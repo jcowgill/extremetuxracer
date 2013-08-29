@@ -129,6 +129,7 @@ AC_CONFIG_FILES([
         data/terrains/Makefile
         data/textures/Makefile
         data/translations/Makefile
+        doc/Makefile
         resources/Makefile
 ])
 AC_OUTPUT

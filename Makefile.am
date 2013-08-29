@@ -1,4 +1,4 @@
-SUBDIRS = build data resources
+SUBDIRS = build data resources doc
 
 bin_PROGRAMS = etr
 
