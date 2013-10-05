@@ -88,7 +88,6 @@ int main( int argc, char **argv ) {
 	Tex.LoadTextureList ();
 	FT.LoadFontlist ();
 	Winsys.SetFonttype ();
-	Audio.Open ();
 	Music.LoadMusicList ();
 	Music.SetVolume (param.music_volume);
 

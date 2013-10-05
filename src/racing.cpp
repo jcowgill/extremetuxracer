@@ -345,7 +345,6 @@ void CRacing::Loop (double time_step) {
 	check_gl_error();
 	ClearRenderContext ();
 	Env.SetupFog ();
-	Music.Update ();
 	CalcTrickControls (ctrl, time_step, airborne);
 
 	if (!g_game.finish) CalcSteeringControls (ctrl, time_step);

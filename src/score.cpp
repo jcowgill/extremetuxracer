@@ -244,7 +244,6 @@ void CScore::Loop (double timestep) {
 	int ww = Winsys.resolution.width;
 	int hh = Winsys.resolution.height;
 
-	Music.Update ();
 	check_gl_error();
 	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);

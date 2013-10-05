@@ -58,7 +58,6 @@ void CSplashScreen::Enter() {
 }
 
 void CSplashScreen::Loop(double timestep) {
-	Music.Update ();
 	check_gl_error();
 	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);

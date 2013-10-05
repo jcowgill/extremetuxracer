@@ -92,7 +92,7 @@
       <PrecompiledHeaderFile>bh.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>freetype.lib;sdl.lib;sdl_mixer.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;sdl.lib;sfml-audio-d.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -109,7 +109,7 @@
       <PrecompiledHeaderFile>bh.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>freetype.lib;sdl.lib;sdl_mixer.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;sdl.lib;sfml-audio-d-64.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmtd.lib;libcmt.lib;msvcrt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -132,7 +132,7 @@
       <PrecompiledHeaderFile>bh.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>freetype.lib;sdl.lib;sdl_mixer.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;sdl.lib;sfml-audio.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -157,7 +157,7 @@
       <PrecompiledHeaderFile>bh.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>freetype.lib;sdl.lib;sdl_mixer.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;sdl.lib;sfml-audio-64.lib;sdl_image.lib;sdlmain.lib;opengl32.lib;glu32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>libcmt.lib</IgnoreSpecificDefaultLibraries>
       <SubSystem>Console</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>

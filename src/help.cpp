@@ -53,7 +53,6 @@ void CHelp::Enter() {
 }
 
 void CHelp::Loop(double timestep) {
-	Music.Update ();
 	check_gl_error();
 	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);

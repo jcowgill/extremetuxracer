@@ -182,7 +182,6 @@ void CEvent::Loop (double timestep) {
 
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
-	Music.Update ();
 	ClearRenderContext ();
 	SetupGuiDisplay ();
 

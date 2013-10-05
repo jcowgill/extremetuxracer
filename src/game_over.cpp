@@ -197,8 +197,6 @@ void CGameOver::Loop(double time_step) {
 	int height = Winsys.resolution.height;
 	check_gl_error();
 
-	Music.Update ();
-
 	ClearRenderContext ();
 	Env.SetupFog ();
 

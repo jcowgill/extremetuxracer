@@ -185,7 +185,6 @@ void CRaceSelect::Loop(double timestep) {
 	ClearRenderContext ();
 	SetupGuiDisplay ();
 
-	Music.Update ();
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
 		draw_ui_snow ();

@@ -111,7 +111,6 @@ void CNewPlayer::Loop(double timestep) {
 	int hh = Winsys.resolution.height;
 	TColor col;
 
-	Music.Update ();
 	check_gl_error();
 	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);
