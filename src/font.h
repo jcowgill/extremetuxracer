@@ -29,12 +29,10 @@ GNU General Public License for more details.
 
 #define MAX_FONTS 36
 
-class FTFont;
-
 
 class CFont {
 private:
-	vector<FTFont*> fonts;
+	vector<sf::Font*> fonts;
 	map<string, size_t> fontindex;
 	Orientation forientation;
 
@@ -55,7 +53,7 @@ public:
 
 	void Clear ();
 	int  LoadFont(const string& name, const string& dir, const string& filename);
-	int  LoadFont(const string& name, const char *path);
+	int  LoadFont(const string& name, const string& path);
 	bool LoadFontlist ();
 	size_t GetFontIdx (const string &name) const;
 

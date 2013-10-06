@@ -44,14 +44,17 @@ static const GLshort fullsize_texture[] = {
 
 bool TTexture::Load(const string& filename) {
 	texture = new sf::Texture();
+	texture->setSmooth(true);
 	return texture->loadFromFile(filename);
 }
+
 bool TTexture::Load(const string& dir, const string& filename) {
 	return Load(dir + SEP + filename);
 }
 
 bool TTexture::LoadMipmap(const string& filename, bool repeatable) {
 	texture = new sf::Texture();
+	texture->setSmooth(true);
 	texture->setRepeated(repeatable);
 	if (!texture->loadFromFile(filename))
 		return false;

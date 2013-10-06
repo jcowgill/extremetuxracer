@@ -44,7 +44,7 @@ private:
 	sf::ContextSettings ctx;
 	double CalcScreenScale () const;
 public:
-	sf::Window window;
+	sf::RenderWindow window;
 	TScreenRes resolution;
 	double scale;			// scale factor for screen, see 'use_quad_scale'
 

@@ -21,10 +21,10 @@ GNU General Public License for more details.
 #endif
 
 #include "font.h"
-#include "ft_font.h"
 #include "spx.h"
 #include "ogl.h"
 #include "winsys.h"
+#include "gui.h"
 
 #define USE_UNICODE 1
 
@@ -139,14 +139,12 @@ wstring CFont::UnicodeStr (const char *s) {
 //					public
 // --------------------------------------------------------------------
 
-int CFont::LoadFont (const string& name, const char *path) {
-	fonts.push_back(new FTGLPixmapFont (path));
-	if (fonts.back()->Error()) {
+int CFont::LoadFont (const string& name, const string& path) {
+	fonts.push_back(new sf::Font());
+	if (!fonts.back()->loadFromFile(path)) {
 		Message ("Failed to open font");
 		return -1;
 	}
-	fonts.back()->FaceSize (18);
-	fonts.back()->CharMap (ft_encoding_unicode);
 
 	fontindex[name] = fonts.size()-1;
 	return (int)fonts.size()-1;
@@ -156,7 +154,7 @@ int CFont::LoadFont(const string& name, const string& dir, const string& filenam
 	string path = dir;
 	path += SEP;
 	path += filename;
-	return LoadFont (name, path.c_str());
+	return LoadFont (name, path);
 }
 
 bool CFont::LoadFontlist () {
@@ -222,23 +220,14 @@ template<typename T>
 void CFont::DrawText(float x, float y, const T* text, size_t font, float size) const {
 	if (font >= fonts.size()) return;
 
-	glPushMatrix();
-	fonts[font]->FaceSize((int)size);
-	glColor(curr_col);
-
-	float left;
-	if (x >= 0) left = x;
-	else left = (Winsys.resolution.width - GetTextWidth(text)) / 2;
-	if (left < 0) left = 0;
-
-	if (forientation == OR_TOP) {
-		glRasterPos2i ((int)left, (int)(Winsys.resolution.height - curr_size - y));
-	} else {
-		glRasterPos2i ((int)left, (int)y);
-	}
-
-	fonts[font]->Render(text);
-	glPopMatrix();
+	sf::Text temp(text, *fonts[font], size);
+	if (x == CENTER)
+		x = (Winsys.resolution.width - temp.getLocalBounds().width) / 2;
+	temp.setPosition(x, y);
+	temp.setColor(sf::Color(curr_col.r * 255, curr_col.g * 255, curr_col.b * 255, curr_col.a * 255));
+	Winsys.window.pushGLStates();
+	Winsys.window.draw(temp);
+	Winsys.window.popGLStates();
 }
 template void CFont::DrawText<char>(float x, float y, const char* text, size_t font, float size) const; // instanciate
 template void CFont::DrawText<wchar_t>(float x, float y, const wchar_t* text, size_t font, float size) const; // instanciate
@@ -272,19 +261,16 @@ void CFont::DrawText(float x, float y, const char *text, const string &fontname,
 #endif
 }
 
-void CFont::DrawText
-(float x, float y, const wchar_t *text, const string &fontname, float size) const {
+void CFont::DrawText(float x, float y, const wchar_t *text, const string &fontname, float size) const {
 	size_t temp_font = GetFontIdx (fontname);
 	DrawText(x, y, text, temp_font, size);
 }
 
-void CFont::DrawString (
-    float x, float y, const string &s, const string &fontname, float size) const {
+void CFont::DrawString (float x, float y, const string &s, const string &fontname, float size) const {
 	DrawText (x, y, s.c_str(), fontname, size);
 }
 
-void CFont::DrawString (
-    float x, float y, const wstring &s, const string &fontname, float size) const {
+void CFont::DrawString (float x, float y, const wstring &s, const string &fontname, float size) const {
 	DrawText (x, y, s.c_str(), fontname, size);
 }
 
@@ -293,11 +279,9 @@ void CFont::DrawString (
 void CFont::GetTextSize (const wchar_t *text, float &x, float &y, size_t font, float size) const {
 	if (font >= fonts.size()) { x = 0; y = 0; return; }
 
-	float llx, lly, llz, urx, ury, urz;
-	fonts[font]->FaceSize ((int)size);
-	fonts[font]->BBox (text, llx, lly, llz, urx, ury, urz);
-	x = urx - llx;
-	y = ury - lly;
+	sf::Text temp(text, *fonts[font], size);
+	x = temp.getGlobalBounds().width;
+	y = temp.getGlobalBounds().height;
 }
 
 void CFont::GetTextSize (const char *text, float &x, float &y, size_t font, float size) const {
@@ -306,11 +290,9 @@ void CFont::GetTextSize (const char *text, float &x, float &y, size_t font, floa
 #else
 	if (font >= fonts.size()) { x = 0; y = 0; return; }
 
-	float llx, lly, llz, urx, ury, urz;
-	fonts[font]->FaceSize ((int)size);
-	fonts[font]->BBox (text, llx, lly, llz, urx, ury, urz);
-	x = urx - llx;
-	y = ury - lly;
+	sf::Text temp(text, *fonts[font], size);
+	x = temp.getLocalBounds().width;
+	y = temp.getLocalBounds().height;
 #endif
 }
 
