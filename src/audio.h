@@ -65,7 +65,7 @@ enum ESituation {
 };
 
 namespace sf {
-	class Music;
+class Music;
 };
 
 class CMusic {

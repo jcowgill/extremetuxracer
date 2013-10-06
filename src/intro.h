@@ -24,7 +24,7 @@ GNU General Public License for more details.
 class CIntro : public State {
 	void Enter();
 	void Loop(double time_step);
-	void Keyb(unsigned int key, bool special, bool release, int x, int y);
+	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 public:
 };
 

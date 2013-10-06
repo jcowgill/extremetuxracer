@@ -110,13 +110,13 @@ void CCredits::DrawCreditsText (double time_step) {
 	if (offs < TOP_Y) y_offset = 0;
 }
 
-void CCredits::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CCredits::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case SDLK_m:
+		case sf::Keyboard::M:
 			moving = !moving;
 			break;
-		case SDLK_u:
+		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:

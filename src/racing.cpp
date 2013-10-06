@@ -65,59 +65,59 @@ static bool trees = true;
 static int newsound = -1;
 static int lastsound = -1;
 
-void CRacing::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	switch (key) {
 			// steering flipflops
-		case SDLK_UP:
+		case sf::Keyboard::Up:
 			key_paddling = !release;
 			break;
-		case SDLK_DOWN:
+		case sf::Keyboard::Down:
 			key_braking = !release;
 			break;
-		case SDLK_LEFT:
+		case sf::Keyboard::Left:
 			left_turn = !release;
 			break;
-		case SDLK_RIGHT:
+		case sf::Keyboard::Right:
 			right_turn = !release;
 			break;
-		case SDLK_SPACE:
+		case sf::Keyboard::Space:
 			key_charging = !release;
 			break;
-		case SDLK_t:
+		case sf::Keyboard::T:
 			trick_modifier = !release;
 			break;
 			// mode changing and other actions
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			if (!release) {
 				g_game.raceaborted = true;
 				g_game.race_result = -1;
 				State::manager.RequestEnterState (GameOver);
 			}
 			break;
-		case SDLK_p:
+		case sf::Keyboard::P:
 			if (!release) State::manager.RequestEnterState (Paused);
 			break;
-		case SDLK_r:
+		case sf::Keyboard::R:
 			if (!release) State::manager.RequestEnterState (Reset);
 			break;
-		case SDLK_s:
+		case sf::Keyboard::S:
 			if (!release) ScreenshotN ();
 			break;
 
 			// view changing
-		case SDLK_1:
+		case sf::Keyboard::Num1:
 			if (!release) {
 				set_view_mode (Players.GetCtrl (g_game.player_id), ABOVE);
 				param.view_mode = ABOVE;
 			}
 			break;
-		case SDLK_2:
+		case sf::Keyboard::Num2:
 			if (!release) {
 				set_view_mode (Players.GetCtrl (g_game.player_id), FOLLOW);
 				param.view_mode = FOLLOW;
 			}
 			break;
-		case SDLK_3:
+		case sf::Keyboard::Num3:
 			if (!release) {
 				set_view_mode (Players.GetCtrl (g_game.player_id), BEHIND);
 				param.view_mode = BEHIND;
@@ -125,22 +125,22 @@ void CRacing::Keyb (unsigned int key, bool special, bool release, int x, int y) 
 			break;
 
 			// toggle
-		case SDLK_h:
+		case sf::Keyboard::H:
 			if (!release) param.show_hud = !param.show_hud;
 			break;
-		case SDLK_f:
+		case sf::Keyboard::F:
 			if (!release) param.display_fps = !param.display_fps;
 			break;
-		case SDLK_F5:
+		case sf::Keyboard::F5:
 			if (!release) sky = !sky;
 			break;
-		case SDLK_F6:
+		case sf::Keyboard::F6:
 			if (!release) fog = !fog;
 			break;
-		case SDLK_F7:
+		case sf::Keyboard::F7:
 			if (!release) terr = !terr;
 			break;
-		case SDLK_F8:
+		case sf::Keyboard::F8:
 			if (!release) trees = !trees;
 			break;
 	}

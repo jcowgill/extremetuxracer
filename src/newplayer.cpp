@@ -45,21 +45,25 @@ void QuitAndAddPlayer () {
 	State::manager.RequestEnterState (Regist);
 }
 
-void CNewPlayer::Keyb_spec (SDL_keysym sym, bool release) {
+void CNewPlayer::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 
-	KeyGUI(sym.sym, sym.mod, release);
-	switch (sym.sym) {
-		case SDLK_ESCAPE:
-			State::manager.RequestEnterState (Regist);
+	KeyGUI(key, 0, release);
+	switch (key) {
+		case sf::Keyboard::Escape:
+			State::manager.RequestEnterState(Regist);
 			break;
-		case SDLK_RETURN:
-			if (textbuttons[0]->focussed()) State::manager.RequestEnterState (Regist);
-			else QuitAndAddPlayer ();
+		case sf::Keyboard::Return:
+			if (textbuttons[0]->focussed()) State::manager.RequestEnterState(Regist);
+			else QuitAndAddPlayer();
 			break;
 		default:
 			break;
 	}
+}
+
+void CNewPlayer::TextEntered(char text) {
+	TextEnterGUI(text);
 }
 
 void CNewPlayer::Mouse (int button, int state, int x, int y) {

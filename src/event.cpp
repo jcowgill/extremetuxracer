@@ -63,17 +63,17 @@ void StartRace () {
 	State::manager.RequestEnterState (Loading);
 }
 
-void CEvent::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CEvent::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			if (curr_focus == textbuttons[0] && ready < 1) StartRace ();
 			else State::manager.RequestEnterState (EventSelect);
 			break;
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (EventSelect);
 			break;
-		case SDLK_TAB:
+		case sf::Keyboard::Tab:
 			if (ready > 0) {
 				curr_focus = textbuttons[2];
 			} else {
@@ -81,13 +81,13 @@ void CEvent::Keyb (unsigned int key, bool special, bool release, int x, int y) {
 				else curr_focus = textbuttons[0];
 			}
 			break;
-		case SDLK_LEFT:
+		case sf::Keyboard::Left:
 			if (curr_focus == textbuttons[0]) curr_focus = textbuttons[1];
 			break;
-		case SDLK_RIGHT:
+		case sf::Keyboard::Right:
 			if (curr_focus == textbuttons[1]) curr_focus = textbuttons[0];
 			break;
-		case SDLK_u:
+		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
 			break;
 	}

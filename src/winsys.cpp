@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "textures.h"
 #include "spx.h"
 #include "course.h"
-#include <SDL/SDL_syswm.h>
+#include <SFML/Window.hpp>
 #include <iostream>
 
 #define USE_JOYSTICK true
@@ -39,10 +39,12 @@ CWinsys Winsys;
 
 CWinsys::CWinsys ()
 	: auto_resolution(800, 600) {
-	screen = NULL;
-
-	joystick = NULL;
-	numJoysticks = 0;
+	for (int i = 0; i < 8; i++) {
+		if (sf::Joystick::isConnected(i))
+			numJoysticks++;
+		else
+			break;
+	}
 	joystick_active = false;
 
 	resolutions[0] = TScreenRes(0, 0);
@@ -77,12 +79,10 @@ double CWinsys::CalcScreenScale () const {
 }
 
 void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
-	int bpp = 0;
-	Uint32 video_flags = SDL_OPENGL;
-	if (param.fullscreen) video_flags |= SDL_FULLSCREEN;
+	int bpp = 32;
 	switch (param.bpp_mode) {
 		case 0:
-			bpp = 0;
+			bpp = 32;
 			break;
 		case 1:
 			bpp = 16;
@@ -92,41 +92,23 @@ void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
 			break;
 		default:
 			param.bpp_mode = 0;
-			bpp = 0;
+			bpp = 32;
 	}
+	sf::Uint32 style = sf::Style::Close | sf::Style::Titlebar;
+	if (param.fullscreen)
+		style |= sf::Style::Fullscreen;
 
-#ifdef _WIN32
-	SDL_SysWMinfo info;
-	SDL_VERSION(&info.version);
-	SDL_GetWMInfo(&info);
-	HDC tempDC = GetDC(info.window);
-	HGLRC tempRC = wglCreateContext(tempDC);
-	SetLastError(0);
-	wglShareLists(info.hglrc, tempRC); // Share resources with old context
+	resolution = resolution_;
+
+#ifdef USE_STENCIL_BUFFER
+	sf::ContextSettings ctx(bpp, 8, 0, 1, 2);
+#else
+	sf::ContextSettings ctx(bpp, 0, 0, 1, 2);
 #endif
+	window.create(sf::VideoMode(resolution.width, resolution.height, bpp), WINDOW_TITLE, style, ctx);
+	if (param.framerate)
+		window.setFramerateLimit(param.framerate);
 
-	if ((screen = SDL_SetVideoMode
-	              (resolution_.width, resolution_.height, bpp, video_flags)) == NULL) {
-		Message ("couldn't initialize video",  SDL_GetError());
-		Message ("set to 800 x 600");
-		screen = SDL_SetVideoMode (800, 600, bpp, video_flags);
-		param.res_type = 1;
-		SaveConfigFile ();
-	}
-
-#ifdef _WIN32
-	SDL_VERSION(&info.version);
-	SDL_GetWMInfo(&info);
-	wglShareLists(tempRC, info.hglrc); // Share resources with new context
-	wglDeleteContext(tempRC);
-#endif
-
-	SDL_Surface *surf = SDL_GetVideoSurface ();
-	resolution.width = surf->w;
-	resolution.height = surf->h;
-	if (resolution.width == 0 && resolution.height == 0) {
-		auto_resolution = resolution;
-	}
 	scale = CalcScreenScale ();
 	if (param.use_quad_scale) scale = sqrt (scale);
 }
@@ -139,47 +121,14 @@ void CWinsys::SetupVideoMode (int width, int height) {
 	SetupVideoMode (TScreenRes(width, height));
 }
 
-void CWinsys::InitJoystick () {
-	if (SDL_InitSubSystem (SDL_INIT_JOYSTICK) < 0) {
-		Message ("Could not initialize SDL_joystick: %s", SDL_GetError());
-		return;
-	}
-	numJoysticks = SDL_NumJoysticks ();
-	if (numJoysticks < 1) {
-		joystick = NULL;
-		return;
-	}
-	SDL_JoystickEventState (SDL_ENABLE);
-	joystick = SDL_JoystickOpen (0);	// first stick with number 0
-	if (joystick == NULL) {
-		Message ("Cannot open joystick %s", SDL_GetError ());
-		return;
-	}
-	joystick_active = true;
-}
-
 void CWinsys::Init () {
-	Uint32 sdl_flags = SDL_INIT_VIDEO | SDL_INIT_NOPARACHUTE | SDL_INIT_TIMER;
-	if (SDL_Init (sdl_flags) < 0) Message ("Could not initialize SDL");
-	SDL_GL_SetAttribute (SDL_GL_DOUBLEBUFFER, 1);
+	SetupVideoMode(GetResolution(param.res_type));
 
-#if defined (USE_STENCIL_BUFFER)
-	SDL_GL_SetAttribute (SDL_GL_STENCIL_SIZE, 8);
-#endif
-
-	SetupVideoMode (GetResolution (param.res_type));
-	Reshape (resolution.width, resolution.height);
-
-	SDL_WM_SetCaption (WINDOW_TITLE, WINDOW_TITLE);
 	KeyRepeat (false);
-	if (USE_JOYSTICK) InitJoystick ();
-//	SDL_EnableUNICODE (1);
 }
 
 void CWinsys::KeyRepeat (bool repeat) {
-	if (repeat)
-		SDL_EnableKeyRepeat (SDL_DEFAULT_REPEAT_DELAY, SDL_DEFAULT_REPEAT_INTERVAL);
-	else SDL_EnableKeyRepeat (0, 0);
+	window.setKeyRepeatEnabled(repeat);
 }
 
 void CWinsys::SetFonttype () {
@@ -190,17 +139,12 @@ void CWinsys::SetFonttype () {
 	}
 }
 
-void CWinsys::CloseJoystick () {
-	if (joystick_active) SDL_JoystickClose (joystick);
-}
-
 void CWinsys::Quit () {
-	CloseJoystick ();
 	Score.SaveHighScore ();
 	SaveMessages ();
 	FT.Clear ();
 	if (g_game.argument < 1) Players.SavePlayers ();
-	SDL_Quit ();
+	window.close();
 }
 
 void CWinsys::Terminate () {
@@ -209,18 +153,34 @@ void CWinsys::Terminate () {
 }
 
 void CWinsys::PrintJoystickInfo () const {
-	if (joystick_active == false) {
-		Message ("No joystick found");
+	if (numJoysticks == 0) {
+		cout << "No joystick found\n";
 		return;
 	}
-	PrintStr ("");
-	PrintStr (SDL_JoystickName (0));
-	int num_buttons = SDL_JoystickNumButtons (joystick);
-	cout << "Joystick has " << num_buttons << " button" << (num_buttons == 1 ? "" : "s") << '\n';
-	int num_axes = SDL_JoystickNumAxes (joystick);
-	cout << "Joystick has " << num_axes << " ax" << (num_axes == 1 ? "i" : "e") << "s\n\n";
+	cout << '\n';
+	for (int i = 0; i < numJoysticks; i++) {
+		cout << "Joystick " << i << '\n';
+		int buttons = sf::Joystick::getButtonCount(i);
+		cout << "Joystick has " << buttons << " button" << (buttons == 1 ? "" : "s") << '\n';
+		cout << "Axes: ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::R)) cout << "R ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::U)) cout << "U ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::V)) cout << "V ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::X)) cout << "X ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Y)) cout << "Y ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Z)) cout << "Z ";
+		cout << '\n';
+	}
 }
 
-unsigned char *CWinsys::GetSurfaceData () const {
-	return (unsigned char*)screen->pixels;
+void CWinsys::ShowCursor(bool visible) {
+	window.setMouseCursorVisible(visible);
+}
+
+void CWinsys::SwapBuffers() {
+	window.display();
+}
+
+bool CWinsys::PollEvent(sf::Event& event) {
+	return window.pollEvent(event);
 }

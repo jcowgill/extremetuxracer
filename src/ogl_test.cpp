@@ -43,10 +43,10 @@ void SetTestLight () {
 }
 
 
-void COglTest::Keyb(unsigned int key, bool special, bool release, int x, int y) {
+void COglTest::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestQuit();
 			break;
 	}

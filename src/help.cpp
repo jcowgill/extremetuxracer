@@ -33,7 +33,7 @@ CHelp Help;
 
 static int ytop;
 
-void CHelp::Keyb(unsigned int key, bool special, bool release, int x, int y) {
+void CHelp::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	State::manager.RequestEnterState (GameTypeSelect);
 }
 

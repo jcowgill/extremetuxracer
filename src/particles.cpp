@@ -65,7 +65,6 @@ struct TGuiParticle {
 static list<TGuiParticle> particles_2d;
 static TVector2d push_position(0, 0);
 static TVector2d last_push_position;
-static double last_update_time = -1;
 static bool push_position_initialized = false;
 
 TGuiParticle::TGuiParticle(double x, double y) {
@@ -79,25 +78,25 @@ TGuiParticle::TGuiParticle(double x, double y) {
 
 	static const GLfloat tex_coords[4][8] = {
 		{
-			0.0, 0.0,
+			0.0, 0.5,
+			0.5, 0.5,
 			0.5, 0.0,
+			0.0, 0.0
+		}, {
+			0.5, 0.5,
+			1.0, 0.5,
+			1.0, 0.0,
+			0.5, 0.0
+		}, {
+			0.0, 1.0,
+			0.5, 1.0,
 			0.5, 0.5,
 			0.0, 0.5
 		}, {
-			0.5, 0.0,
-			1.0, 0.0,
+			0.5, 1.0,
+			1.0, 1.0,
 			1.0, 0.5,
 			0.5, 0.5
-		}, {
-			0.0, 0.5,
-			0.5, 0.5,
-			0.5, 1.0,
-			0.0, 1.0
-		}, {
-			0.5, 0.5,
-			1.0, 0.5,
-			1.0, 1.0,
-			0.5, 1.0
 		}
 	};
 	int type = rand() % 4;
@@ -152,18 +151,19 @@ void init_ui_snow () {
 }
 
 void update_ui_snow(double time_step) {
-	double time = Winsys.ClockTime ();
+	static sf::Clock timer;
+	float time = timer.getElapsedTime().asSeconds();
+	timer.restart();
 
 	TVector2d push_vector;
-	double push_timestep = 0;
+	float push_timestep = 0;
 
 	if (push_position_initialized) {
 		push_vector.x = push_position.x - last_push_position.x;
 		push_vector.y = push_position.y - last_push_position.y;
-		push_timestep = time - last_update_time;
+		push_timestep = time;
 	}
 	last_push_position = push_position;
-	last_update_time = time;
 
 	for (list<TGuiParticle>::iterator p = particles_2d.begin(); p != particles_2d.end(); ++p) {
 		p->Update(time_step, push_timestep, push_vector);
@@ -266,25 +266,25 @@ static list<Particle> particles;
 void Particle::Draw(const CControl* ctrl) const {
 	static const GLfloat tex_coords[4][8] = {
 		{
-			0.0, 0.0,
+			0.0, 0.5,
+			0.5, 0.5,
 			0.5, 0.0,
+			0.0, 0.0
+		}, {
+			0.5, 0.5,
+			1.0, 0.5,
+			1.0, 0.0,
+			0.5, 0.0
+		}, {
+			0.0, 1.0,
+			0.5, 1.0,
 			0.5, 0.5,
 			0.0, 0.5
 		}, {
-			0.5, 0.0,
-			1.0, 0.0,
+			0.5, 1.0,
+			1.0, 1.0,
 			1.0, 0.5,
 			0.5, 0.5
-		}, {
-			0.0, 0.5,
-			0.5, 0.5,
-			0.5, 1.0,
-			0.0, 1.0
-		}, {
-			0.5, 0.5,
-			1.0, 0.5,
-			1.0, 1.0,
-			0.5, 1.0
 		}
 	};
 
@@ -581,25 +581,25 @@ void CFlakes::MakeSnowFlake (size_t ar, size_t i) {
 
 	static const GLfloat tex_coords[4][8] = {
 		{
-			0.0, 0.875,
-			0.125, 0.875,
-			0.125, 1.0,
-			0.0, 1.0
+			0.0, 0.125,
+			0.125, 0.125,
+			0.125, 0.0,
+			0.0, 0.0
 		}, {
-			0.125, 0.875,
-			0.25, 0.875,
-			0.25, 1.0,
-			0.125, 1.0
+			0.125, 0.125,
+			0.25, 0.125,
+			0.25, 0.0,
+			0.125, 0.0
 		}, {
-			0.0, 0.75,
-			0.125, 0.75,
-			0.125, 0.875,
-			0.0, 0.875
+			0.0, 0.25,
+			0.125, 0.25,
+			0.125, 0.125,
+			0.0, 0.125
 		}, {
-			0.125, 0.75,
-			0.25, 0.75,
-			0.25, 0.875,
-			0.125, 0.875
+			0.125, 0.25,
+			0.25, 0.25,
+			0.25, 0.125,
+			0.125, 0.125
 		}
 	};
 
@@ -799,10 +799,10 @@ void TCurtain::Draw() const {
 			glRotatef (-curtains[co][row].angle, 0, 1, 0);
 
 			static const GLshort tex[] = {
-				0, 0,
-				1, 0,
+				0, 1,
 				1, 1,
-				0, 1
+				1, 0,
+				0, 0
 			};
 			const GLfloat vtx[] = {
 				-halfsize, -halfsize, 0,

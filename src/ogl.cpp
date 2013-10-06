@@ -54,11 +54,15 @@ void check_gl_error() {
 PFNGLLOCKARRAYSEXTPROC glLockArraysEXT_p = NULL;
 PFNGLUNLOCKARRAYSEXTPROC glUnlockArraysEXT_p = NULL;
 
+
 typedef void (*(*get_gl_proc_fptr_t)(const GLubyte *))();
 void InitOpenglExtensions () {
 	get_gl_proc_fptr_t get_gl_proc;
-
-	get_gl_proc = (get_gl_proc_fptr_t) SDL_GL_GetProcAddress;
+#ifdef OS_WIN32_MSC
+	get_gl_proc = (get_gl_proc_fptr_t) wglGetProcAddress;//(get_gl_proc_fptr_t) SDL_GL_GetProcAddress;
+#else
+	get_gl_proc = 0;
+#endif
 
 	if (get_gl_proc) {
 		glLockArraysEXT_p = (PFNGLLOCKARRAYSEXTPROC)

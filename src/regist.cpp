@@ -47,14 +47,14 @@ void QuitRegistration () {
 	State::manager.RequestEnterState (GameTypeSelect);
 }
 
-void CRegist::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CRegist::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	TWidget* focussed = KeyGUI(key, 0, release);
 	if (release) return;
 	switch (key) {
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestQuit();
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			if (focussed == textbuttons[1]) {
 				g_game.player_id = player->GetValue();
 				State::manager.RequestEnterState (NewPlayer);

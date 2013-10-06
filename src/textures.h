@@ -67,49 +67,17 @@ GNU General Public License for more details.
 
 
 // --------------------------------------------------------------------
-//				class CImage
-// --------------------------------------------------------------------
-
-class CImage {
-private:
-public:
-	CImage ();
-	~CImage ();
-
-	unsigned char *data;
-	int nx;
-	int ny;
-	int depth;
-	int pitch;
-
-	void DisposeData ();
-
-	// load:
-	bool LoadPng (const char *filepath, bool mirroring);
-	bool LoadPng (const char *dir, const char *filepath, bool mirroring);
-
-	// write:
-	bool ReadFrameBuffer_PPM ();
-	void ReadFrameBuffer_TGA ();
-	void ReadFrameBuffer_BMP ();
-	void WritePPM (const char *filepath);
-	void WriteTGA (const char *filepath);
-	void WriteBMP (const char *filepath);
-};
-
-// --------------------------------------------------------------------
 //				class CTexture
 // --------------------------------------------------------------------
 
 class TTexture {
+	sf::Texture* texture;
+
 	TTexture(const TTexture&);
 	TTexture& operator=(const TTexture&);
-
-	GLuint id;
 public:
-
-	TTexture() : id(0) {}
-	~TTexture();
+	TTexture() : texture(NULL) {}
+	~TTexture() { delete texture; }
 	bool Load(const string& filename);
 	bool Load(const string& dir, const string& filename);
 	bool LoadMipmap(const string& filename, bool repeatable);

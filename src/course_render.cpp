@@ -93,14 +93,14 @@ void DrawTrees() {
 		glNormal3i(0, 0, 1);
 
 		static const GLshort tex[] = {
-			0, 0,
-			1, 0,
-			1, 1,
 			0, 1,
-			0, 0,
-			1, 0,
 			1, 1,
-			0, 1
+			1, 0,
+			0, 0,
+			0, 1,
+			1, 1,
+			1, 0,
+			0, 0
 		};
 
 		const GLfloat vtx[] = {
@@ -160,10 +160,10 @@ void DrawTrees() {
 		normal.Norm();
 
 		static const GLshort tex[] = {
-			0, 0,
-			1, 0,
+			0, 1,
 			1, 1,
-			0, 1
+			1, 0,
+			0, 0
 		};
 
 		const GLfloat vtx[] = {

@@ -337,15 +337,16 @@ void CCourse::FreeObjectTextures () {
 // --------------------------------------------------------------------
 
 bool CCourse::LoadElevMap () {
-	CImage img;
+	sf::Image img;
 
-	if (!img.LoadPng (CourseDir.c_str(), "elev.png", true)) {
+	if (!img.loadFromFile(CourseDir + SEP + "elev.png")) {
 		Message ("unable to open elev.png");
 		return false;
 	}
+	img.flipVertically();
 
-	nx = img.nx;
-	ny = img.ny;
+	nx = img.getSize().x;
+	ny = img.getSize().y;
 	try {
 		elevation = new double[nx * ny];
 	} catch (...) {
@@ -355,14 +356,16 @@ bool CCourse::LoadElevMap () {
 
 	double slope = tan (ANGLES_TO_RADIANS (curr_course->angle));
 	int pad = 0;
+	int depth = 4;
+	const uint8_t* data = img.getPixelsPtr();
 	for (int y=0; y<ny; y++) {
 		for (int x=0; x<nx; x++) {
 			elevation [(nx-1-x) + nx * (ny-1-y)] =
-			    ((img.data [(x+nx*y) * img.depth + pad]
+			    ((data[(x + nx*y) * depth + pad]
 			      - base_height_value) / 255.0) * curr_course->scale
 			    - (double)(ny-1-y) / ny * curr_course->size.y * slope;
 		}
-		pad += (nx * img.depth) % 4;
+		pad += (nx * depth) % 4;
 	}
 	return true;
 }
@@ -424,7 +427,7 @@ void CCourse::LoadItemList () {
 // --------------------	LoadObjectMap ---------------------------------
 
 
-static int GetObject (unsigned char pixel[]) {
+static int GetObject (const unsigned char* pixel) {
 	int r = pixel[0];
 	int g = pixel[1];
 	int b = pixel[2];
@@ -460,15 +463,18 @@ static void CalcRandomTrees (double baseheight, double basediam, double &height,
 }
 
 bool CCourse::LoadAndConvertObjectMap () {
-	CImage treeImg;
+	sf::Image treeImg;
 
-	if (!treeImg.LoadPng (CourseDir.c_str(), "trees.png", true)) {
+	if (!treeImg.loadFromFile (CourseDir + SEP + "trees.png")) {
 		Message ("unable to open trees.png");
 		return false;
 	}
+	treeImg.flipVertically();
 
 	int pad = 0;
 	int cnt = 0;
+	int depth = 4;
+	const unsigned char* data = (unsigned char*)treeImg.getPixelsPtr();
 	double height, diam;
 	CSPList savelist (10000);
 
@@ -476,8 +482,8 @@ bool CCourse::LoadAndConvertObjectMap () {
 	NocollArr.clear();
 	for (int y=0; y<ny; y++) {
 		for (int x=0; x<nx; x++) {
-			int imgidx = (x + nx * y) * treeImg.depth + pad;
-			int type = GetObject (&treeImg.data[imgidx]);
+			int imgidx = (x + nx * y) * depth + pad;
+			int type = GetObject (&data[imgidx]);
 			if (type >= 0) {
 				cnt++;
 				double xx = (nx - x) / (double)(nx - 1.0) * curr_course->size.x;
@@ -543,7 +549,7 @@ bool CCourse::LoadAndConvertObjectMap () {
 				savelist.Add (line);
 			}
 		}
-		pad += (nx * treeImg.depth) % 4;
+		pad += (nx * depth) % 4;
 	}
 	string itemfile = CourseDir + SEP + "items.lst";
 	savelist.Save (itemfile); // Convert trees.png to items.lst
@@ -597,7 +603,7 @@ bool CCourse::LoadObjectTypes () {
 //						Terrain
 // ====================================================================
 
-int CCourse::GetTerrain (unsigned char pixel[]) const {
+int CCourse::GetTerrain (const unsigned char* pixel) const {
 	for (size_t i=0; i<TerrList.size(); i++) {
 		if (abs(pixel[0]-(int)(TerrList[i].col.r)) < 30
 		        && abs(pixel[1]-(int)(TerrList[i].col.g)) < 30
@@ -645,13 +651,14 @@ bool CCourse::LoadTerrainTypes () {
 // --------------------------------------------------------------------
 
 bool CCourse::LoadTerrainMap () {
-	CImage terrImage;
+	sf::Image terrImage;
 
-	if (!terrImage.LoadPng (CourseDir.c_str(), "terrain.png", true)) {
+	if (!terrImage.loadFromFile (CourseDir + SEP + "terrain.png")) {
 		Message ("unable to open terrain.png");
 		return false;
 	}
-	if (nx != terrImage.nx || ny != terrImage.ny) {
+	terrImage.flipVertically();
+	if (nx != terrImage.getSize().x || ny != terrImage.getSize().y) {
 		Message ("wrong terrain size");
 	}
 
@@ -660,19 +667,21 @@ bool CCourse::LoadTerrainMap () {
 	} catch (...) {
 		Message ("Allocation failed in LoadTerrainMap");
 	}
+	int depth = 4;
+	const unsigned char* data = (const unsigned char*) terrImage.getPixelsPtr();
 	int pad = 0;
 	for (int y=0; y<ny; y++) {
 		for (int x=0; x<nx; x++) {
-			int imgidx = (x+nx*y) * terrImage.depth + pad;
+			int imgidx = (x+nx*y) * depth + pad;
 			int arridx = (nx-1-x) + nx * (ny-1-y);
-			int terr = GetTerrain (&terrImage.data[imgidx]);
+			int terr = GetTerrain (&data[imgidx]);
 			terrain[arridx] = terr;
 			if (TerrList[terr].texture == NULL) {
 				TerrList[terr].texture = new TTexture();
 				TerrList[terr].texture->LoadMipmap(param.terr_dir, TerrList[terr].textureFile, true);
 			}
 		}
-		pad += (nx * terrImage.depth) % 4;
+		pad += (nx * depth) % 4;
 	}
 	return true;
 }

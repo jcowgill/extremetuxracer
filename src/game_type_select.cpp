@@ -68,27 +68,27 @@ void CGameTypeSelect::Mouse (int button, int state, int x, int y) {
 	}
 }
 
-void CGameTypeSelect::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CGameTypeSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 
 	KeyGUI(key, 0, release);
 	switch (key) {
-		case SDLK_u:
+		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
 			break;
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestQuit();
 			break;
-		case SDLK_DOWN:
+		case sf::Keyboard::Down:
 			IncreaseFocus();
 			break;
-		case SDLK_UP:
+		case sf::Keyboard::Up:
 			DecreaseFocus();
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			QuitGameType();
 			break;
-		case SDLK_w:
+		case sf::Keyboard::W:
 			Music.FreeMusics();
 			break;
 	}

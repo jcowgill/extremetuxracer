@@ -65,18 +65,15 @@ void InitGame (int argc, char **argv) {
 // 					main
 // ====================================================================
 
-#if defined ( OS_WIN32_MINGW )
 #undef main
-#endif
-
-int main( int argc, char **argv ) {
+int main(/* int argc, char **argv*/) {
 	// ****************************************************************
 	cout << "\n----------- Extreme Tux Racer " ETR_VERSION_STRING " ----------------";
 	cout << "\n----------- (C) 2010-2013 Extreme Tuxracer Team  --------\n\n";
 
 	srand (time (NULL));
-	InitConfig (argv[0]);
-	InitGame (argc, argv);
+	InitConfig(0);// argv[0]);
+	InitGame(0, 0);// argc, argv);
 	Winsys.Init ();
 	InitOpenglExtensions ();
 	// for checking the joystick and the OpgenGL version (the info is

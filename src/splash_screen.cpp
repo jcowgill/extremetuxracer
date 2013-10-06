@@ -38,13 +38,13 @@ GNU General Public License for more details.
 
 CSplashScreen SplashScreen;
 
-void CSplashScreen::Keyb(unsigned int key, bool special, bool release, int x, int y) {
+void CSplashScreen::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestQuit();
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			State::manager.RequestEnterState (Regist);
 			break;
 	}

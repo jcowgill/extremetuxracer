@@ -209,11 +209,12 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 	glTranslate(pos);
 
 	static const GLfloat tex[] = {
-		aa, aa,
-		bb, aa,
+		aa, bb,
 		bb, bb,
-		aa, bb
+		bb, aa,
+		aa, aa
 	};
+	glTexCoordPointer(2, GL_FLOAT, 0, tex);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -227,7 +228,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 
 	Skybox[0].Bind();
 	glVertexPointer(3, GL_SHORT, 0, front);
-	glTexCoordPointer(2, GL_FLOAT, 0, tex);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	// left
@@ -239,7 +239,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 	};
 	Skybox[1].Bind();
 	glVertexPointer(3, GL_SHORT, 0, left);
-	glTexCoordPointer(2, GL_FLOAT, 0, tex);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	// right
@@ -251,7 +250,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 	};
 	Skybox[2].Bind();
 	glVertexPointer(3, GL_SHORT, 0, right);
-	glTexCoordPointer(2, GL_FLOAT, 0, tex);
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 	// normally, the following textures are unvisible
@@ -266,7 +264,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 		};
 		Skybox[3].Bind();
 		glVertexPointer(3, GL_SHORT, 0, top);
-		glTexCoordPointer(2, GL_FLOAT, 0, tex);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 		// bottom
@@ -278,7 +275,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 		};
 		Skybox[4].Bind();
 		glVertexPointer(3, GL_SHORT, 0, bottom);
-		glTexCoordPointer(2, GL_FLOAT, 0, tex);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 
 		// back
@@ -290,7 +286,6 @@ void CEnvironment::DrawSkybox (const TVector3d& pos) {
 		};
 		Skybox[5].Bind();
 		glVertexPointer(3, GL_SHORT, 0, back);
-		glTexCoordPointer(2, GL_FLOAT, 0, tex);
 		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 	}
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

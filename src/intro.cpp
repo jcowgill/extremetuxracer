@@ -129,7 +129,7 @@ void CIntro::Loop (double time_step) {
 }
 // -----------------------------------------------------------------------
 
-void CIntro::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CIntro::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	CControl *ctrl = Players.GetCtrl (g_game.player_id);
 	if (release) return;
 	abort_intro (ctrl);

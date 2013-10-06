@@ -27,6 +27,9 @@ GNU General Public License for more details.
 #include <string>
 
 #include <GL/gl.h>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
 
 #ifndef HAVE_CONFIG_H
 #	ifdef _WIN32 // Windows platform

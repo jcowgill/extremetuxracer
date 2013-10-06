@@ -127,7 +127,7 @@ private:
 	void		LoadItemList ();
 	bool		LoadAndConvertObjectMap ();
 	bool		LoadTerrainMap ();
-	int			GetTerrain (unsigned char pixel[]) const;
+	int			GetTerrain (const unsigned char* pixel) const;
 
 	void		MirrorCourseData ();
 public:

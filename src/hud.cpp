@@ -366,10 +366,10 @@ void DrawPercentBar (float fact, float x, float y) {
 	glColor4f (1.0, 1.0, 1.0, 1.0);
 
 	const GLfloat tex[] = {
-		0, 0,
-		1, 0,
-		1, fact,
-		0, fact
+		0, 1,
+		1, 1,
+		1, 1 - fact,
+		0, 1 - fact
 	};
 	const GLfloat vtx[] = {
 		x, y,

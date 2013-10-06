@@ -30,8 +30,7 @@ CMusic Music;
 struct TSound {
 	sf::SoundBuffer data;
 	sf::Sound player;
-	TSound(int volume)
-	{
+	TSound(int volume) {
 		setVolume(volume);
 	}
 	void setVolume(int volume) {
@@ -49,8 +48,7 @@ struct TSound {
 //				class CSound
 // --------------------------------------------------------------------
 
-CSound::~CSound()
-{
+CSound::~CSound() {
 	FreeSounds();
 }
 

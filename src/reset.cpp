@@ -38,19 +38,19 @@ GNU General Public License for more details.
 
 CReset Reset;
 
-static double reset_start_time;
+static sf::Clock reset_timer;
 static bool position_reset;
 
 
 //=====================================================================
 void CReset::Enter() {
-	reset_start_time = Winsys.ClockTime ();
+	reset_timer.restart();
 	position_reset = false;
 }
 
 void CReset::Loop(double time_step) {
 	CControl *ctrl = Players.GetCtrl (g_game.player_id);
-	double elapsed_time = Winsys.ClockTime () - reset_start_time;
+	float elapsed_time = reset_timer.getElapsedTime().asSeconds();
 	static bool tux_visible = true;
 	static int tux_visible_count = 0;
 

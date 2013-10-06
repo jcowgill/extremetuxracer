@@ -54,7 +54,8 @@ public:
 	TWidget(int x, int y, int width, int height);
 	virtual void Draw() const = 0;
 	virtual bool Click(int x, int y);
-	virtual void Key(unsigned int key, unsigned int mod, bool released) {}
+	virtual void TextEnter(char text) {}
+	virtual void Key(sf::Keyboard::Key key, unsigned int mod, bool released) {}
 	virtual void MouseMove(int x, int y);
 	bool focussed() const { return focus; }
 	void SetActive(bool a) { active = a; if (!a) focus = false; }
@@ -82,7 +83,8 @@ class TTextField : public TWidget {
 public:
 	TTextField(int x, int y, int width, int height, const string& text_);
 	void Draw() const;
-	void Key(unsigned int key, unsigned int mod, bool released);
+	void TextEnter(char text);
+	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 	void UpdateCursor(double timestep);
 	const string& Text() const { return text; }
 };
@@ -103,7 +105,7 @@ public:
 	}
 	void Draw() const;
 	bool Click(int x, int y);
-	void Key(unsigned int key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 };
 TCheckbox* AddCheckbox (int x, int y, int width, const string& tag);
 
@@ -124,7 +126,7 @@ public:
 	void SetValue(int _value);
 	void Draw() const;
 	bool Click(int x, int y);
-	void Key(unsigned int key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 };
 TIconButton* AddIconButton (int x, int y, TTexture* texture, double size, int maximum, int value);
 
@@ -153,7 +155,7 @@ public:
 	void SetMaximum(int max_);
 	void Draw() const;
 	bool Click(int x, int y);
-	void Key(unsigned int key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 	void MouseMove(int x, int y);
 };
 TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distance = 2);
@@ -163,7 +165,8 @@ TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distan
 void DrawGUI();
 TWidget* ClickGUI(int x, int y);
 TWidget* MouseMoveGUI(int x, int y);
-TWidget* KeyGUI(unsigned int key, unsigned int mod, bool released);
+TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released);
+TWidget* TextEnterGUI(char text);
 void SetFocus(TWidget* widget);
 void IncreaseFocus();
 void DecreaseFocus();

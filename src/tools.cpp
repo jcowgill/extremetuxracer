@@ -239,7 +239,7 @@ void CTools::Enter() {
 	Winsys.KeyRepeat (true);
 }
 
-void CTools::Keyb(unsigned int key, bool special, bool release, int x, int y) {
+void CTools::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	switch (tool_mode) {
 		case 0:
 			CharKeys (key, special, release, x, y);

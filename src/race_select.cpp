@@ -102,28 +102,28 @@ void CRaceSelect::Mouse (int button, int state, int x, int y) {
 	}
 }
 
-void CRaceSelect::Keyb(unsigned int key, bool special, bool release, int x, int y) {
+void CRaceSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	KeyGUI(key, 0, release);
 	switch (key) {
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (GameTypeSelect);
 			break;
-		case SDLK_u:
+		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
 			break;
-		case SDLK_t:
+		case sf::Keyboard::T:
 			g_game.force_treemap = !g_game.force_treemap;
 			break;
-		case SDLK_c:
+		case sf::Keyboard::C:
 			g_game.treesize++;
 			if (g_game.treesize > 5) g_game.treesize = 1;
 			break;
-		case SDLK_v:
+		case sf::Keyboard::V:
 			g_game.treevar++;
 			if (g_game.treevar > 5) g_game.treevar = 1;
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			if (textbuttons[1]->focussed())
 				State::manager.RequestEnterState (GameTypeSelect);
 			else

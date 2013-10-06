@@ -136,43 +136,31 @@ void TTextField::Draw() const {
 	}
 }
 
-void TTextField::Key(unsigned int key, unsigned int mod, bool released) {
-	if (islower (key)) {
-		if (text.size() < maxLng) {
-			if (mod & KMOD_SHIFT) text.insert(cursorPos, 1, toupper(key));
-			else text.insert(cursorPos, 1, key);
-			cursorPos++;
-		}
-	} else if (isdigit (key)) {
-		if (text.size() < maxLng) {
-			text.insert(cursorPos, 1, key);
-			cursorPos++;
-		}
-	} else {
-		switch (key) {
-			case SDLK_DELETE:
-				if (cursorPos < text.size()) text.erase (cursorPos, 1);
-				break;
-			case SDLK_BACKSPACE:
-				if (cursorPos > 0) { text.erase (cursorPos-1, 1); cursorPos--; }
-				break;
-			case SDLK_RIGHT:
-				if (cursorPos < text.size()) cursorPos++;
-				break;
-			case SDLK_LEFT:
-				if (cursorPos > 0) cursorPos--;
-				break;
-			case SDLK_HOME:
-				cursorPos = 0;
-				break;
-			case SDLK_END:
-				cursorPos = text.size();
-				break;
-			case SDLK_SPACE:
-				text.insert(cursorPos, 1, 21);
-				cursorPos++;
-				break;
-		}
+void TTextField::TextEnter(char key) {
+	text.insert(cursorPos, 1, key);
+	cursorPos++;
+}
+
+void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
+	switch (key) {
+		case sf::Keyboard::Delete:
+			if (cursorPos < text.size()) text.erase (cursorPos, 1);
+			break;
+		case sf::Keyboard::BackSpace:
+			if (cursorPos > 0) { text.erase (cursorPos-1, 1); cursorPos--; }
+			break;
+		case sf::Keyboard::Right:
+			if (cursorPos < text.size()) cursorPos++;
+			break;
+		case sf::Keyboard::Left:
+			if (cursorPos > 0) cursorPos--;
+			break;
+		case sf::Keyboard::Home:
+			cursorPos = 0;
+			break;
+		case sf::Keyboard::End:
+			cursorPos = text.size();
+			break;
 	}
 }
 
@@ -208,10 +196,10 @@ bool TCheckbox::Click(int x, int y) {
 	return false;
 }
 
-void TCheckbox::Key(unsigned int key, unsigned int mod, bool released) {
+void TCheckbox::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (released) return;
 
-	if (key == SDLK_SPACE || key == SDLK_RIGHT || key == SDLK_LEFT) {
+	if (key == sf::Keyboard::Space || key == sf::Keyboard::Right || key == sf::Keyboard::Left) {
 		checked = !checked;
 	}
 }
@@ -256,21 +244,21 @@ void TIconButton::Draw () const {
 		{
 			0, 0.5,
 			0.5, 0.5,
-			0.5, 1,
-			0, 1
+			0.5, 0,
+			0, 0
 		}, {
 			0.5, 0.5,
 			1, 0.5,
-			1, 1,
-			0.5, 1
+			1, 0,
+			0.5, 0
 		}, {
-			0, 0,
-			0.5, 0,
+			0, 1,
+			0.5, 1,
 			0.5, 0.5,
 			0, 0.5
 		}, {
-			0.5, 0,
-			1, 0,
+			0.5, 1,
+			1, 1,
 			1, 0.5,
 			0.5, 0.5
 		}
@@ -296,14 +284,14 @@ bool TIconButton::Click(int x, int y) {
 	return false;
 }
 
-void TIconButton::Key(unsigned int key, unsigned int mod, bool released) {
+void TIconButton::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (released) return;
 
-	if (key == SDLK_DOWN || key == SDLK_LEFT) { // Arrow down/left
+	if (key == sf::Keyboard::Down || key == sf::Keyboard::Left) { // Arrow down/left
 		value--;
 		if (value < 0)
 			value = maximum;
-	} else if (key == SDLK_UP || key == SDLK_RIGHT) { // Arrow up/right
+	} else if (key == sf::Keyboard::Up || key == sf::Keyboard::Right) { // Arrow up/right
 		value++;
 		if (value > maximum)
 			value = 0;
@@ -318,8 +306,8 @@ TIconButton* AddIconButton(int x, int y, TTexture* texture, double size, int max
 void TArrow::Draw() const {
 	static const float textl[6] = { 0.5, 0.0, 0.5, 0.5, 0.0, 0.5 };
 	static const float textr[6] = { 1.0, 0.5, 1.0, 1.0, 0.5, 1.0 };
-	static const float texbl[6] = { 0.25, 0.25, 0.75, 0.00, 0.00, 0.50 };
-	static const float texbr[6] = {0.50, 0.50, 1.00, 0.25, 0.25, 0.75};
+	static const float texbl[6] = { 0.75, 0.75, 0.25, 1.00, 1.00, 0.50 };
+	static const float texbr[6] = {0.50, 0.50, 0.00, 0.75, 0.75, 0.25};
 
 	int type = 0;
 	if (active)
@@ -397,17 +385,17 @@ bool TUpDown::Click(int x, int y) {
 	return false;
 }
 
-void TUpDown::Key(unsigned int key, unsigned int mod, bool released) {
+void TUpDown::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (released) return;
 
-	if (key == SDLK_UP || key == SDLK_RIGHT) { // Arrow down/left
+	if (key == sf::Keyboard::Up || key == sf::Keyboard::Right) { // Arrow down/left
 		if (value > minimum) {
 			value--;
 			up.SetActive(true);
 			if (value == minimum)
 				down.SetActive(false);
 		}
-	} else if (key == SDLK_DOWN || key == SDLK_LEFT) { // Arrow up/right
+	} else if (key == sf::Keyboard::Down || key == sf::Keyboard::Left) { // Arrow up/right
 		if (value < maximum) {
 			value++;
 			down.SetActive(true);
@@ -494,10 +482,10 @@ void DrawLevel (int x, int y, int level, double fact) {
 	glColor4f (1.0, 1.0, 1.0, 1.0);
 
 	const GLfloat tex[] = {
-		0,    bott,
-		0.75, bott,
+		0,    top,
 		0.75, top,
-		0,    top
+		0.75, bott,
+		0,    bott
 	};
 	const GLshort vtx[] = {
 		x,      Winsys.resolution.height - y - 32,
@@ -566,10 +554,10 @@ void DrawBonusExt (int y, size_t numraces, size_t num) {
 			float top = 1.0;
 
 			const GLfloat tex[] = {
-				0, bott,
-				1, bott,
+				0, top,
 				1, top,
-				0, top
+				1, bott,
+				0, bott
 			};
 			const GLshort vtx[] = {
 				bl.x, bl.y,
@@ -626,10 +614,10 @@ TWidget* MouseMoveGUI(int x, int y) {
 	return Widgets[focussed];
 }
 
-TWidget* KeyGUI(unsigned int key, unsigned int mod, bool released) {
+TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (!released) {
 		switch (key) {
-			case SDLK_TAB:
+			case sf::Keyboard::Tab:
 				IncreaseFocus();
 				break;
 			default:
@@ -639,6 +627,13 @@ TWidget* KeyGUI(unsigned int key, unsigned int mod, bool released) {
 	if (focussed == -1)
 		return 0;
 	Widgets[focussed]->Key(key, mod, released);
+	return Widgets[focussed];
+}
+
+TWidget* TextEnterGUI(char text) {
+	if (focussed == -1)
+		return 0;
+	Widgets[focussed]->TextEnter(text);
 	return Widgets[focussed];
 }
 

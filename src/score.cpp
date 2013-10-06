@@ -171,23 +171,23 @@ static TCourse *CourseList;
 static TUpDown* course;
 static TWidget* textbutton;
 
-void CScore::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CScore::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	KeyGUI(key, 0, release);
 	if (release) return;
 	switch (key) {
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (GameTypeSelect);
 			break;
-		case SDLK_q:
+		case sf::Keyboard::Q:
 			State::manager.RequestQuit();
 			break;
-		case SDLK_s:
+		case sf::Keyboard::S:
 			Score.SaveHighScore ();
 			break;
-		case SDLK_l:
+		case sf::Keyboard::L:
 			Score.LoadHighScore ();
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			State::manager.RequestEnterState (GameTypeSelect);
 			break;
 	}

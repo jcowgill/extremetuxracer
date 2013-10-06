@@ -103,28 +103,28 @@ void SetConfig () {
 	State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
-void CGameConfig::Keyb (unsigned int key, bool special, bool release, int x, int y) {
+void CGameConfig::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 
-	if (key != SDLK_UP && key != SDLK_DOWN)
+	if (key != sf::Keyboard::Up && key != sf::Keyboard::Down)
 		KeyGUI(key, 0, release);
 	switch (key) {
-		case SDLK_q:
+		case sf::Keyboard::Q:
 			State::manager.RequestQuit();
 			break;
-		case SDLK_ESCAPE:
+		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (*State::manager.PreviousState());
 			break;
-		case SDLK_RETURN:
+		case sf::Keyboard::Return:
 			if (textbuttons[0]->focussed())
 				State::manager.RequestEnterState (*State::manager.PreviousState());
 			else if (textbuttons[1]->focussed())
 				SetConfig ();
 			break;
-		case SDLK_UP:
+		case sf::Keyboard::Up:
 			DecreaseFocus();
 			break;
-		case SDLK_DOWN:
+		case sf::Keyboard::Down:
 			IncreaseFocus();
 			break;
 	}

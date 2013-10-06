@@ -19,10 +19,13 @@ GNU General Public License for more details.
 #define WINSYS_H
 
 #include "bh.h"
-#include <SDL/SDL.h>
 
 #define NUM_RESOLUTIONS 10
 
+namespace sf {
+class Window;
+class Event;
+}
 extern TVector2i cursor_pos;
 
 struct TScreenRes {
@@ -32,17 +35,16 @@ struct TScreenRes {
 
 class CWinsys {
 private:
-	// joystick
-	SDL_Joystick *joystick;
 	size_t numJoysticks;
 	bool joystick_active;
 
 	// sdl window
 	TScreenRes resolutions[NUM_RESOLUTIONS];
 	TScreenRes auto_resolution;
-	SDL_Surface *screen;
+	sf::ContextSettings ctx;
 	double CalcScreenScale () const;
 public:
+	sf::Window window;
 	TScreenRes resolution;
 	double scale;			// scale factor for screen, see 'use_quad_scale'
 
@@ -58,15 +60,14 @@ public:
 	void KeyRepeat (bool repeat);
 	void SetFonttype ();
 	void PrintJoystickInfo () const;
-	void ShowCursor (bool visible) {SDL_ShowCursor (visible);}
-	void SwapBuffers () {SDL_GL_SwapBuffers ();}
+	void ShowCursor(bool visible);
+	void SwapBuffers();
 	void Quit ();
 	void Terminate ();
 	void InitJoystick ();
 	void CloseJoystick ();
 	bool joystick_isActive() const { return joystick_active; }
-	double ClockTime () const {return SDL_GetTicks() * 1.e-3; }
-	unsigned char *GetSurfaceData () const;
+	bool PollEvent(sf::Event& event);
 };
 
 extern CWinsys Winsys;
