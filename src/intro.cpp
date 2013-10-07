@@ -38,7 +38,7 @@ CIntro Intro;
 static CKeyframe *startframe;
 
 void abort_intro (CControl *ctrl) {
-	TVector2d start_pt = Course.GetStartPoint ();
+	const TVector2d& start_pt = Course.GetStartPoint();
 	State::manager.RequestEnterState (Racing);
 	ctrl->orientation_initialized = false;
 	ctrl->view_init = false;
@@ -49,7 +49,7 @@ void abort_intro (CControl *ctrl) {
 // =================================================================
 void CIntro::Enter() {
 	CControl *ctrl = Players.GetCtrl (g_game.player_id);
-	TVector2d start_pt = Course.GetStartPoint ();
+	const TVector2d& start_pt = Course.GetStartPoint ();
 	ctrl->orientation_initialized = false;
 	ctrl->view_init = false;
 	ctrl->cpos.x = start_pt.x;
@@ -130,7 +130,8 @@ void CIntro::Loop (double time_step) {
 // -----------------------------------------------------------------------
 
 void CIntro::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+	if (release)
+		return;
 	CControl *ctrl = Players.GetCtrl (g_game.player_id);
-	if (release) return;
 	abort_intro (ctrl);
 }

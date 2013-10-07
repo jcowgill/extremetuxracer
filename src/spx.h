@@ -22,8 +22,6 @@ GNU General Public License for more details.
 #include <vector>
 #include <map>
 
-using namespace std;
-
 extern const string emptyString;
 extern const string errorString;
 

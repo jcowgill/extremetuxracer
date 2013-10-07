@@ -166,7 +166,7 @@ void ClearRenderContext (const TColor& col) {
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void SetupGuiDisplay () {
+void Setup2dScene () {
 	static const float offset = 0.f;
 
 	glMatrixMode (GL_PROJECTION);
@@ -192,24 +192,13 @@ void Reshape (int w, int h) {
 
 TRenderMode currentMode = RM_UNINITIALIZED;
 void set_gl_options (TRenderMode mode) {
+	if (currentMode == GUI)
+		Winsys.endSFML();
+
 	currentMode = mode;
 	switch (mode) {
 		case GUI:
-			glEnable (GL_TEXTURE_2D);
-			glDisable (GL_DEPTH_TEST);
-			glDisable (GL_CULL_FACE);
-			glDisable (GL_LIGHTING);
-			glDisable (GL_NORMALIZE);
-			glDisable (GL_ALPHA_TEST);
-			glEnable (GL_BLEND);
-			glDisable (GL_STENCIL_TEST);
-			glDisable (GL_TEXTURE_GEN_S);
-			glDisable (GL_TEXTURE_GEN_T);
-			glDisable (GL_COLOR_MATERIAL);
-			glDepthMask (GL_TRUE);
-			glShadeModel (GL_SMOOTH);
-			glDepthFunc (GL_LESS);
-			glDisable (GL_FOG);
+			Winsys.beginSFML();
 			break;
 
 		case GAUGE_BARS:
@@ -403,76 +392,6 @@ void set_gl_options (TRenderMode mode) {
 			Message ("not a valid render mode");
 	}
 }
-/* defined but not used
-    case TEXT:
-        glDisable (GL_TEXTURE_2D);
-        glDisable (GL_DEPTH_TEST);
-        glDisable (GL_CULL_FACE);
-		glDisable (GL_LIGHTING);
-		glDisable (GL_NORMALIZE);
-		glDisable (GL_ALPHA_TEST);
-        glEnable (GL_BLEND);
-		glDisable (GL_STENCIL_TEST);
-		glDisable (GL_TEXTURE_GEN_S);
-		glDisable (GL_TEXTURE_GEN_T);
-		glDisable (GL_COLOR_MATERIAL);
-		glDepthMask (GL_TRUE);
-		glShadeModel (GL_SMOOTH);
-		glDepthFunc (GL_LESS);
-        break;
-
-	case SPLASH_SCREEN:
-        glDisable (GL_TEXTURE_2D);
-        glDisable (GL_DEPTH_TEST);
-        glDisable (GL_CULL_FACE);
-		glDisable (GL_LIGHTING);
-		glDisable (GL_NORMALIZE);
-		glDisable (GL_ALPHA_TEST);
-        glEnable (GL_BLEND);
-		glDisable (GL_STENCIL_TEST);
-		glDisable (GL_TEXTURE_GEN_S);
-		glDisable (GL_TEXTURE_GEN_T);
-		glDisable (GL_COLOR_MATERIAL);
-		glDepthMask (GL_TRUE);
-		glShadeModel (GL_SMOOTH);
-		glDepthFunc (GL_LESS);
-        break;
-
-    case PARTICLE_SHADOWS:
-        glDisable (GL_TEXTURE_2D);
-		glEnable (GL_DEPTH_TEST);
-        glDisable (GL_CULL_FACE);
-		glDisable (GL_LIGHTING);
-		glDisable (GL_NORMALIZE);
-		glDisable (GL_ALPHA_TEST);
-        glEnable (GL_BLEND);
-		glDisable (GL_STENCIL_TEST);
-		glDisable (GL_TEXTURE_GEN_S);
-		glDisable (GL_TEXTURE_GEN_T);
-		glDisable (GL_COLOR_MATERIAL);
-		glDepthMask (GL_TRUE);
-		glShadeModel (GL_SMOOTH);
-		glDepthFunc (GL_LESS);
-        break;
-
-    case OVERLAYS:
-	    glEnable (GL_TEXTURE_2D);
-    	glDisable (GL_DEPTH_TEST);
-	    glDisable (GL_CULL_FACE);
-		glDisable (GL_LIGHTING);
-		glDisable (GL_NORMALIZE);
-		glEnable (GL_ALPHA_TEST);
-		glEnable (GL_BLEND);
-		glDisable (GL_STENCIL_TEST);
-		glDisable (GL_TEXTURE_GEN_S);
-		glDisable (GL_TEXTURE_GEN_T);
-		glDisable (GL_COLOR_MATERIAL);
-		glDepthMask (GL_TRUE);
-		glShadeModel (GL_SMOOTH);
-		glDepthFunc (GL_LESS);
-    	glAlphaFunc (GL_GEQUAL, 0.5);
-    break;
-*/
 
 static stack<TRenderMode> modestack;
 void PushRenderMode(TRenderMode mode) {

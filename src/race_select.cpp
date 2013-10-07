@@ -164,11 +164,11 @@ void CRaceSelect::Enter() {
 
 	course = AddUpDown(area.left + framewidth + 8, frametop, 0, (int)Course.CourseList.size() - 1, (int)g_game.course_id);
 
-	light = AddIconButton (iconleft, icontop, Tex.GetTexture (LIGHT_BUTT), iconsize, 3, (int)g_game.light_id);
-	snow = AddIconButton (iconleft + iconspace, icontop, Tex.GetTexture (SNOW_BUTT), iconsize, 3, g_game.snow_id);
-	wind = AddIconButton (iconleft + iconspace*2, icontop, Tex.GetTexture (WIND_BUTT), iconsize, 3, g_game.wind_id);
-	mirror = AddIconButton (iconleft + iconspace*3, icontop, Tex.GetTexture (MIRROR_BUTT), iconsize, 1, (int)g_game.mirror_id);
-	random_btn = AddIconButton (iconleft + iconspace*4, icontop, Tex.GetTexture (RANDOM_BUTT), iconsize, 0, 0);
+	light = AddIconButton (iconleft, icontop, Tex.GetSFTexture (LIGHT_BUTT), iconsize, 3, (int)g_game.light_id);
+	snow = AddIconButton(iconleft + iconspace, icontop, Tex.GetSFTexture(SNOW_BUTT), iconsize, 3, g_game.snow_id);
+	wind = AddIconButton(iconleft + iconspace * 2, icontop, Tex.GetSFTexture(WIND_BUTT), iconsize, 3, g_game.wind_id);
+	mirror = AddIconButton(iconleft + iconspace * 3, icontop, Tex.GetSFTexture(MIRROR_BUTT), iconsize, 1, (int) g_game.mirror_id);
+	random_btn = AddIconButton(iconleft + iconspace * 4, icontop, Tex.GetSFTexture(RANDOM_BUTT), iconsize, 0, 0);
 	int siz = FT.AutoSizeN (5);
 	int len1 = FT.GetTextWidth (Trans.Text(13));
 	textbuttons[0] = AddTextButton (Trans.Text(13), area.right-len1-50, AutoYPosN (80), siz);
@@ -182,19 +182,14 @@ void CRaceSelect::Loop(double timestep) {
 
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
-	ClearRenderContext ();
-	SetupGuiDisplay ();
+	Winsys.clear();
 
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
 		draw_ui_snow ();
 	}
 
-	Tex.Draw (T_TITLE_SMALL, CENTER, AutoYPosN (5), 1.0);
-	Tex.Draw (BOTTOM_LEFT, 0, hh-256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
+	DrawGUIBackground(1.0);
 
 //	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
 //			0, colMBackgr, colBlack, 0.2);

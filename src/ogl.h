@@ -67,7 +67,7 @@ struct ScopedRenderMode {
 
 void ClearRenderContext ();
 void ClearRenderContext (const TColor& col);
-void SetupGuiDisplay ();
+void Setup2dScene();
 void Reshape (int w, int h);
 
 void glColor(const TColor& col);

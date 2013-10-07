@@ -31,7 +31,10 @@ GNU General Public License for more details.
 
 CHelp Help;
 
-static int ytop;
+#define TEXT_LINES 13
+sf::Text* headline;
+sf::Text* texts[TEXT_LINES];
+sf::Text* footnote;
 
 void CHelp::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	State::manager.RequestEnterState (GameTypeSelect);
@@ -49,45 +52,46 @@ void CHelp::Enter() {
 	Winsys.ShowCursor (false);
 	Music.Play (param.credits_music, -1);
 
-	ytop = AutoYPosN (15);
+	int ytop = AutoYPosN(15);
+
+	const int xleft1 = 40;
+
+	FT.AutoSizeN(4);
+	headline = new sf::Text(Trans.Text(57), FT.getCurrentFont(), FT.GetSize());
+	headline->setPosition(xleft1, AutoYPosN(5));
+
+	FT.AutoSizeN(3);
+	int offs = FT.AutoDistanceN(2);
+	for (int i = 0; i < TEXT_LINES; i++) {
+		texts[i] = new sf::Text(Trans.Text(44 + i), FT.getCurrentFont(), FT.GetSize());
+		texts[i]->setPosition(xleft1, ytop + offs*i);
+	}
+
+	footnote = new sf::Text(Trans.Text(65), FT.getCurrentFont(), FT.GetSize());
+	footnote->setPosition((Winsys.resolution.width - footnote->getLocalBounds().width) / 2, AutoYPosN(90));
 }
 
 void CHelp::Loop(double timestep) {
 	check_gl_error();
-	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
+	Winsys.clear();
 
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
 		draw_ui_snow();
 	}
 
-	FT.AutoSizeN (4);
-	FT.SetColor(colWhite);
-	const int xleft1 = 40;
-	FT.DrawString (xleft1, AutoYPosN (5), Trans.Text (57));
-
-	FT.AutoSizeN (3);
-	int offs = FT.AutoDistanceN (2);
-	FT.DrawString (xleft1, ytop, Trans.Text(44));
-	FT.DrawString (xleft1, ytop + offs, Trans.Text(45));
-	FT.DrawString (xleft1, ytop + offs * 2, Trans.Text(46));
-	FT.DrawString (xleft1, ytop + offs * 3, Trans.Text(47));
-	FT.DrawString (xleft1, ytop + offs * 4, Trans.Text(48));
-	FT.DrawString (xleft1, ytop + offs * 5, Trans.Text(49));
-	FT.DrawString (xleft1, ytop + offs * 6, Trans.Text(50));
-	FT.DrawString (xleft1, ytop + offs * 7, Trans.Text(51));
-	FT.DrawString (xleft1, ytop + offs * 8,Trans.Text(52));
-	FT.DrawString (xleft1, ytop + offs * 9, Trans.Text(53));
-	FT.DrawString (xleft1, ytop + offs * 10, Trans.Text(54));
-	FT.DrawString (xleft1, ytop + offs * 11, Trans.Text(55));
-	FT.DrawString (xleft1, ytop + offs * 12, Trans.Text(56));
-
-	FT.DrawString (CENTER, AutoYPosN (90), Trans.Text(65));
+	Winsys.draw(*headline);
+	for (int i = 0; i < TEXT_LINES; i++)
+		Winsys.draw(*texts[i]);
+	Winsys.draw(*footnote);
 	Winsys.SwapBuffers();
 }
 
 void CHelp::Exit() {
+	delete headline;
+	for (int i = 0; i < TEXT_LINES; i++)
+		delete texts[i];
+	delete footnote;
 	Music.Halt();
 }

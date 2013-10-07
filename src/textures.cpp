@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "course.h"
 #include "winsys.h"
 #include "ogl.h"
+#include "gui.h"
 #include <SFML/Graphics.hpp>
 #include <GL/glu.h>
 #include <fstream>
@@ -43,9 +44,8 @@ static const GLshort fullsize_texture[] = {
 // --------------------------------------------------------------------
 
 bool TTexture::Load(const string& filename) {
-	texture = new sf::Texture();
-	texture->setSmooth(true);
-	return texture->loadFromFile(filename);
+	texture.setSmooth(true);
+	return texture.loadFromFile(filename);
 }
 
 bool TTexture::Load(const string& dir, const string& filename) {
@@ -53,10 +53,9 @@ bool TTexture::Load(const string& dir, const string& filename) {
 }
 
 bool TTexture::LoadMipmap(const string& filename, bool repeatable) {
-	texture = new sf::Texture();
-	texture->setSmooth(true);
-	texture->setRepeated(repeatable);
-	if (!texture->loadFromFile(filename))
+	texture.setSmooth(true);
+	texture.setRepeated(repeatable);
+	if (!texture.loadFromFile(filename))
 		return false;
 	///gluBuild2DMipmaps(GL_TEXTURE_2D, 4, texture->getSize().x, texture->getSize().y, GL_RGBA, GL_UNSIGNED_BYTE, texture->);
 	return true;
@@ -66,7 +65,7 @@ bool TTexture::LoadMipmap(const string& dir, const string& filename, bool repeat
 }
 
 void TTexture::Bind() {
-	sf::Texture::bind(texture);
+	sf::Texture::bind(&texture);
 }
 
 void TTexture::Draw() {
@@ -178,53 +177,16 @@ void TTexture::Draw(int x, int y, float width, float height, Orientation orienta
 }
 
 void TTexture::DrawFrame(int x, int y, double w, double h, int frame, const TColor& col) {
-	if (!texture)
-		return;
+	if (w < 1) w = texture.getSize().x;
+	if (h < 1) h = texture.getSize().y;
 
-	GLint ww = GLint(w);
-	GLint hh = GLint(h);
-	GLint xx = x;
-	GLint yy = Winsys.resolution.height - hh - y;
+	if (frame > 0)
+		DrawFrameX(x - frame, y - frame, w + 2 * frame + 1, h + 2 * frame + 1, frame, colTransp, col, 1.0);
 
-	Bind();
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	if (frame > 0) {
-		if (w < 1) glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_WIDTH, &ww);
-		if (h < 1) glGetTexLevelParameteriv (GL_TEXTURE_2D, 0, GL_TEXTURE_HEIGHT, &hh);
-
-		glColor(col, 1.0);
-
-		glDisable (GL_TEXTURE_2D);
-		const GLint vtx [] = {
-			xx - frame, yy - frame,
-			xx + ww + frame, yy - frame,
-			xx + ww + frame, yy + hh + frame,
-			xx - frame, yy + hh + frame
-		};
-
-		glVertexPointer(2, GL_INT, 0, vtx);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-		glEnable (GL_TEXTURE_2D);
-	}
-
-	glColor4f (1.0, 1.0, 1.0, 1.0);
-
-	const GLshort vtx[] = {
-		xx, yy,
-		xx + ww, yy,
-		xx + ww, yy + hh,
-		xx, yy + hh
-	};
-
-	glVertexPointer(2, GL_SHORT, 0, vtx);
-	glTexCoordPointer(2, GL_SHORT, 0, fullsize_texture);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
+	sf::Sprite temp(texture);
+	temp.setPosition(x, y);
+	temp.setScale((float) w / (float) texture.getSize().x, (float) h / (float) texture.getSize().y);
+	Winsys.draw(temp);
 }
 
 // --------------------------------------------------------------------
@@ -276,6 +238,10 @@ void CTexture::FreeTextureList () {
 TTexture* CTexture::GetTexture (size_t idx) const {
 	if (idx >= CommonTex.size()) return NULL;
 	return CommonTex[idx];
+}
+
+const sf::Texture& CTexture::GetSFTexture(size_t idx) const {
+	return CommonTex[idx]->texture;
 }
 
 TTexture* CTexture::GetTexture (const string& name) const {
@@ -406,7 +372,7 @@ void CTexture::DrawNumStr (const string& s, int x, int y, float size, const TCol
 
 void ScreenshotN () {
 	sf::Texture tex;
-	tex.update(Winsys.window);
+	tex.update(Winsys.getWindow());
 	sf::Image img = tex.copyToImage();
 
 	string path = param.screenshot_dir;

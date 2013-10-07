@@ -349,7 +349,7 @@ void RenderChar (double timestep) {
 	drawcount++;
 
 	// --------------- 2d screen --------------------------------------
-	SetupGuiDisplay ();
+	Setup2dScene ();
 	ScopedRenderMode rm2(TEXFONT);
 
 	FT.SetProps("bold", 20, colYellow);

@@ -71,6 +71,7 @@ extern const TColor colMBackgr;
 extern const TColor colLBackgr;
 extern const TColor colMess;
 extern const TColor colSky;
+extern const TColor colTransp;
 
 // --------------------------------------------------------------------
 //				print utils

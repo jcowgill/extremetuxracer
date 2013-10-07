@@ -22,10 +22,6 @@ GNU General Public License for more details.
 
 #define NUM_RESOLUTIONS 10
 
-namespace sf {
-class Window;
-class Event;
-}
 extern TVector2i cursor_pos;
 
 struct TScreenRes {
@@ -38,13 +34,13 @@ private:
 	size_t numJoysticks;
 	bool joystick_active;
 
-	// sdl window
+	// sfml window
+	sf::RenderWindow window;
+	bool sfmlRenders;
 	TScreenRes resolutions[NUM_RESOLUTIONS];
 	TScreenRes auto_resolution;
-	sf::ContextSettings ctx;
-	double CalcScreenScale () const;
+	double CalcScreenScale() const;
 public:
-	sf::RenderWindow window;
 	TScreenRes resolution;
 	double scale;			// scale factor for screen, see 'use_quad_scale'
 
@@ -60,15 +56,19 @@ public:
 	void KeyRepeat (bool repeat);
 	void SetFonttype ();
 	void PrintJoystickInfo () const;
-	void ShowCursor(bool visible);
-	void SwapBuffers();
+	void ShowCursor(bool visible) { window.setMouseCursorVisible(visible); }
+	void SwapBuffers() { window.display(); }
 	void Quit ();
 	void Terminate ();
-	void InitJoystick ();
-	void CloseJoystick ();
 	bool joystick_isActive() const { return joystick_active; }
-	bool PollEvent(sf::Event& event);
+	void draw(const sf::Drawable& drawable) { window.draw(drawable); }
+	void clear() { window.clear(sf::Color(colBackgr.r * 255, colBackgr.g * 255, colBackgr.b * 255, colBackgr.a * 255)); }
+	void beginSFML() { if (!sfmlRenders) window.pushGLStates(); sfmlRenders = true; }
+	void endSFML() { if (sfmlRenders) window.popGLStates(); sfmlRenders = false; }
+	bool PollEvent(sf::Event& event) { return window.pollEvent(event); }
+	const sf::Window& getWindow() { return window; }
 };
+
 
 extern CWinsys Winsys;
 

@@ -76,7 +76,7 @@ void COglTest::Loop(double timestep) {
 	glPopMatrix ();
 
 	// --------------- 2d screen --------------------------------------
-	SetupGuiDisplay ();
+	Setup2dScene ();
 	ScopedRenderMode rm2(TEXFONT);
 	FT.SetProps("bold", 24, colWhite);
 	FT.DrawString (CENTER, 10, "Test screen");

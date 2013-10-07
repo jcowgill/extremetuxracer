@@ -191,19 +191,14 @@ void CGameConfig::Loop (double time_step) {
 
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
-	ClearRenderContext ();
-	SetupGuiDisplay ();
+	Winsys.clear();
 
 	if (param.ui_snow) {
 		update_ui_snow (time_step);
 		draw_ui_snow();
 	}
 
-	Tex.Draw (T_TITLE_SMALL, CENTER, AutoYPosN (5), 1.0);
-	Tex.Draw (BOTTOM_LEFT, 0, hh-256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
+	DrawGUIBackground(1.0);
 
 //	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
 //			0, colMBackgr, colBlack, 0.2);
@@ -254,7 +249,6 @@ void CGameConfig::Loop (double time_step) {
 
 	DrawGUI();
 
-	Reshape (ww, hh);
 	Winsys.SwapBuffers ();
 }
 

@@ -129,9 +129,35 @@ void CTranslation::SetDefaultTranslations () {
 	texts[85] = "You need to restart the game";
 }
 
-const string& CTranslation::Text (size_t idx) const {
-	if (idx >= NUM_COMMON_TEXTS) return emptyString;
+const sf::String& CTranslation::Text(size_t idx) const {
+	static const sf::String empty;
+	if (idx >= NUM_COMMON_TEXTS) return empty;
 	return texts[idx];
+}
+
+static wstring UnicodeStr(const char *s) {
+	size_t len = strlen(s);
+	wstring res;
+	res.resize(len);
+
+	for (size_t i = 0, j = 0; i < len; ++i, ++j) {
+		wchar_t ch = ((const unsigned char *) s)[i];
+		if (ch >= 0xF0) {
+			ch = (wchar_t) (s[i] & 0x07) << 18;
+			ch |= (wchar_t) (s[++i] & 0x3F) << 12;
+			ch |= (wchar_t) (s[++i] & 0x3F) << 6;
+			ch |= (wchar_t) (s[++i] & 0x3F);
+		} else if (ch >= 0xE0) {
+			ch = (wchar_t) (s[i] & 0x0F) << 12;
+			ch |= (wchar_t) (s[++i] & 0x3F) << 6;
+			ch |= (wchar_t) (s[++i] & 0x3F);
+		} else if (ch >= 0xC0) {
+			ch = (wchar_t) (s[i] & 0x1F) << 6;
+			ch |= (wchar_t) (s[++i] & 0x3F);
+		}
+		res[j] = ch;
+	}
+	return res;
 }
 
 void CTranslation::LoadLanguages () {
@@ -148,7 +174,7 @@ void CTranslation::LoadLanguages () {
 	for (size_t i=1; i<list.Count()+1; i++) {
 		const string& line = list.Line(i-1);
 		languages[i].lang = SPStrN (line, "lang", "en_GB");
-		languages[i].language = SPStrN (line, "language", "English");
+		languages[i].language = UnicodeStr(SPStrN(line, "language", "English").c_str());
 		LangIndex[languages[i].lang] = i;
 	}
 
@@ -160,12 +186,13 @@ size_t CTranslation::GetLangIdx (const string& lang) const {
 	return LangIndex.at(lang);
 }
 
-const string& CTranslation::GetLanguage (size_t idx) const {
-	if (idx >= languages.size()) return errorString;
+const sf::String& CTranslation::GetLanguage (size_t idx) const {
+	static const sf::String error = "error";
+	if (idx >= languages.size()) return error;
 	return languages[idx].language;
 }
 
-const string& CTranslation::GetLanguage (const string& lang) const {
+const sf::String& CTranslation::GetLanguage(const string& lang) const {
 	return GetLanguage (GetLangIdx (lang));
 }
 
@@ -184,7 +211,7 @@ void CTranslation::LoadTranslations (size_t langidx) {
 		const string& line = list.Line(i);
 		int idx = SPIntN (line, "idx", -1);
 		if (idx >= 0 && idx < NUM_COMMON_TEXTS) {
-			texts[idx] = SPStrN (line, "trans", texts[idx]);
+			texts[idx] = UnicodeStr(SPStrN(line, "trans", texts[idx]).c_str());
 		}
 	}
 }

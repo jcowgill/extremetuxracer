@@ -71,13 +71,9 @@ GNU General Public License for more details.
 // --------------------------------------------------------------------
 
 class TTexture {
-	sf::Texture* texture;
-
-	TTexture(const TTexture&);
-	TTexture& operator=(const TTexture&);
+	sf::Texture texture;
+	friend class CTexture;
 public:
-	TTexture() : texture(NULL) {}
-	~TTexture() { delete texture; }
 	bool Load(const string& filename);
 	bool Load(const string& dir, const string& filename);
 	bool LoadMipmap(const string& filename, bool repeatable);
@@ -103,7 +99,8 @@ public:
 	void LoadTextureList ();
 	void FreeTextureList ();
 
-	TTexture* GetTexture (size_t idx) const;
+	TTexture* GetTexture(size_t idx) const;
+	const sf::Texture& GetSFTexture(size_t idx) const;
 	TTexture* GetTexture (const string& name) const;
 	bool BindTex (size_t idx);
 	bool BindTex (const string& name);

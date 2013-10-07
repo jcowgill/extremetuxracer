@@ -49,19 +49,19 @@ void CLoading::Loop(double time_step) {
 
 	check_gl_error ();
 	ScopedRenderMode rm(GUI);
-	ClearRenderContext ();
-	SetupGuiDisplay ();
+	Winsys.clear();
 
 	if (param.ui_snow) {
 		update_ui_snow (time_step);
 		draw_ui_snow ();
 	}
 
-	Tex.Draw (TEXLOGO, CENTER, 40, 0.7);
-	Tex.Draw (BOTTOM_LEFT, 0, hh-256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
+	sf::Sprite logo;
+	logo.setTexture(Tex.GetSFTexture(TEXLOGO));
+	logo.setScale(0.7, 0.7);
+	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 40);
+	Winsys.draw(logo);
+	DrawGUIFrame();
 
 	FT.SetColor (colDYell);
 	FT.AutoSizeN (5);

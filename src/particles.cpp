@@ -52,14 +52,13 @@ GNU General Public License for more details.
 #define PARTICLE_SIZE_RANGE 10
 
 struct TGuiParticle {
-	TVector2d pt;
+	sf::Sprite sprite;
 	float size;
 	TVector2d vel;
-	const GLfloat* tex;
 
-	TGuiParticle(double x, double y);
-	void Draw(double xres, double yres) const;
-	void Update(double time_step, double push_timestep, const TVector2d& push_vector);
+	TGuiParticle(float x, float y);
+	void Draw() const;
+	void Update(float time_step, float push_timestep, const TVector2d& push_vector);
 };
 
 static list<TGuiParticle> particles_2d;
@@ -67,81 +66,66 @@ static TVector2d push_position(0, 0);
 static TVector2d last_push_position;
 static bool push_position_initialized = false;
 
-TGuiParticle::TGuiParticle(double x, double y) {
-	pt.x = x;
-	pt.y = y;
+TGuiParticle::TGuiParticle(float x, float y) {
+	const sf::Texture& texture = Tex.GetSFTexture(SNOW_PART);
+	sprite.setTexture(texture);
+	sprite.setPosition(x*static_cast<float>(Winsys.resolution.width), y*static_cast<float>(Winsys.resolution.height));
+	sprite.setColor(sf::Color(255, 255, 255, 0.3 * 255));
 	double p_dist = FRandom();
 
 	size = PARTICLE_MIN_SIZE + (1.0 - p_dist) * PARTICLE_SIZE_RANGE;
+
+	sprite.setScale(size / (texture.getSize().x / 2), size / (texture.getSize().y / 2));
 	vel.x = 0;
-	vel.y = -BASE_VELOCITY - p_dist * VELOCITY_RANGE;
+	vel.y = BASE_VELOCITY + p_dist * VELOCITY_RANGE;
 
-	static const GLfloat tex_coords[4][8] = {
-		{
-			0.0, 0.5,
-			0.5, 0.5,
-			0.5, 0.0,
-			0.0, 0.0
-		}, {
-			0.5, 0.5,
-			1.0, 0.5,
-			1.0, 0.0,
-			0.5, 0.0
-		}, {
-			0.0, 1.0,
-			0.5, 1.0,
-			0.5, 0.5,
-			0.0, 0.5
-		}, {
-			0.5, 1.0,
-			1.0, 1.0,
-			1.0, 0.5,
-			0.5, 0.5
-		}
-	};
 	int type = rand() % 4;
-	tex = tex_coords[type];
+	switch (type) {
+		case 0:
+			sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().x / 2, texture.getSize().y / 2));
+			break;
+		case 1:
+			sprite.setTextureRect(sf::IntRect(texture.getSize().x / 2, 0, texture.getSize().x / 2, texture.getSize().y / 2));
+			break;
+		case 2:
+			sprite.setTextureRect(sf::IntRect(texture.getSize().x / 2, texture.getSize().y / 2, texture.getSize().x / 2, texture.getSize().y / 2));
+			break;
+		case 3:
+			sprite.setTextureRect(sf::IntRect(0, texture.getSize().y / 2, texture.getSize().x / 2, texture.getSize().y / 2));
+			break;
+	}
 }
 
-void TGuiParticle::Draw(double xres, double yres) const {
-	const GLfloat vtx[] = {
-		pt.x * xres,        pt.y * yres,
-		pt.x * xres + size, pt.y * yres,
-		pt.x * xres + size, pt.y * yres + size,
-		pt.x * xres,        pt.y * yres + size
-	};
-	glVertexPointer(2, GL_FLOAT, 0, vtx);
-	glTexCoordPointer(2, GL_FLOAT, 0, tex);
-	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
+void TGuiParticle::Draw() const {
+	Winsys.draw(sprite);
 }
 
-void TGuiParticle::Update(double time_step, double push_timestep, const TVector2d& push_vector) {
+void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d& push_vector) {
 	TVector2d f;
 
-	double dist_from_push = (pow((pt.x - push_position.x), 2) +
-	                         pow((pt.y - push_position.y), 2));
+	float x = sprite.getPosition().x / static_cast<float>(Winsys.resolution.width);
+	float y = sprite.getPosition().y / static_cast<float>(Winsys.resolution.height);
+	float dist_from_push = (pow((x - push_position.x), 2) +
+	                        pow((y - push_position.y), 2));
 	if (push_timestep > 0) {
 		f.x = PUSH_FACTOR * push_vector.x / push_timestep;
 		f.y = PUSH_FACTOR * push_vector.y / push_timestep;
 		f.x = clamp (-MAX_PUSH_FORCE, f.x, MAX_PUSH_FORCE);
 		f.y = clamp (-MAX_PUSH_FORCE, f.y, MAX_PUSH_FORCE);
 		f.x *= 1.0/(PUSH_DIST_DECAY*dist_from_push + 1) *
-		       size/PARTICLE_SIZE_RANGE;
+		       size/ PARTICLE_SIZE_RANGE;
 		f.y *= 1.0/(PUSH_DIST_DECAY*dist_from_push + 1) *
-		       size/PARTICLE_SIZE_RANGE;
+		       size / PARTICLE_SIZE_RANGE;
 	}
 
 	vel.x +=  (f.x - vel.x * AIR_DRAG) *  time_step;
-	vel.y +=  (f.y - GRAVITY_FACTOR - vel.y * AIR_DRAG) * time_step;
+	vel.y +=  (f.y + GRAVITY_FACTOR - vel.y * AIR_DRAG) * time_step;
 
-	pt.x += vel.x * time_step *  (size / PARTICLE_SIZE_RANGE);
-	pt.y += vel.y * time_step *  (size / PARTICLE_SIZE_RANGE);
+	x += vel.x * time_step *  (size / PARTICLE_SIZE_RANGE);
+	y += vel.y * time_step *  (size / PARTICLE_SIZE_RANGE);
 
-	if (pt.x < 0) {
-		pt.x = 1;
-	} else if (pt.x > 1) {
-		pt.x = 0.0;
-	}
+	x = clamp(0, x, 1);
+	sprite.setPosition(x*Winsys.resolution.width, y*Winsys.resolution.height);
 }
 
 void init_ui_snow () {
@@ -170,20 +154,20 @@ void update_ui_snow(double time_step) {
 	}
 
 	if (FRandom() < time_step*20.0*(MAX_num_snowparticles - particles_2d.size()) / 1000.0) {
-		particles_2d.push_back(TGuiParticle(FRandom(), 1));
+		particles_2d.push_back(TGuiParticle(FRandom(), -0.05));
 	}
 
 	for (list<TGuiParticle>::iterator p = particles_2d.begin(); p != particles_2d.end();) {
-		if (p->pt.y < -0.05) {
+		if (p->sprite.getPosition().y / static_cast<float>(Winsys.resolution.height) > 1.05) {
 			if (particles_2d.size() > BASE_num_snowparticles && FRandom() > 0.2) {
 				p = particles_2d.erase(p);
 			} else {
-				p->pt.x = FRandom();
-				p->pt.y = 1 + FRandom()*BASE_VELOCITY;
+				p->sprite.setPosition(static_cast<float>(Winsys.resolution.width)*FRandom(), static_cast<float>(Winsys.resolution.height) * (-FRandom()*BASE_VELOCITY));
 				double p_dist = FRandom();
 				p->size = PARTICLE_MIN_SIZE + (1.0 - p_dist) * PARTICLE_SIZE_RANGE;
+				p->sprite.setScale(p->size / (p->sprite.getTexture()->getSize().x / 2), p->size / (p->sprite.getTexture()->getSize().x / 2));
 				p->vel.x = 0;
-				p->vel.y = -BASE_VELOCITY-p_dist*VELOCITY_RANGE;
+				p->vel.y = BASE_VELOCITY + p_dist*VELOCITY_RANGE;
 				++p;
 			}
 		} else
@@ -198,25 +182,14 @@ void update_ui_snow(double time_step) {
 		push_vector.y = 0.0;
 	}
 }
-void draw_ui_snow () {
-	double xres = Winsys.resolution.width;
-	double yres = Winsys.resolution.height;
-
-	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	Tex.BindTex (SNOW_PART);
-	glColor4f(1.f, 1.f, 1.f, 0.3f);
-
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+void draw_ui_snow() {
 	for (list<TGuiParticle>::const_iterator i = particles_2d.begin(); i != particles_2d.end(); ++i) {
-		i->Draw(xres, yres);
+		i->Draw();
 	}
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
 void push_ui_snow (const TVector2i& pos) {
-	push_position = TVector2d(pos.x/(double)Winsys.resolution.width, 1.0 - pos.y/(double)Winsys.resolution.height);
+	push_position = TVector2d((pos.x) / static_cast<float>(Winsys.resolution.width), (pos.y) / static_cast<float>(Winsys.resolution.height));
 	if (!push_position_initialized) last_push_position = push_position;
 	push_position_initialized = true;
 }

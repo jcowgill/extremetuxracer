@@ -38,7 +38,8 @@ TVector2i cursor_pos(0, 0);
 CWinsys Winsys;
 
 CWinsys::CWinsys ()
-	: auto_resolution(800, 600) {
+	: auto_resolution(800, 600)
+	, sfmlRenders(false) {
 	for (int i = 0; i < 8; i++) {
 		if (sf::Joystick::isConnected(i))
 			numJoysticks++;
@@ -106,8 +107,8 @@ void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
 	sf::ContextSettings ctx(bpp, 0, 0, 1, 2);
 #endif
 	window.create(sf::VideoMode(resolution.width, resolution.height, bpp), WINDOW_TITLE, style, ctx);
-	if (param.framerate)
-		window.setFramerateLimit(param.framerate);
+	//if (param.framerate)
+	//window.setFramerateLimit(param.framerate);
 
 	scale = CalcScreenScale ();
 	if (param.use_quad_scale) scale = sqrt (scale);
@@ -171,16 +172,4 @@ void CWinsys::PrintJoystickInfo () const {
 		if (sf::Joystick::hasAxis(i, sf::Joystick::Z)) cout << "Z ";
 		cout << '\n';
 	}
-}
-
-void CWinsys::ShowCursor(bool visible) {
-	window.setMouseCursorVisible(visible);
-}
-
-void CWinsys::SwapBuffers() {
-	window.display();
-}
-
-bool CWinsys::PollEvent(sf::Event& event) {
-	return window.pollEvent(event);
 }

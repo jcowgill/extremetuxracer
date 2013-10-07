@@ -219,11 +219,14 @@ void CGameOver::Loop(double time_step) {
 
 	Char.Draw (g_game.char_id);
 
-	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
-	if (final_frame != NULL) {
-		if (!final_frame->active) GameOverMessage (ctrl);
-	} else GameOverMessage (ctrl);
+	{
+		ScopedRenderMode rm(GUI);
+		if (final_frame != NULL) {
+			if (!final_frame->active) GameOverMessage(ctrl);
+		}
+		else GameOverMessage(ctrl);
+	}
+	Setup2dScene();
 	DrawHud (ctrl);
 	Reshape (width, height);
 	Winsys.SwapBuffers ();

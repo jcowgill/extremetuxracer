@@ -40,7 +40,7 @@ static TWidget* textbuttons[2];
 static TTextField* textfield;
 
 void QuitAndAddPlayer () {
-	if (textfield->Text().size () > 0)
+	if (textfield->Text().getSize() > 0)
 		Players.AddPlayer (textfield->Text(), Players.GetDirectAvatarName(avatar->GetValue()));
 	State::manager.RequestEnterState (Regist);
 }
@@ -116,9 +116,8 @@ void CNewPlayer::Loop(double timestep) {
 	TColor col;
 
 	check_gl_error();
-	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
+	Winsys.clear();
 
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
@@ -130,11 +129,7 @@ void CNewPlayer::Loop(double timestep) {
 //	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
 //			0, colMBackgr, col, 0.2);
 
-	Tex.Draw (BOTTOM_LEFT, 0, hh - 256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
-	Tex.Draw (T_TITLE_SMALL, CENTER, AutoYPosN (5), Winsys.scale);
+	DrawGUIBackground(Winsys.scale);
 
 	FT.SetColor (colWhite);
 	FT.AutoSizeN (4);

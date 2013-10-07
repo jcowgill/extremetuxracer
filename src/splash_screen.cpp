@@ -59,22 +59,28 @@ void CSplashScreen::Enter() {
 
 void CSplashScreen::Loop(double timestep) {
 	check_gl_error();
-	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
+	Winsys.clear();
 	Trans.LoadLanguages ();
 	Trans.LoadTranslations (param.language); // Before first texts are being displayed
 
-//	FT.SetFont ("normal");
-	Tex.Draw (TEXLOGO, CENTER, 60, Winsys.scale);
-	FT.SetColor (colDYell);
-	FT.AutoSizeN (6);
-	int top = AutoYPosN (60);
-	int dist = FT.AutoDistanceN (3);
-	FT.DrawString (CENTER, top, Trans.Text(67));
-	FT.DrawString (CENTER, top+dist, Trans.Text(68));
+	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
+	logo.setScale(Winsys.scale, Winsys.scale);
+	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 60);
 
+	FT.AutoSizeN(6);
+	sf::Text t1(Trans.Text(67), FT.getCurrentFont(), FT.GetSize());
+	int top = AutoYPosN(60);
+	t1.setPosition((Winsys.resolution.width - t1.getLocalBounds().width) / 2, top);
+	sf::Text t2(Trans.Text(68), FT.getCurrentFont(), FT.GetSize());
+	int dist = FT.AutoDistanceN (3);
+	t2.setPosition((Winsys.resolution.width - t2.getLocalBounds().width) / 2, top + dist);
+
+	Winsys.draw(logo);
+	Winsys.draw(t1);
+	Winsys.draw(t2);
 	Winsys.SwapBuffers();
+
 	Course.MakeStandardPolyhedrons ();
 	Sound.LoadSoundList ();
 	Credits.LoadCreditList ();

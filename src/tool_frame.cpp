@@ -245,7 +245,7 @@ void RenderSingleFrame (double timestep) {
 	glPopMatrix ();
 
 	// ----------------- 2d screen ------------------------------------
-	SetupGuiDisplay ();
+	Setup2dScene ();
 	ScopedRenderMode rm2(TEXFONT);
 
 	if (FrameHasChanged ()) DrawChanged ();

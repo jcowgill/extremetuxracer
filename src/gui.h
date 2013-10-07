@@ -57,6 +57,7 @@ public:
 	virtual void TextEnter(char text) {}
 	virtual void Key(sf::Keyboard::Key key, unsigned int mod, bool released) {}
 	virtual void MouseMove(int x, int y);
+	virtual void Focussed() {}
 	bool focussed() const { return focus; }
 	void SetActive(bool a) { active = a; if (!a) focus = false; }
 	void SetVisible(bool v) { visible = v; if (!v) focus = false; }
@@ -65,78 +66,67 @@ public:
 };
 
 class TTextButton : public TWidget {
-	string text;
-	double ftsize;	// font height
+	sf::Text text;
 public:
-	TTextButton(int x, int y, const string& text_, double ftsize_);
+	TTextButton(int x, int y, const sf::String& text_, float ftsize);
+	void Focussed();
 	void Draw() const;
 };
-TTextButton* AddTextButton (const string& text, int x, int y, double ftsize);
-TTextButton* AddTextButtonN (const string& text, int x, int y, int rel_ftsize);
+TTextButton* AddTextButton(const sf::String& text, int x, int y, float ftsize);
+TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize);
 
 class TTextField : public TWidget {
-	string text;
+	sf::String text;
 	size_t cursorPos;
 	size_t maxLng;
 	double time;
 	bool cursor;
 public:
-	TTextField(int x, int y, int width, int height, const string& text_);
+	TTextField(int x, int y, int width, int height, const sf::String& text_);
 	void Draw() const;
 	void TextEnter(char text);
 	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 	void UpdateCursor(double timestep);
-	const string& Text() const { return text; }
+	const sf::String& Text() const { return text; }
 };
-TTextField* AddTextField(const string& text, int x, int y, int width, int height);
+TTextField* AddTextField(const sf::String& text, int x, int y, int width, int height);
 
 class TCheckbox : public TWidget {
-	string tag;
-	int width;
+	sf::Text text;
+	sf::Sprite back, checkmark;
 public:
 	bool checked;
 
-	TCheckbox(int x, int y, int width_, const string& tag_)
-		: TWidget(x, y, 32, 32)
-		, tag(tag_)
-		, width(width_)
-		, checked(false) {
-		mouseRect.left = x+width-32;
-	}
+	TCheckbox(int x, int y, int width_, const sf::String& tag_);
 	void Draw() const;
+	void Focussed();
 	bool Click(int x, int y);
 	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 };
-TCheckbox* AddCheckbox (int x, int y, int width, const string& tag);
+TCheckbox* AddCheckbox(int x, int y, int width, const sf::String& tag);
 
 class TIconButton : public TWidget {
 	double size;
-	TTexture* texture;
+	sf::Sprite sprite;
 	int maximum;
 	int value;
 public:
-	TIconButton(int x, int y, TTexture* texture_, double size_, int max_, int value_)
-		: TWidget(x, y, 32, 32)
-		, size(size_)
-		, texture(texture_)
-		, maximum(max_)
-		, value(value_)
-	{}
+	TIconButton(int x, int y, const sf::Texture& texture, double size_, int max_, int value_);
 	int GetValue() const { return value; }
 	void SetValue(int _value);
 	void Draw() const;
 	bool Click(int x, int y);
 	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
 };
-TIconButton* AddIconButton (int x, int y, TTexture* texture, double size, int maximum, int value);
+TIconButton* AddIconButton(int x, int y, const sf::Texture& texture, double size, int maximum, int value);
 
 class TArrow : public TWidget {
+	sf::Sprite sprite;
+	void SetTexture();
 public:
-	TArrow(int x, int y, bool down_)
-		: TWidget(x, y, 32, 16)
-		, down(down_)
-	{}
+	TArrow(int x, int y, bool down_);
 	bool down;
+	void Focussed();
 	void Draw() const;
 };
 TArrow* AddArrow(int x, int y, bool down);
@@ -176,9 +166,10 @@ void ResetGUI();
 
 void DrawFrameX (int x, int y, int w, int h, int line,
                  const TColor& backcol, const TColor& framecol, double transp);
-void DrawLevel (int x, int y, int level, double fact);
 void DrawBonusExt (int y, size_t numraces, size_t num);
-void DrawCursor ();
+void DrawGUIBackground(float scale);
+void DrawGUIFrame();
+void DrawCursor();
 
 // --------------------------------------------------------------------
 

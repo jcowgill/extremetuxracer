@@ -34,22 +34,22 @@ An name convention:
 
 struct TLang {
 	string lang;
-	string language;
+	sf::String language;
 };
 
 class CTranslation {
 private:
-	string texts[NUM_COMMON_TEXTS];
+	sf::String texts[NUM_COMMON_TEXTS];
 	map<string, size_t> LangIndex;
 public:
 	vector<TLang> languages;
 
 	void LoadLanguages ();
 	size_t GetLangIdx (const string& lang) const;
-	const string& GetLanguage (size_t idx) const;
-	const string& GetLanguage (const string& lang) const;
+	const sf::String& GetLanguage(size_t idx) const;
+	const sf::String& GetLanguage(const string& lang) const;
 	void SetDefaultTranslations ();
-	const string& Text (size_t idx) const;
+	const sf::String& Text(size_t idx) const;
 	void LoadTranslations (size_t langidx);
 	static string GetSystemDefaultLang();
 	size_t GetSystemDefaultLangIdx() const;

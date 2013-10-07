@@ -403,7 +403,7 @@ void DrawHud (const CControl *ctrl) {
 		return;
 
 	double speed = ctrl->cvel.Length();
-	SetupGuiDisplay ();
+	Setup2dScene ();
 
 	draw_gauge (speed * 3.6, ctrl->jump_amt);
 	ScopedRenderMode rm(TEXFONT);

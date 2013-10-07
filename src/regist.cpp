@@ -84,6 +84,10 @@ void CRegist::Motion (int x, int y) {
 static int framewidth, frameheight, arrowwidth;
 static TArea area;
 static double texsize;
+static sf::Text* sHelpPlayer;
+static sf::Text* sHelpCharacter;
+static sf::Text* sPlayer;
+static sf::Text* sCharacter;
 
 void CRegist::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
@@ -103,17 +107,36 @@ void CRegist::Enter() {
 	textbuttons[0] = AddTextButton (Trans.Text(60), CENTER, AutoYPosN (62), siz);
 	textbuttons[1] = AddTextButton (Trans.Text(61), CENTER, AutoYPosN (70), siz);
 
+	FT.AutoSizeN(3);
+	int top = AutoYPosN(24);
+	sHelpPlayer = new sf::Text(Trans.Text(58), FT.getCurrentFont(), FT.GetSize());
+	sHelpPlayer->setPosition(area.left, top);
+	sHelpCharacter = new sf::Text(Trans.Text(59), FT.getCurrentFont(), FT.GetSize());
+	sHelpCharacter->setPosition(area.left + framewidth + arrowwidth, top);
+
+	FT.AutoSizeN(4);
+	sPlayer = new sf::Text("", FT.getCurrentFont(), FT.GetSize());
+	sPlayer->setPosition(area.left + 20, area.top);
+	sCharacter = new sf::Text("", FT.getCurrentFont(), FT.GetSize());
+	sCharacter->setPosition(area.left + framewidth + arrowwidth + 20, area.top);
+
 	if (Char.CharList.empty())
 		Winsys.Terminate(); // Characters are necessary - ETR is unusable otherwise
+}
+
+void CRegist::Exit() {
+	delete sHelpPlayer;
+	delete sHelpCharacter;
+	delete sPlayer;
+	delete sCharacter;
 }
 
 void CRegist::Loop (double timestep) {
 	int ww = Winsys.resolution.width;
 	int hh = Winsys.resolution.height;
 	check_gl_error();
-	ClearRenderContext ();
 	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
+	Winsys.clear();
 	TColor col;
 
 	if (param.ui_snow) {
@@ -121,27 +144,17 @@ void CRegist::Loop (double timestep) {
 		draw_ui_snow();
 	}
 
-	Tex.Draw (BOTTOM_LEFT, 0, hh - 256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
-	Tex.Draw(T_TITLE_SMALL, CENTER, AutoYPosN(5), Winsys.scale);
+	DrawGUIBackground(Winsys.scale);
 
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, col, 0.2);
+	Winsys.draw(*sHelpPlayer);
+	Winsys.draw(*sHelpCharacter);
 
-	FT.AutoSizeN (3);
-	FT.SetColor (colWhite);
-	int top = AutoYPosN (24);
-	FT.DrawString (area.left, top, Trans.Text(58));
-	FT.DrawString (area.left + framewidth + arrowwidth, top, Trans.Text(59));
-
-	FT.AutoSizeN (4);
 	if (player->focussed()) col = colDYell;
 	else col = colWhite;
-	DrawFrameX (area.left, area.top, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	FT.SetColor (col);
-	FT.DrawString (area.left + 20, area.top, Players.GetName (player->GetValue()));
+	DrawFrameX(area.left, area.top, framewidth, frameheight, 3, colMBackgr, col, 1.0);
+	sPlayer->setString(Players.GetName(player->GetValue()));
+	sPlayer->setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	Winsys.draw(*sPlayer);
 	Players.GetAvatarTexture(player->GetValue())->DrawFrame(
 	    area.left + 60, AutoYPosN (40), texsize, texsize, 3, colWhite);
 
@@ -149,16 +162,14 @@ void CRegist::Loop (double timestep) {
 	else col = colWhite;
 	DrawFrameX (area.left + framewidth + arrowwidth, area.top,
 	            framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	FT.SetColor (col);
-	FT.DrawString (area.left + framewidth + arrowwidth + 20,
-	               area.top, Char.CharList[character->GetValue()].name);
+	sCharacter->setString(Char.CharList[character->GetValue()].name);
+	sCharacter->setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	Winsys.draw(*sCharacter);
 	if (Char.CharList[character->GetValue()].preview != NULL)
 		Char.CharList[character->GetValue()].preview->DrawFrame(
 		    area.right - texsize - 60 - arrowwidth,
 		    AutoYPosN (40), texsize, texsize, 3, colWhite);
 
-
-	FT.SetColor (colWhite);
 	DrawGUI();
 
 	Winsys.SwapBuffers();

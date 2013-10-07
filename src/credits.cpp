@@ -143,22 +143,15 @@ void CCredits::Loop(double time_step) {
 	int hh = Winsys.resolution.height;
 
 	check_gl_error();
-	ClearRenderContext ();
-	ScopedRenderMode rm(GUI);
-	SetupGuiDisplay ();
+	ClearRenderContext();
+	Winsys.clear();
 
 	DrawCreditsText (time_step);
 	if (param.ui_snow) {
 		update_ui_snow (time_step);
 		draw_ui_snow();
 	}
-	Tex.Draw (BOTTOM_LEFT, 0, hh-256, 1);
-	Tex.Draw (BOTTOM_RIGHT, ww-256, hh-256, 1);
-	Tex.Draw (TOP_LEFT, 0, 0, 1);
-	Tex.Draw (TOP_RIGHT, ww-256, 0, 1);
-	Tex.Draw (T_TITLE_SMALL, CENTER, AutoYPosN (5), Winsys.scale);
+	DrawGUIBackground(Winsys.scale);
 
-
-	Reshape (ww, hh);
 	Winsys.SwapBuffers();
 }
