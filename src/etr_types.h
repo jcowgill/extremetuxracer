@@ -26,8 +26,8 @@ enum Orientation {
 };
 
 struct TColor3 {
-	double r, g, b;
-	TColor3(double r_ = 0, double g_ = 0, double b_ = 0)
+	uint8_t r, g, b;
+	TColor3(uint8_t r_ = 0, uint8_t g_ = 0, uint8_t b_ = 0)
 		: r(r_), g(g_), b(b_)
 	{}
 };

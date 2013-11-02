@@ -61,7 +61,7 @@ public:
 	void Quit ();
 	void Terminate ();
 	bool joystick_isActive() const { return joystick_active; }
-	void draw(const sf::Drawable& drawable) { window.draw(drawable); }
+	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default) { window.draw(drawable, states); }
 	void clear() { window.clear(colBackgr); }
 	void beginSFML() { if (!sfmlRenders) window.pushGLStates(); sfmlRenders = true; }
 	void endSFML() { if (sfmlRenders) window.popGLStates(); sfmlRenders = false; }

@@ -47,6 +47,7 @@ const sf::Color colBackgr =		TColor(0.4, 0.6, 0.8, 1.0);
 const sf::Color colMBackgr =	TColor(0.35, 0.5, 0.7, 1.0);
 const sf::Color colDBackgr =	TColor(0.2, 0.3, 0.6, 1.0);
 const sf::Color colDDBackgr =	TColor(0.13, 0.2, 0.4, 1.0);
+const sf::Color colTBackr =		TColor(0.4, 0.6, 0.8, 0.0);
 const sf::Color colMess =		TColor(0.3, 0.3, 0.7, 1.0);
 const sf::Color colSky =		TColor(0.82, 0.86, 0.88, 1.0);
 

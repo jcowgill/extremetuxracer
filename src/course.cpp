@@ -605,9 +605,9 @@ bool CCourse::LoadObjectTypes () {
 
 int CCourse::GetTerrain (const unsigned char* pixel) const {
 	for (size_t i=0; i<TerrList.size(); i++) {
-		if (abs(pixel[0]-(int)(TerrList[i].col.r)) < 30
-		        && abs(pixel[1]-(int)(TerrList[i].col.g)) < 30
-		        && abs(pixel[2]-(int)(TerrList[i].col.b)) < 30) {
+		if (abs(pixel[0]-TerrList[i].col.r) < 30
+		        && abs(pixel[1]-TerrList[i].col.g) < 30
+		        && abs(pixel[2]-TerrList[i].col.b) < 30) {
 			return (int)i;
 		}
 	}
@@ -634,7 +634,7 @@ bool CCourse::LoadTerrainTypes () {
 		TerrList[i].starttex = SPIntN (line, "starttex", -1);
 		TerrList[i].tracktex = SPIntN (line, "tracktex", -1);
 		TerrList[i].stoptex = SPIntN (line, "stoptex", -1);
-		TerrList[i].col = SPColor3N (line, "col", TColor3(1, 1, 1));
+		TerrList[i].col = SPColor3N (line, "col", TColor3(255, 255, 255));
 		TerrList[i].friction = SPFloatN (line, "friction", 0.5);
 		TerrList[i].depth = SPFloatN (line, "depth", 0.01);
 		TerrList[i].particles = SPBoolN (line, "part", false);

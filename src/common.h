@@ -54,6 +54,7 @@ using namespace std;
 #define colRed    sf::Color::Red
 #define colYellow sf::Color::Yellow
 #define colBlue   sf::Color::Blue
+extern const sf::Color colTBackr;
 extern const sf::Color colDYell;
 extern const sf::Color colDDYell;
 extern const sf::Color colLYell;

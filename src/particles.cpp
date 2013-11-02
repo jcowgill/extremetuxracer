@@ -124,7 +124,7 @@ void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d&
 	x += vel.x * time_step *  (size / PARTICLE_SIZE_RANGE);
 	y += vel.y * time_step *  (size / PARTICLE_SIZE_RANGE);
 
-	x = clamp(0, x, 1);
+	x = clamp(-0.05, x, 1);
 	sprite.setPosition(x*Winsys.resolution.width, y*Winsys.resolution.height);
 }
 
