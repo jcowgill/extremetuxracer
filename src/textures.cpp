@@ -176,7 +176,7 @@ void TTexture::Draw(int x, int y, float width, float height, Orientation orienta
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void TTexture::DrawFrame(int x, int y, int w, int h, int frame, const TColor& col) {
+void TTexture::DrawFrame(int x, int y, int w, int h, int frame, const sf::Color& col) {
 	if (w < 1) w = texture.getSize().x;
 	if (h < 1) h = texture.getSize().y;
 
@@ -292,12 +292,12 @@ void CTexture::Draw (const string& name, int x, int y, int width, int height) {
 	Index[name]->Draw (x, y, width, height, forientation);
 }
 
-void CTexture::DrawFrame (size_t idx, int x, int y, double w, double h, int frame, const TColor& col) {
+void CTexture::DrawFrame(size_t idx, int x, int y, double w, double h, int frame, const sf::Color& col) {
 	if (CommonTex.size() > idx)
 		CommonTex[idx]->DrawFrame (x, y, w, h, frame, col);
 }
 
-void CTexture::DrawFrame (const string& name, int x, int y, double w, double h, int frame, const TColor& col) {
+void CTexture::DrawFrame(const string& name, int x, int y, double w, double h, int frame, const sf::Color& col) {
 	Index[name]->DrawFrame (x, y, w, h, frame, col);
 }
 
@@ -307,7 +307,7 @@ void CTexture::SetOrientation (Orientation orientation) {
 
 // -------------------------- numeric strings -------------------------
 
-void CTexture::DrawNumChr (char c, int x, int y, int w, int h, const TColor& col) {
+void CTexture::DrawNumChr(char c, int x, int y, int w, int h) {
 	int idx;
 	if (isdigit(c)) {
 		char chrname[2] = {c, '\0'};
@@ -342,7 +342,7 @@ void CTexture::DrawNumChr (char c, int x, int y, int w, int h, const TColor& col
 	glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
 }
 
-void CTexture::DrawNumStr (const string& s, int x, int y, float size, const TColor& col) {
+void CTexture::DrawNumStr(const string& s, int x, int y, float size, const sf::Color& col) {
 	if (!BindTex ("ziff032")) {
 		Message ("DrawNumStr: missing texture");
 		return;
@@ -356,7 +356,7 @@ void CTexture::DrawNumStr (const string& s, int x, int y, float size, const TCol
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	for (size_t i=0; i < s.size(); i++) {
-		DrawNumChr (s[i], x + (int)i*qw, y, qw, qh, col);
+		DrawNumChr (s[i], x + (int)i*qw, y, qw, qh);
 	}
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);

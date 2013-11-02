@@ -35,7 +35,7 @@ static const float def_diff[]    = {1.0, 0.9, 1.0, 1.0};
 static const float def_spec[]    = {0.6, 0.6, 0.6, 1.0};
 static const float def_pos[]     = {1, 2, 2, 0.0};
 static const float def_fogcol[]  = {0.9, 0.9, 1.0, 0.0};
-static const TColor def_partcol    (0.8, 0.8, 0.9, 0.0);
+static const sf::Color def_partcol(0.8*255, 0.8*255, 0.9*255, 0);
 
 void TLight::Enable(GLenum num) const {
 	glLightfv(num, GL_POSITION, position);

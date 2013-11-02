@@ -162,12 +162,12 @@ template TVector4<double> Str_Vector4(const string &s, const TVector4<double> &d
 template TVector4<int> Str_Vector4(const string &s, const TVector4<int> &def);
 
 
-TColor Str_ColorN (const string &s, const TColor &def) {
+sf::Color Str_ColorN(const string &s, const sf::Color &def) {
 	float r, g, b, a;
 	istringstream is(s);
 	is >> r >> g >> b >> a;
 	if (is.fail()) return def;
-	else return TColor(r, g, b, a);
+	else return sf::Color(r * 255, g * 255, b * 255, a * 255);
 }
 
 TColor3 Str_Color3N (const string &s, const TColor3 &def) {
@@ -247,7 +247,7 @@ TVector4<T> SPVector4(const string &s, const string &tag, const TVector4<T>& def
 template TVector4<int> SPVector4(const string &s, const string &tag, const TVector4<int>& def);
 template TVector4<double> SPVector4(const string &s, const string &tag, const TVector4<double>& def);
 
-TColor SPColorN (const string &s, const string &tag, const TColor& def) {
+sf::Color SPColorN(const string &s, const string &tag, const sf::Color& def) {
 	return (Str_ColorN (SPItemN (s, tag), def));
 }
 

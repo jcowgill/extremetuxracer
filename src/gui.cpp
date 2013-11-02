@@ -79,9 +79,9 @@ TTextButton::TTextButton(int x, int y, const sf::String& text_, float ftsize)
 
 void TTextButton::Focussed() {
 	if (focus)
-		text.setColor(sf::Color(colDYell.r * 255, colDYell.g * 255, colDYell.b * 255, colDYell.a * 255));
+		text.setColor(colDYell);
 	else
-		text.setColor(sf::Color(colWhite.r * 255, colWhite.g * 255, colWhite.b * 255, colWhite.a * 255));
+		text.setColor(colWhite);
 }
 
 void TTextButton::Draw() const {
@@ -109,7 +109,7 @@ TTextField::TTextField(int x, int y, int width, int height, const sf::String& te
 }
 
 void TTextField::Draw() const {
-	const TColor& col = focus?colDYell:colWhite;
+	const sf::Color& col = focus ? colDYell : colWhite;
 	FT.SetColor (col);
 	DrawFrameX (mouseRect.left, mouseRect.top, mouseRect.width, mouseRect.height, 3, colMBackgr, col, 1.0);
 	FT.AutoSizeN (5);
@@ -204,9 +204,9 @@ void TCheckbox::SetPosition(int x, int y) {
 
 void TCheckbox::Focussed()  {
 	if (focus)
-		text.setColor(sf::Color(colDYell.r * 255, colDYell.g * 255, colDYell.b * 255, colDYell.a * 255));
+		text.setColor(colDYell);
 	else
-		text.setColor(sf::Color(colWhite.r * 255, colWhite.g * 255, colWhite.b * 255, colWhite.a * 255));
+		text.setColor(colWhite);
 }
 
 void TCheckbox::Draw() const {
@@ -273,7 +273,7 @@ void TIconButton::SetValue (int _value) {
 }
 
 void TIconButton::Draw () const {
-	TColor framecol = colWhite;
+	sf::Color framecol = colWhite;
 	if (focus) framecol = colDYell;
 
 	int line = 3;
@@ -439,7 +439,7 @@ TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distan
 
 // ------------------ Elementary drawing ---------------------------------------------
 
-void DrawFrameX (int x, int y, int w, int h, int line, const TColor& backcol, const TColor& framecol, double transp) {
+void DrawFrameX(int x, int y, int w, int h, int line, const sf::Color& backcol, const sf::Color& framecol, double transp) {
 	x += line;
 	y += line;
 	w -= line * 2;
@@ -447,8 +447,8 @@ void DrawFrameX (int x, int y, int w, int h, int line, const TColor& backcol, co
 	sf::RectangleShape shape(sf::Vector2f(w, h));
 	shape.setPosition(x, y);
 	shape.setOutlineThickness(line);
-	shape.setFillColor(sf::Color(backcol.r * 255, backcol.g * 255, backcol.b * 255, backcol.a * 255 * transp));
-	shape.setOutlineColor(sf::Color(framecol.r * 255, framecol.g * 255, framecol.b * 255, framecol.a * 255 * transp));
+	shape.setFillColor(sf::Color(backcol.r, backcol.g, backcol.b, backcol.a * transp));
+	shape.setOutlineColor(sf::Color(framecol.r, framecol.g, framecol.b, framecol.a * transp));
 	Winsys.draw(shape);
 }
 
@@ -457,7 +457,7 @@ void DrawBonusExt (int y, size_t numraces, size_t num) {
 	if (num > maxtux) return;
 
 	//TColor col1 = {0.3, 0.5, 0.7, 1};
-	TColor col2(0.45, 0.65, 0.85, 1);
+	sf::Color col2(0.45*255, 0.65*255, 0.85*255);
 	//TColor col3 = {0.6, 0.8, 1.0, 1};
 	//TColor gold = {1, 1, 0, 1};
 

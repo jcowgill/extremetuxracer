@@ -148,7 +148,7 @@ size_t CFont::GetFontIdx (const string &name) const {
 	return fontindex.at(name);
 }
 
-void CFont::SetProps (const string &fontname, float size, const TColor& col) {
+void CFont::SetProps(const string &fontname, float size, const sf::Color& col) {
 	SetProps(fontname, size);
 	curr_col  = col;
 }
@@ -194,7 +194,7 @@ void CFont::DrawText(float x, float y, const sf::String& text, size_t font, floa
 	if (x == CENTER)
 		x = (Winsys.resolution.width - temp.getLocalBounds().width) / 2;
 	temp.setPosition(x, y);
-	temp.setColor(sf::Color(curr_col.r * 255, curr_col.g * 255, curr_col.b * 255, curr_col.a * 255));
+	temp.setColor(curr_col);
 	Winsys.draw(temp);
 }
 

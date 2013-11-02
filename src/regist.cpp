@@ -137,7 +137,7 @@ void CRegist::Loop (double timestep) {
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
-	TColor col;
+	sf::Color col;
 
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
@@ -153,7 +153,7 @@ void CRegist::Loop (double timestep) {
 	else col = colWhite;
 	DrawFrameX(area.left, area.top, framewidth, frameheight, 3, colMBackgr, col, 1.0);
 	sPlayer->setString(Players.GetName(player->GetValue()));
-	sPlayer->setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	sPlayer->setColor(col);
 	Winsys.draw(*sPlayer);
 	Players.GetAvatarTexture(player->GetValue())->DrawFrame(
 	    area.left + 60, AutoYPosN (40), texsize, texsize, 3, colWhite);
@@ -163,7 +163,7 @@ void CRegist::Loop (double timestep) {
 	DrawFrameX (area.left + framewidth + arrowwidth, area.top,
 	            framewidth, frameheight, 3, colMBackgr, col, 1.0);
 	sCharacter->setString(Char.CharList[character->GetValue()].name);
-	sCharacter->setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	sCharacter->setColor(col);
 	Winsys.draw(*sCharacter);
 	if (Char.CharList[character->GetValue()].preview != NULL)
 		Char.CharList[character->GetValue()].preview->DrawFrame(

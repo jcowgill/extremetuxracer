@@ -31,12 +31,6 @@ struct TColor3 {
 		: r(r_), g(g_), b(b_)
 	{}
 };
-struct TColor : public TColor3 {
-	double a;
-	TColor(double r_ = 0, double g_ = 0, double b_ = 0, double a_ = 0)
-		: TColor3(r_, g_, b_), a(a_)
-	{}
-};
 
 enum TToolMode {
     NONE,

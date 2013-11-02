@@ -135,7 +135,7 @@ static const TLight toollight = {
 };
 static int tool_mode = 0;
 
-void DrawQuad (float x, float y, float w, float h, float scrheight, const TColor& col, int frame) {
+void DrawQuad(float x, float y, float w, float h, float scrheight, const sf::Color& col, int frame) {
 	glDisable (GL_TEXTURE_2D);
 	glColor(col);
 	const GLfloat vtx[] = {

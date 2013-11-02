@@ -261,7 +261,7 @@ void Particle::Draw(const CControl* ctrl) const {
 		}
 	};
 
-	const TColor& particle_colour = Env.ParticleColor ();
+	const sf::Color& particle_colour = Env.ParticleColor ();
 	glColor(particle_colour, particle_colour.a * alpha);
 
 	draw_billboard(ctrl, cur_size, cur_size, false, tex_coords[type]);
@@ -502,7 +502,7 @@ void TFlakeArea::Draw (const CControl *ctrl) const {
 	ScopedRenderMode rm(PARTICLES);
 	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	Tex.BindTex (T_WIDGETS);
-	const TColor& particle_colour = Env.ParticleColor ();
+	const sf::Color& particle_colour = Env.ParticleColor();
 	glColor(particle_colour);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
@@ -827,8 +827,8 @@ void CCurtain::Draw () {
 
 	ScopedRenderMode rm(PARTICLES);
 	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	const TColor& particle_colour = Env.ParticleColor ();
-	glColor(particle_colour, 1.0);
+	const sf::Color& particle_colour = Env.ParticleColor();
+	glColor(particle_colour, 255);
 
 	// glEnable (GL_NORMALIZE);
 	for (size_t i=0; i<curtains.size(); i++) {

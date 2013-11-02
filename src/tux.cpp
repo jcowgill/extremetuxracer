@@ -43,13 +43,13 @@ still shaped with spheres.
 #define SHADOW_HEIGHT 0.03 // ->0.05
 
 #ifdef USE_STENCIL_BUFFER
-static const TColor shad_col(0.0, 0.0, 0.0, 0.3);
+static const sf::Color shad_col(0, 0, 0, 76);
 #else
-static const TColor shad_col(0.0, 0.0, 0.0, 0.1);
+static const sf::Color shad_col(0, 0, 0, 25);
 #endif
 
-static const TCharMaterial TuxDefMat = {TColor(0.5, 0.5, 0.5, 1.0), TColor(0.0, 0.0, 0.0, 1.0), 0.0};
-static const TCharMaterial Highlight = {TColor(0.8, 0.15, 0.15, 1.0), TColor(0.0, 0.0, 0.0, 1.0), 0.0};
+static const TCharMaterial TuxDefMat = { sf::Color(0.5 * 255, 0.5 * 255, 0.5 * 255), colBlack, 0.0 };
+static const TCharMaterial Highlight = { sf::Color(0.8 * 255, 0.15 * 255, 0.15 * 255), colBlack, 0.0 };
 CCharShape TestChar;
 
 CCharShape::CCharShape () {
@@ -344,14 +344,14 @@ void CCharShape::CreateMaterial (const string& line) {
 	std::string mat = SPStrN(line, "mat");
 
 	Materials.push_back(TCharMaterial());
-	Materials.back().diffuse.r = diff.x;
-	Materials.back().diffuse.g = diff.y;
-	Materials.back().diffuse.b = diff.z;
-	Materials.back().diffuse.a = 1.0;
-	Materials.back().specular.r = spec.x;
-	Materials.back().specular.g = spec.y;
-	Materials.back().specular.b = spec.z;
-	Materials.back().specular.a = 1.0;
+	Materials.back().diffuse.r = diff.x * 255;
+	Materials.back().diffuse.g = diff.y * 255;
+	Materials.back().diffuse.b = diff.z * 255;
+	Materials.back().diffuse.a = 255;
+	Materials.back().specular.r = spec.x * 255;
+	Materials.back().specular.g = spec.y * 255;
+	Materials.back().specular.b = spec.z * 255;
+	Materials.back().specular.a = 255;
 	Materials.back().exp = exp;
 	if (useActions)
 		Materials.back().matline = line;

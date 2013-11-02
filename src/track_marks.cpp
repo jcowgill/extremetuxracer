@@ -102,7 +102,7 @@ void DrawTrackmarks() {
 
 	TTexture* textures[NUM_TRACK_TYPES];
 
-	TColor track_colour = colWhite;
+	sf::Color track_colour = colWhite;
 	ScopedRenderMode rm(TRACK_MARKS);
 
 	textures[TRACK_HEAD] = Tex.GetTexture (trackid1);

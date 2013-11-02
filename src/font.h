@@ -37,7 +37,7 @@ private:
 	Orientation forientation;
 
 	int    curr_font;
-	TColor curr_col;
+	sf::Color curr_col;
 	float  curr_size;
 	float  curr_fact;		// the length factor
 
@@ -56,9 +56,9 @@ public:
 	float GetSize() const { return curr_size; }
 
 	// properties
-	void SetProps   (const string &fontname, float size, const TColor& col);
+	void SetProps(const string &fontname, float size, const sf::Color& col);
 	void SetProps   (const string &fontname, float size);
-	void SetColor   (const TColor& col) { curr_col = col; }
+	void SetColor(const sf::Color& col) { curr_col = col; }
 	void SetSize    (float size) { curr_size = size; }
 	void SetFont    (const string& fontname);
 

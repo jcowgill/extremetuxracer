@@ -131,20 +131,20 @@ void PrintGLInfo () {
 	}
 }
 
-void set_material (const TColor& diffuse_colour, const TColor& specular_colour, float specular_exp) {
+void set_material(const sf::Color& diffuse_colour, const sf::Color& specular_colour, float specular_exp) {
 	GLfloat mat_amb_diff[4] = {
-		static_cast<GLfloat>(diffuse_colour.r),
-		static_cast<GLfloat>(diffuse_colour.g),
-		static_cast<GLfloat>(diffuse_colour.b),
-		static_cast<GLfloat>(diffuse_colour.a)
+		static_cast<GLfloat>(diffuse_colour.r) / 255.f,
+		static_cast<GLfloat>(diffuse_colour.g) / 255.f,
+		static_cast<GLfloat>(diffuse_colour.b) / 255.f,
+		static_cast<GLfloat>(diffuse_colour.a) / 255.f
 	};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
 
 	GLfloat mat_specular[4] = {
-		static_cast<GLfloat>(specular_colour.r),
-		static_cast<GLfloat>(specular_colour.g),
-		static_cast<GLfloat>(specular_colour.b),
-		static_cast<GLfloat>(specular_colour.a)
+		static_cast<GLfloat>(specular_colour.r) / 255.f,
+		static_cast<GLfloat>(specular_colour.g) / 255.f,
+		static_cast<GLfloat>(specular_colour.b) / 255.f,
+		static_cast<GLfloat>(specular_colour.a) / 255.f
 	};
 	glMaterialfv (GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 
@@ -154,14 +154,14 @@ void set_material (const TColor& diffuse_colour, const TColor& specular_colour, 
 }
 void ClearRenderContext () {
 	glDepthMask (GL_TRUE);
-	glClearColor (colBackgr.r, colBackgr.g, colBackgr.b, colBackgr.a);
+	glClearColor(colBackgr.r / 255.f, colBackgr.g / 255.f, colBackgr.b / 255.f, colBackgr.a / 255.f);
 	glClearStencil (0);
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-void ClearRenderContext (const TColor& col) {
+void ClearRenderContext(const sf::Color& col) {
 	glDepthMask (GL_TRUE);
-	glClearColor (col.r, col.g, col.b, col.a);
+	glClearColor(col.r / 255.f, col.g / 255.f, col.b / 255.f, col.a / 255.f);
 	glClearStencil (0);
 	glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
@@ -408,12 +408,12 @@ void PopRenderMode() {
 }
 
 
-void glColor(const TColor& col) {
-	glColor4d(col.r, col.g, col.b, col.a);
+void glColor(const sf::Color& col) {
+	glColor4ub(col.r, col.g, col.b, col.a);
 }
 
-void glColor(const TColor& col, double alpha) {
-	glColor4d(col.r, col.g, col.b, alpha);
+void glColor(const sf::Color& col, uint8_t alpha) {
+	glColor4ub(col.r, col.g, col.b, alpha);
 }
 
 void glTranslate(const TVector3d& vec) {

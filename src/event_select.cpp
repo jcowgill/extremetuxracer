@@ -128,14 +128,14 @@ void CEventSelect::Enter () {
 	cupLocked.setString(Trans.Text(10));
 	cupLocked.setCharacterSize(FT.GetSize());
 	cupLocked.setFont(FT.getCurrentFont());
-	cupLocked.setColor(sf::Color(colLGrey.r * 255, colLGrey.g * 255, colLGrey.b * 255, colLGrey.a * 255));
+	cupLocked.setColor(colLGrey);
 	cupLocked.setPosition((Winsys.resolution.width - cupLocked.getLocalBounds().width) / 2, AutoYPosN(58));
 
 	FT.AutoSizeN(4);
 	selectedEvent.setCharacterSize(FT.GetSize());
 	selectedEvent.setFont(FT.getCurrentFont());
 	selectedEvent.setPosition(area.left + 20, frametop1+2);
-	selectedEvent.setColor(sf::Color(colDYell.r * 255, colDYell.g * 255, colDYell.b * 255, colDYell.a * 255));
+	selectedEvent.setColor(colDYell);
 	selectedCup.setCharacterSize(FT.GetSize());
 	selectedCup.setFont(FT.getCurrentFont());
 	selectedCup.setPosition(area.left + 20, frametop2+2);
@@ -147,7 +147,7 @@ void CEventSelect::Enter () {
 void CEventSelect::Loop (double timestep) {
 	int ww = Winsys.resolution.width;
 	int hh = Winsys.resolution.height;
-	TColor col;
+	sf::Color col;
 
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
@@ -178,7 +178,7 @@ void CEventSelect::Loop (double timestep) {
 		col = colDYell;
 	else
 		col = colLGrey;
-	selectedCup.setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	selectedCup.setColor(col);
 	selectedCup.setString(Events.GetCupTrivialName(event->GetValue(), cup->GetValue()));
 	Winsys.draw(selectedCup);
 

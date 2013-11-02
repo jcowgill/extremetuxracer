@@ -62,7 +62,7 @@ public:
 	void Terminate ();
 	bool joystick_isActive() const { return joystick_active; }
 	void draw(const sf::Drawable& drawable) { window.draw(drawable); }
-	void clear() { window.clear(sf::Color(colBackgr.r * 255, colBackgr.g * 255, colBackgr.b * 255, colBackgr.a * 255)); }
+	void clear() { window.clear(colBackgr); }
 	void beginSFML() { if (!sfmlRenders) window.pushGLStates(); sfmlRenders = true; }
 	void endSFML() { if (sfmlRenders) window.popGLStates(); sfmlRenders = false; }
 	bool PollEvent(sf::Event& event) { return window.pollEvent(event); }

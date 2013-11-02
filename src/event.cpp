@@ -180,7 +180,7 @@ void CEvent::Enter () {
 	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.z);
 	info1 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
 	info1->setPosition((Winsys.resolution.width - info1->getLocalBounds().width) / 2, framebottom + 15);
-	info1->setColor(sf::Color(colDBlue.r * 255, colDBlue.g * 255, colDBlue.b * 255, colDBlue.a * 255));
+	info1->setColor(colDBlue);
 
 	info = Trans.Text(12);
 	info += "   " + Float_StrN(ecup->races[curr_race]->time.x, 0);
@@ -189,7 +189,7 @@ void CEvent::Enter () {
 	info += "  " + Trans.Text(14);
 	info2 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
 	info2->setPosition((Winsys.resolution.width - info2->getLocalBounds().width) / 2, framebottom + 15 + ddd);
-	info2->setColor(sf::Color(colDBlue.r * 255, colDBlue.g * 255, colDBlue.b * 255, colDBlue.a * 255));
+	info2->setColor(colDBlue);
 
 	Music.Play (param.menu_music, -1);
 	if (ready < 1) curr_focus = textbuttons[0];

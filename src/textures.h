@@ -83,7 +83,7 @@ public:
 	void Draw();
 	void Draw(int x, int y, float size, Orientation orientation);
 	void Draw(int x, int y, float width, float height, Orientation orientation);
-	void DrawFrame(int x, int y, int w, int h, int frame, const TColor& col);
+	void DrawFrame(int x, int y, int w, int h, int frame, const sf::Color& col);
 };
 
 class CTexture {
@@ -92,7 +92,7 @@ private:
 	map<string, TTexture*> Index;
 	Orientation forientation;
 
-	void DrawNumChr (char c, int x, int y, int w, int h, const TColor& col);
+	void DrawNumChr(char c, int x, int y, int w, int h);
 public:
 	CTexture ();
 	~CTexture ();
@@ -114,11 +114,11 @@ public:
 	void Draw (size_t idx, int x, int y, int width, int height);
 	void Draw (const string& name, int x, int y, int width, int height);
 
-	void DrawFrame (size_t idx, int x, int y, double w, double h, int frame, const TColor& col);
-	void DrawFrame (const string& name, int x, int y, double w, double h, int frame, const TColor& col);
+	void DrawFrame(size_t idx, int x, int y, double w, double h, int frame, const sf::Color& col);
+	void DrawFrame(const string& name, int x, int y, double w, double h, int frame, const sf::Color& col);
 
 	void SetOrientation (Orientation orientation);
-	void DrawNumStr (const string& s, int x, int y, float size, const TColor& col);
+	void DrawNumStr(const string& s, int x, int y, float size, const sf::Color& col);
 };
 
 extern CTexture Tex;

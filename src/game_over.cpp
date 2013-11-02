@@ -68,8 +68,8 @@ void GameOverMessage (const CControl *ctrl) {
 	int leftframe = (Winsys.resolution.width - fwidth) / 2;
 	int topframe = 80;
 
-	const TColor& backcol = colWhite;
-	static const TColor framecol(0.7, 0.7, 1, 1);
+	const sf::Color& backcol = colWhite;
+	static const sf::Color framecol(0.7*255, 0.7*255, 1*255);
 
 	if (param.use_papercut_font > 0) FT.SetSize (28);
 	else FT.SetSize (22);
