@@ -88,6 +88,11 @@ void CEventSelect::Motion (int x, int y) {
 // --------------------------------------------------------------------
 static TArea area;
 static int framewidth, frameheight, frametop1, frametop2;
+static sf::Text selectEvent;
+static sf::Text selectCup;
+static sf::Text selectedEvent;
+static sf::Text selectedCup;
+static sf::Text cupLocked;
 
 void CEventSelect::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
@@ -111,6 +116,30 @@ void CEventSelect::Enter () {
 	textbuttons[1] = AddTextButton (Trans.Text(8), area.left+50, AutoYPosN (70), siz);
 	SetFocus(textbuttons[1]);
 
+	FT.AutoSizeN(3);
+	selectEvent.setString(Trans.Text(6));
+	selectEvent.setCharacterSize(FT.GetSize());
+	selectEvent.setFont(FT.getCurrentFont());
+	selectEvent.setPosition(area.left, AutoYPosN(30));
+	selectCup.setString(Trans.Text(7));
+	selectCup.setCharacterSize(FT.GetSize());
+	selectCup.setFont(FT.getCurrentFont());
+	selectCup.setPosition(area.left, AutoYPosN(45));
+	cupLocked.setString(Trans.Text(10));
+	cupLocked.setCharacterSize(FT.GetSize());
+	cupLocked.setFont(FT.getCurrentFont());
+	cupLocked.setColor(sf::Color(colLGrey.r * 255, colLGrey.g * 255, colLGrey.b * 255, colLGrey.a * 255));
+	cupLocked.setPosition((Winsys.resolution.width - cupLocked.getLocalBounds().width) / 2, AutoYPosN(58));
+
+	FT.AutoSizeN(4);
+	selectedEvent.setCharacterSize(FT.GetSize());
+	selectedEvent.setFont(FT.getCurrentFont());
+	selectedEvent.setPosition(area.left + 20, frametop1+2);
+	selectedEvent.setColor(sf::Color(colDYell.r * 255, colDYell.g * 255, colDYell.b * 255, colDYell.a * 255));
+	selectedCup.setCharacterSize(FT.GetSize());
+	selectedCup.setFont(FT.getCurrentFont());
+	selectedCup.setPosition(area.left + 20, frametop2+2);
+
 	Events.MakeUnlockList (Players.GetCurrUnlocked());
 	Music.Play (param.menu_music, -1);
 }
@@ -131,34 +160,27 @@ void CEventSelect::Loop (double timestep) {
 
 	DrawGUIBackground(Winsys.scale);
 
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, colBlack, 0.2);
-
-	FT.AutoSizeN (3);
-	FT.SetColor (colWhite);
-	FT.DrawString (area.left, AutoYPosN (30), Trans.Text (6));
-	FT.DrawString (area.left,AutoYPosN (45), Trans.Text (7));
-	if (Events.IsUnlocked (event->GetValue(), cup->GetValue()) == false) {
-		FT.SetColor (colLGrey);
-		FT.DrawString (CENTER, AutoYPosN (58), Trans.Text (10));
-	}
-
-	FT.AutoSizeN (4);
+	Winsys.draw(selectEvent);
+	Winsys.draw(selectCup);
+	if (Events.IsUnlocked(event->GetValue(), cup->GetValue()) == false)
+		Winsys.draw(cupLocked);
 
 	if (event->focussed()) col = colDYell;
 	else col = colWhite;
-	DrawFrameX (area.left, frametop1, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	FT.SetColor (colDYell);
-	FT.DrawString (area.left + 20, frametop1, EventList[event->GetValue()].name);
+	DrawFrameX(area.left, frametop1, framewidth, frameheight, 3, colMBackgr, col, 1.0);
+	selectedEvent.setString(EventList[event->GetValue()].name);
+	Winsys.draw(selectedEvent);
 
 	if (cup->focussed()) col = colDYell;
 	else col = colWhite;
 	DrawFrameX (area.left, frametop2, framewidth, frameheight, 3, colMBackgr, col, 1.0);
 	if (Events.IsUnlocked (event->GetValue(), cup->GetValue()))
-		FT.SetColor (colDYell);
+		col = colDYell;
 	else
-		FT.SetColor (colLGrey);
-	FT.DrawString (area.left + 20, frametop2, Events.GetCupTrivialName (event->GetValue(), cup->GetValue()));
+		col = colLGrey;
+	selectedCup.setColor(sf::Color(col.r * 255, col.g * 255, col.b * 255, col.a * 255));
+	selectedCup.setString(Events.GetCupTrivialName(event->GetValue(), cup->GetValue()));
+	Winsys.draw(selectedCup);
 
 	textbuttons[0]->SetActive(Events.IsUnlocked (event->GetValue(), cup->GetValue()));
 	DrawGUI();

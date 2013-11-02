@@ -39,7 +39,7 @@ GNU General Public License for more details.
 CEvent Event;
 
 // ready: 0 - racing  1 - ready with success  2 - ready with failure
-static int ready = 0; 						// indicates if last race is done
+static int ready = 0; // indicates if last race is done
 static TWidget* curr_focus = 0;
 static TCup2 *ecup = 0;
 static size_t curr_race = 0;
@@ -140,6 +140,9 @@ static TArea area;
 static int messtop, messtop2;
 static int bonustop, framewidth, frametop, framebottom;
 static int dist, texsize;
+static sf::Text* headline;
+static sf::Text* info1;
+static sf::Text* info2;
 
 void CEvent::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
@@ -165,9 +168,38 @@ void CEvent::Enter () {
 	textbuttons[0] = AddTextButton (Trans.Text(13), area.right -len - 100, AutoYPosN (80), siz);
 	textbuttons[2] = AddTextButton (Trans.Text(15), CENTER, AutoYPosN (80), siz);
 
+	FT.AutoSizeN(6);
+	headline = new sf::Text(ecup->name, FT.getCurrentFont(), FT.GetSize());
+	headline->setPosition((Winsys.resolution.width - headline->getLocalBounds().width) / 2, AutoYPosN(25));
+
+	FT.AutoSizeN(3);
+	int ddd = FT.AutoDistanceN(1);
+	string info = Trans.Text(11);
+	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.x);
+	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.y);
+	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.z);
+	info1 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
+	info1->setPosition((Winsys.resolution.width - info1->getLocalBounds().width) / 2, framebottom + 15);
+	info1->setColor(sf::Color(colDBlue.r * 255, colDBlue.g * 255, colDBlue.b * 255, colDBlue.a * 255));
+
+	info = Trans.Text(12);
+	info += "   " + Float_StrN(ecup->races[curr_race]->time.x, 0);
+	info += "   " + Float_StrN(ecup->races[curr_race]->time.y, 0);
+	info += "   " + Float_StrN(ecup->races[curr_race]->time.z, 0);
+	info += "  " + Trans.Text(14);
+	info2 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
+	info2->setPosition((Winsys.resolution.width - info2->getLocalBounds().width) / 2, framebottom + 15 + ddd);
+	info2->setColor(sf::Color(colDBlue.r * 255, colDBlue.g * 255, colDBlue.b * 255, colDBlue.a * 255));
+
 	Music.Play (param.menu_music, -1);
 	if (ready < 1) curr_focus = textbuttons[0];
 	else curr_focus = textbuttons[2];
+}
+
+void CEvent::Exit() {
+	delete headline;
+	delete info1;
+	delete info2;
 }
 
 int resultlevel (size_t num, size_t numraces) {
@@ -194,15 +226,14 @@ void CEvent::Loop (double timestep) {
 //			0, colMBackgr, colBlack, 0.2);
 
 	if (ready == 0) {			// cup not finished
-		FT.AutoSizeN (6);
-		FT.SetColor (colWhite);
-		FT.DrawString (CENTER, AutoYPosN (25), ecup->name);
+		Winsys.draw(*headline);
 
 		DrawBonusExt (bonustop, (int)ecup->races.size(), curr_bonus);
 
 		DrawFrameX (area.left, frametop, framewidth,
 		            (int)ecup->races.size() * dist + 20, 3, colBackgr, colWhite, 1);
 
+		TCheckbox checkbox(area.right - 50, frametop, texsize, "");
 		for (size_t i=0; i<ecup->races.size(); i++) {
 			FT.AutoSizeN (3);
 
@@ -212,26 +243,12 @@ void CEvent::Loop (double timestep) {
 			else
 				FT.SetColor (colWhite);
 			FT.DrawString (area.left + 29, y, Course.CourseList[ecup->races[i]->course].name);
-			Tex.Draw (CHECKBOX, area.right -54, y, texsize, texsize);
-			if (curr_race > i) Tex.Draw (CHECKMARK, area.right-50, y + 4, 0.8);
+			checkbox.SetPosition(area.right - 50, y + 4);
+			checkbox.SetChecked(curr_race > i);
+			checkbox.Draw();
 		}
-
-		FT.AutoSizeN (3);
-		int ddd = FT.AutoDistanceN (1);
-		FT.SetColor (colDBlue);
-		string info = Trans.Text(11);
-		info += "   " + Int_StrN (ecup->races[curr_race]->herrings.x);
-		info += "   " + Int_StrN (ecup->races[curr_race]->herrings.y);
-		info += "   " + Int_StrN (ecup->races[curr_race]->herrings.z);
-		FT.DrawString (CENTER, framebottom+15, info);
-
-		info = Trans.Text(12);
-		info += "   " + Float_StrN (ecup->races[curr_race]->time.x, 0);
-		info += "   " + Float_StrN (ecup->races[curr_race]->time.y, 0);
-		info += "   " + Float_StrN (ecup->races[curr_race]->time.z, 0);
-		info += "  " + Trans.Text(14);
-		FT.DrawString (CENTER, framebottom+15+ddd, info);
-
+		Winsys.draw(*info1);
+		Winsys.draw(*info2);
 	} else if (ready == 1) {		// cup successfully finished
 		FT.AutoSizeN (5);
 		FT.SetColor (colWhite);

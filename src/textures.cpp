@@ -176,12 +176,12 @@ void TTexture::Draw(int x, int y, float width, float height, Orientation orienta
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
 
-void TTexture::DrawFrame(int x, int y, double w, double h, int frame, const TColor& col) {
+void TTexture::DrawFrame(int x, int y, int w, int h, int frame, const TColor& col) {
 	if (w < 1) w = texture.getSize().x;
 	if (h < 1) h = texture.getSize().y;
 
 	if (frame > 0)
-		DrawFrameX(x - frame, y - frame, w + 2 * frame + 1, h + 2 * frame + 1, frame, colTransp, col, 1.0);
+		DrawFrameX(x - frame, y - frame, w + 2 * frame, h + 2 * frame, frame, colTransp, col, 1.0);
 
 	sf::Sprite temp(texture);
 	temp.setPosition(x, y);

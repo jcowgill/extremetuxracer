@@ -99,6 +99,8 @@ public:
 
 	TCheckbox(int x, int y, int width_, const sf::String& tag_);
 	void Draw() const;
+	void SetPosition(int x, int y);
+	void SetChecked(bool c) { checked = c; }
 	void Focussed();
 	bool Click(int x, int y);
 	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);

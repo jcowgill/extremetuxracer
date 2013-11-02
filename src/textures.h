@@ -83,7 +83,7 @@ public:
 	void Draw();
 	void Draw(int x, int y, float size, Orientation orientation);
 	void Draw(int x, int y, float width, float height, Orientation orientation);
-	void DrawFrame(int x, int y, double w, double h, int frame, const TColor& col);
+	void DrawFrame(int x, int y, int w, int h, int frame, const TColor& col);
 };
 
 class CTexture {

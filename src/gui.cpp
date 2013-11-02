@@ -196,6 +196,12 @@ TCheckbox::TCheckbox(int x, int y, int width, const sf::String& tag_)
 	mouseRect.left = x + width - 32;
 }
 
+void TCheckbox::SetPosition(int x, int y) {
+	text.setPosition(x, y);
+	back.setPosition(x, y);
+	checkmark.setPosition(x, y);
+}
+
 void TCheckbox::Focussed()  {
 	if (focus)
 		text.setColor(sf::Color(colDYell.r * 255, colDYell.g * 255, colDYell.b * 255, colDYell.a * 255));
@@ -509,7 +515,7 @@ void DrawGUIBackground(float logoScale) {
 
 	static sf::Sprite logo(Tex.GetSFTexture(T_TITLE_SMALL));
 	logo.setScale(logoScale, logoScale);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) /2, (5));
+	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) /2, 5);
 	Winsys.draw(logo);
 }
 
