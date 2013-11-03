@@ -104,47 +104,31 @@ TVector2d calc_new_fan_pt (double angle) {
 	return pt;
 }
 
-void start_tri_fan() {
-	glBegin (GL_TRIANGLE_FAN);
-	glVertex2f (ENERGY_GAUGE_CENTER_X,
-	            ENERGY_GAUGE_CENTER_Y);
-	TVector2d pt = calc_new_fan_pt (SPEEDBAR_BASE_ANGLE);
-	glVertex2f (pt.x, pt.y);
-}
-
 void draw_partial_tri_fan (double fraction) {
-	bool trifan = false;
-
 	double angle = SPEEDBAR_BASE_ANGLE +
 	               (SPEEDBAR_MAX_ANGLE - SPEEDBAR_BASE_ANGLE) * fraction;
 
-	int divs = (int)((SPEEDBAR_BASE_ANGLE - angle) * CIRCLE_DIVISIONS / 360.0);
+	int divs = (int)((SPEEDBAR_BASE_ANGLE - angle) * CIRCLE_DIVISIONS / 360.0) + 1;
 	double cur_angle = SPEEDBAR_BASE_ANGLE;
 	double angle_incr = 360.0 / CIRCLE_DIVISIONS;
 
+	glBegin(GL_TRIANGLE_FAN);
+	glVertex2f(ENERGY_GAUGE_CENTER_X,
+	           ENERGY_GAUGE_CENTER_Y);
+
 	for (int i=0; i<divs; i++) {
-		if (!trifan) {
-			start_tri_fan();
-			trifan = true;
-		}
+		TVector2d pt = calc_new_fan_pt (cur_angle);
+		glVertex2f (pt.x, pt.y);
 		cur_angle -= angle_incr;
-		TVector2d pt = calc_new_fan_pt (cur_angle);
-		glVertex2f (pt.x, pt.y);
 	}
 
-	if (cur_angle > angle + EPS) {
+	if (cur_angle+angle_incr > angle + EPS) {
 		cur_angle = angle;
-		if (!trifan) {
-			start_tri_fan();
-			trifan = true;
-		}
 		TVector2d pt = calc_new_fan_pt (cur_angle);
 		glVertex2f (pt.x, pt.y);
 	}
 
-	if (trifan) {
-		glEnd();
-	}
+	glEnd();
 }
 
 void draw_gauge (double speed, double energy) {
