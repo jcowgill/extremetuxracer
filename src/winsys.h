@@ -66,7 +66,7 @@ public:
 	void beginSFML() { if (!sfmlRenders) window.pushGLStates(); sfmlRenders = true; }
 	void endSFML() { if (sfmlRenders) window.popGLStates(); sfmlRenders = false; }
 	bool PollEvent(sf::Event& event) { return window.pollEvent(event); }
-	const sf::Window& getWindow() { return window; }
+	const sf::Window& getWindow() const { return window; }
 };
 
 

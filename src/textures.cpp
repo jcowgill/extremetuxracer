@@ -26,8 +26,6 @@ GNU General Public License for more details.
 #include "ogl.h"
 #include "gui.h"
 #include <SFML/Graphics.hpp>
-#include <GL/glu.h>
-#include <fstream>
 #include <cctype>
 
 
@@ -43,25 +41,14 @@ static const GLshort fullsize_texture[] = {
 //				class TTexture
 // --------------------------------------------------------------------
 
-bool TTexture::Load(const string& filename) {
+bool TTexture::Load(const string& filename, bool repeatable) {
 	texture.setSmooth(true);
+	texture.setRepeated(repeatable);
 	return texture.loadFromFile(filename);
 }
 
-bool TTexture::Load(const string& dir, const string& filename) {
-	return Load(dir + SEP + filename);
-}
-
-bool TTexture::LoadMipmap(const string& filename, bool repeatable) {
-	texture.setSmooth(true);
-	texture.setRepeated(repeatable);
-	if (!texture.loadFromFile(filename))
-		return false;
-	///gluBuild2DMipmaps(GL_TEXTURE_2D, 4, texture->getSize().x, texture->getSize().y, GL_RGBA, GL_UNSIGNED_BYTE, texture->);
-	return true;
-}
-bool TTexture::LoadMipmap(const string& dir, const string& filename, bool repeatable) {
-	return LoadMipmap(dir + SEP + filename, repeatable);
+bool TTexture::Load(const string& dir, const string& filename, bool repeatable) {
+	return Load(dir + SEP + filename, repeatable);
 }
 
 void TTexture::Bind() {
@@ -216,10 +203,7 @@ void CTexture::LoadTextureList () {
 			bool rep = SPBoolN (line, "repeat", false);
 			if (id >= 0) {
 				CommonTex[id] = new TTexture();
-				if (rep)
-					CommonTex[id]->LoadMipmap(param.tex_dir, texfile, rep);
-				else
-					CommonTex[id]->Load(param.tex_dir, texfile);
+				CommonTex[id]->Load(param.tex_dir, texfile, rep);
 
 				Index[name] = CommonTex[id];
 			} else Message ("wrong texture id in textures.lst");

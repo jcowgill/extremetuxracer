@@ -42,10 +42,7 @@ void CLoading::Enter() {
 
 void CLoading::Loop(double time_step) {
 	TCourse *CourseList = &Course.CourseList[0];
-	int ww = Winsys.resolution.width;
-	int hh = Winsys.resolution.height;
-	string msg = Trans.Text(29);
-	msg += " " + CourseList[g_game.course_id].name;
+	string msg = Trans.Text(29) + " " + CourseList[g_game.course_id].name;
 
 	check_gl_error ();
 	ScopedRenderMode rm(GUI);

@@ -278,10 +278,6 @@ void TIconButton::Draw () const {
 
 	int line = 3;
 	int framesize = size + 2 * line;
-	int t = Winsys.resolution.height - position.y;
-	int y = t - size;
-	int x = position.x;
-	int r = x + size;
 
 	DrawFrameX (position.x-line, position.y-line,
 	            framesize, framesize, line, colBlack, framecol, 1.0);
@@ -314,8 +310,8 @@ TIconButton* AddIconButton(int x, int y, const sf::Texture& texture, double size
 
 TArrow::TArrow(int x, int y, bool down_)
 	: TWidget(x, y, 32, 16)
-	, down(down_)
-	, sprite(Tex.GetSFTexture(LB_ARROWS)) {
+	, sprite(Tex.GetSFTexture(LB_ARROWS))
+	, down(down_) {
 	sprite.setPosition(x, y);
 
 	SetTexture();
@@ -457,7 +453,7 @@ void DrawBonusExt (int y, size_t numraces, size_t num) {
 	if (num > maxtux) return;
 
 	//TColor col1 = {0.3, 0.5, 0.7, 1};
-	sf::Color col2(0.45*255, 0.65*255, 0.85*255);
+	static const sf::Color col2(0.45*255, 0.65*255, 0.85*255);
 	//TColor col3 = {0.6, 0.8, 1.0, 1};
 	//TColor gold = {1, 1, 0, 1};
 
@@ -470,8 +466,8 @@ void DrawBonusExt (int y, size_t numraces, size_t num) {
 	lleft[1] = xleft + framewidth + 4;
 	lleft[2] = xleft + framewidth + framewidth + 8;
 
-	DrawFrameX (lleft[0], y, framewidth, 40, 1, col2, colBlack, 1);
-	DrawFrameX (lleft[1], y, framewidth, 40, 1, col2, colBlack, 1);
+	DrawFrameX(lleft[0], y, framewidth, 40, 1, col2, colBlack, 1);
+	DrawFrameX(lleft[1], y, framewidth, 40, 1, col2, colBlack, 1);
 	DrawFrameX(lleft[2], y, framewidth, 40, 1, col2, colBlack, 1);
 
 	static sf::Sprite tuxbonus(Tex.GetSFTexture(TUXBONUS));
@@ -521,7 +517,7 @@ void DrawGUIBackground(float logoScale) {
 
 void DrawCursor() {
 	static sf::Sprite s(Tex.GetSFTexture(MOUSECURSOR));
-	bool init = false;
+	static bool init = false;
 	if (!init) {
 		s.setScale((double) Winsys.resolution.width / 1400, (double) Winsys.resolution.width / 1400);
 		init = true;

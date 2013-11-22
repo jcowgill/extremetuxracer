@@ -59,11 +59,10 @@ typedef void (*(*get_gl_proc_fptr_t)(const GLubyte *))();
 void InitOpenglExtensions () {
 	get_gl_proc_fptr_t get_gl_proc;
 #ifdef OS_WIN32_MSC
-	get_gl_proc = (get_gl_proc_fptr_t) wglGetProcAddress;//(get_gl_proc_fptr_t) SDL_GL_GetProcAddress;
+	get_gl_proc = (get_gl_proc_fptr_t)wglGetProcAddress;
 #else
-	get_gl_proc = 0;
+	get_gl_proc = 0; /// TODO: Add support for Linux (probably glXGetProcAddress)
 #endif
-
 	if (get_gl_proc) {
 		glLockArraysEXT_p = (PFNGLLOCKARRAYSEXTPROC)
 		                    (*get_gl_proc)((GLubyte*) "glLockArraysEXT");

@@ -186,9 +186,6 @@ void CGameConfig::Enter() {
 }
 
 void CGameConfig::Loop (double time_step) {
-	int ww = Winsys.resolution.width;
-	int hh = Winsys.resolution.height;
-
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();

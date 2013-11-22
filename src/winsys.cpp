@@ -38,8 +38,8 @@ TVector2i cursor_pos(0, 0);
 CWinsys Winsys;
 
 CWinsys::CWinsys ()
-	: auto_resolution(800, 600)
-	, sfmlRenders(false) {
+	: sfmlRenders(false)
+	, auto_resolution(800, 600) {
 	for (int i = 0; i < 8; i++) {
 		if (sf::Joystick::isConnected(i))
 			numJoysticks++;

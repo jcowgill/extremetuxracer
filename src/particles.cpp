@@ -421,7 +421,7 @@ void generate_particles (const CControl *ctrl, double dtime, const TVector3d& po
 		                            max (-MAX_PARTICLE_ANGLE,
 		                                 -MAX_PARTICLE_ANGLE * speed / MAX_PARTICLE_ANGLE_SPEED));
 		TVector3d left_part_vel = TransformVector (rot_mat, ctrl->plane_nml);
-		left_part_vel = min(MAX_PARTICLE_SPEED, speed * PARTICLE_SPEED_MULTIPLIER);
+		left_part_vel *= min(MAX_PARTICLE_SPEED, speed * PARTICLE_SPEED_MULTIPLIER);
 
 		rot_mat = RotateAboutVectorMatrix(
 		              ctrl->cdirection,

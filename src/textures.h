@@ -74,10 +74,9 @@ class TTexture {
 	sf::Texture texture;
 	friend class CTexture;
 public:
-	bool Load(const string& filename);
-	bool Load(const string& dir, const string& filename);
-	bool LoadMipmap(const string& filename, bool repeatable);
-	bool LoadMipmap(const string& dir, const string& filename, bool repeatable);
+	bool Load(const string& filename, bool repeatable = false);
+	bool Load(const string& dir, const string& filename, bool repeatable = false);
+	bool Load(const string& dir, const char* filename, bool repeatable = false) { return Load(dir, string(filename), repeatable); }
 
 	void Bind();
 	void Draw();

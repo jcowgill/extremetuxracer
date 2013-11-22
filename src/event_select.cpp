@@ -145,8 +145,6 @@ void CEventSelect::Enter () {
 }
 
 void CEventSelect::Loop (double timestep) {
-	int ww = Winsys.resolution.width;
-	int hh = Winsys.resolution.height;
 	sf::Color col;
 
 	check_gl_error();

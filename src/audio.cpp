@@ -37,7 +37,7 @@ struct TSound {
 		player.setVolume(volume);
 	}
 
-	void TSound::Play(bool loop) {
+	void Play(bool loop) {
 		if (player.getStatus() == sf::Sound::Playing) return;
 		player.setLoop(loop);
 		player.play();
@@ -242,7 +242,7 @@ bool CMusic::Play (sf::Music* music, bool loop, int volume) {
 	if (!music)
 		return false;
 
-	int vol = clamp(0, volume, MIX_MAX_VOLUME);
+	volume = clamp(0, volume, MIX_MAX_VOLUME);
 	if (music != curr_music) {
 		music->setVolume(volume);
 		music->setLoop(loop);

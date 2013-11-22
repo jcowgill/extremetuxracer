@@ -31,7 +31,7 @@ static const TVector3d GravVec(0.0, -1.0, 0.0);
 struct TPlane {
 	TVector3d nml;
 	double d;
-	TPlane(double nx = 0.0, double ny = 0.0, double nz = 0.0, double d_ = 0.0)
+	explicit TPlane(double nx = 0.0, double ny = 0.0, double nz = 0.0, double d_ = 0.0)
 		: nml(nx, ny, nz), d(d_)
 	{}
 };
