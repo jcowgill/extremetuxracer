@@ -32,9 +32,9 @@ GNU General Public License for more details.
 CHelp Help;
 
 #define TEXT_LINES 13
-sf::Text* headline;
-sf::Text* texts[TEXT_LINES];
-sf::Text* footnote;
+TLabel* headline;
+TLabel* texts[TEXT_LINES];
+TLabel* footnote;
 
 void CHelp::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	State::manager.RequestEnterState (GameTypeSelect);
@@ -49,6 +49,7 @@ void CHelp::Motion(int x, int y) {
 }
 
 void CHelp::Enter() {
+	ResetGUI();
 	Winsys.ShowCursor (false);
 	Music.Play (param.credits_music, -1);
 
@@ -57,18 +58,14 @@ void CHelp::Enter() {
 	const int xleft1 = 40;
 
 	FT.AutoSizeN(4);
-	headline = new sf::Text(Trans.Text(57), FT.getCurrentFont(), FT.GetSize());
-	headline->setPosition(xleft1, AutoYPosN(5));
+	headline = AddLabel(Trans.Text(57), xleft1, AutoYPosN(5), colWhite);
 
 	FT.AutoSizeN(3);
 	int offs = FT.AutoDistanceN(2);
-	for (int i = 0; i < TEXT_LINES; i++) {
-		texts[i] = new sf::Text(Trans.Text(44 + i), FT.getCurrentFont(), FT.GetSize());
-		texts[i]->setPosition(xleft1, ytop + offs*i);
-	}
+	for (int i = 0; i < TEXT_LINES; i++)
+		texts[i] = AddLabel(Trans.Text(44 + i), xleft1, ytop + offs*i, colWhite);
 
-	footnote = new sf::Text(Trans.Text(65), FT.getCurrentFont(), FT.GetSize());
-	footnote->setPosition((Winsys.resolution.width - footnote->getLocalBounds().width) / 2, AutoYPosN(90));
+	footnote = AddLabel(Trans.Text(65), CENTER, AutoYPosN(90), colWhite);
 }
 
 void CHelp::Loop(double timestep) {
@@ -81,17 +78,6 @@ void CHelp::Loop(double timestep) {
 		draw_ui_snow();
 	}
 
-	Winsys.draw(*headline);
-	for (int i = 0; i < TEXT_LINES; i++)
-		Winsys.draw(*texts[i]);
-	Winsys.draw(*footnote);
+	DrawGUI();
 	Winsys.SwapBuffers();
-}
-
-void CHelp::Exit() {
-	delete headline;
-	for (int i = 0; i < TEXT_LINES; i++)
-		delete texts[i];
-	delete footnote;
-	Music.Halt();
 }

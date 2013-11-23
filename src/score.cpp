@@ -170,6 +170,8 @@ int CScore::CalcRaceResult () {
 static TCourse *CourseList;
 static TUpDown* course;
 static TWidget* textbutton;
+static TFramedText* courseName;
+static TLabel* headline;
 
 void CScore::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	KeyGUI(key, 0, release);
@@ -208,7 +210,6 @@ void CScore::Motion (int x, int y) {
 }
 
 static TArea area;
-static int framewidth, frameheight, frametop;
 static int linedist, listtop;
 static int dd1, dd2, dd3, dd4;
 
@@ -217,9 +218,9 @@ void CScore::Enter() {
 	Winsys.KeyRepeat (true);
 	Music.Play (param.menu_music, -1);
 
-	framewidth = 550 * Winsys.scale;
-	frameheight = 50 * Winsys.scale;
-	frametop = AutoYPosN (32);
+	int framewidth = 550 * Winsys.scale;
+	int frameheight = 50 * Winsys.scale;
+	int frametop = AutoYPosN(32);
 	area = AutoAreaN (30, 80, framewidth);
 	FT.AutoSizeN (3);
 	linedist = FT.AutoDistanceN (1);
@@ -235,6 +236,12 @@ void CScore::Enter() {
 	course = AddUpDown(area.right + 8, frametop, 0, (int)Course.CourseList.size()-1, 0);
 	int siz = FT.AutoSizeN (5);
 	textbutton = AddTextButton (Trans.Text(64), CENTER, AutoYPosN (80), siz);
+
+	FT.AutoSizeN(7);
+	headline = AddLabel(Trans.Text(62), CENTER, AutoYPosN(22), colWhite);
+
+	FT.AutoSizeN(4);
+	courseName = AddFramedText(area.left, frametop-2, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 }
 
 const string ordinals[10] =
@@ -252,17 +259,8 @@ void CScore::Loop (double timestep) {
 
 	DrawGUIBackground(Winsys.scale);
 
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, colBlack, 0.2);
-
-	FT.AutoSizeN (7);
-	FT.SetColor (colWhite);
-	FT.DrawString (CENTER, AutoYPosN (22), Trans.Text(62));
-
-	DrawFrameX (area.left, frametop, framewidth, frameheight, 3, colMBackgr, colDYell, 1.0);
-	FT.AutoSizeN (5);
-	FT.SetColor (colWhite);
-	FT.DrawString (area.left+20, frametop, CourseList[course->GetValue()].name);
+	courseName->Focussed(course->focussed());
+	courseName->SetString(CourseList[course->GetValue()].name);
 
 	const TScoreList *list = Score.GetScorelist (course->GetValue());
 

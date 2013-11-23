@@ -39,10 +39,11 @@ static bool Inside (int x, int y, const TRect& Rect) {
 	        && y <= Rect.top + Rect.height);
 }
 
-TWidget::TWidget(int x, int y, int width, int height)
+TWidget::TWidget(int x, int y, int width, int height, bool interactive_)
 	: active(true)
 	, visible(true)
-	, focus(false) {
+	, focus(false)
+	, interactive(interactive_) {
 	mouseRect.top = y;
 	mouseRect.left = x;
 	mouseRect.height = height;
@@ -57,9 +58,78 @@ bool TWidget::Click(int x, int y) {
 
 void TWidget::MouseMove(int x, int y) {
 	bool ofocus = focus;
-	focus = active && visible && Inside(x, y, mouseRect);
+	focus = interactive && active && visible && Inside(x, y, mouseRect);
 	if (ofocus != focus)
 		Focussed();
+}
+
+
+TLabel::TLabel(const sf::String& string, int x, int y, const sf::Color& color)
+	: TWidget(x, y, 0, 0, false)
+	, text(string, FT.getCurrentFont(), FT.GetSize()) {
+	if (x == CENTER)
+		text.setPosition((Winsys.resolution.width - text.getLocalBounds().width) / 2, y);
+	else
+		text.setPosition(x, y);
+	text.setColor(color);
+}
+
+void TLabel::Draw() const {
+	Winsys.draw(text);
+}
+
+TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color) {
+	Widgets.push_back(new TLabel(string, x, y, color));
+	return static_cast<TLabel*>(Widgets.back());
+}
+
+
+TFramedText::TFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& string, float ftsize, bool borderFocus_)
+	: TWidget(x, y, width, height, false)
+	, frame(sf::Vector2f(width - line * 2, height - line * 2))
+	, text(string, FT.getCurrentFont(), ftsize)
+	, borderFocus(borderFocus_) {
+	text.setPosition(x + line + 20, y + line);
+	if (!borderFocus)
+		text.setColor(colWhite);
+	else
+		text.setColor(colDYell);
+	frame.setPosition(x + line, y + line);
+	frame.setOutlineThickness(line);
+	frame.setFillColor(backcol);
+	frame.setOutlineColor(colWhite);
+}
+
+void TFramedText::Activated() {
+	if (!active)
+		text.setColor(colLGrey);
+	else if (borderFocus || focus)
+		text.setColor(colDYell);
+	else
+		text.setColor(colWhite);
+}
+
+void TFramedText::Focussed(bool masterFocus)  {
+	focus = masterFocus && active;
+	if (focus) {
+		frame.setOutlineColor(colDYell);
+		if (!borderFocus)
+			text.setColor(colDYell);
+	} else {
+		frame.setOutlineColor(colWhite);
+		if (!borderFocus)
+			text.setColor(colWhite);
+	}
+}
+
+void TFramedText::Draw() const {
+	Winsys.draw(frame);
+	Winsys.draw(text);
+}
+
+TFramedText* AddFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& text, float ftsize, bool borderFocus) {
+	Widgets.push_back(new TFramedText(x, y, width, height, line, backcol, text, ftsize, borderFocus));
+	return static_cast<TFramedText*>(Widgets.back());
 }
 
 TTextButton::TTextButton(int x, int y, const sf::String& text_, float ftsize)

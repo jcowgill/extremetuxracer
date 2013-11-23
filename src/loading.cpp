@@ -72,7 +72,3 @@ void CLoading::Loop(double time_step) {
 	Env.LoadEnvironment (g_game.location_id, g_game.light_id);
 	State::manager.RequestEnterState (Intro);
 }
-
-void CLoading::Exit() {
-	Music.Halt ();
-}

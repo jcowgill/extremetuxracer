@@ -43,6 +43,7 @@ static TIconButton* wind;
 static TIconButton* mirror;
 static TIconButton* random_btn;
 static TWidget* textbuttons[2];
+static TFramedText* name;
 static string info;
 
 static TCourse *CourseList;
@@ -172,12 +173,12 @@ void CRaceSelect::Enter() {
 	int siz = FT.AutoSizeN (5);
 	int len1 = FT.GetTextWidth (Trans.Text(13));
 	textbuttons[0] = AddTextButton (Trans.Text(13), area.right-len1-50, AutoYPosN (80), siz);
-	textbuttons[1] = AddTextButton (Trans.Text(8), area.left + 50, AutoYPosN (80), siz);
+	textbuttons[1] = AddTextButton(Trans.Text(8), area.left + 50, AutoYPosN(80), siz);
+	FT.AutoSizeN(4);
+	name = AddFramedText(area.left, frametop, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 }
 
 void CRaceSelect::Loop(double timestep) {
-	sf::Color col;
-
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
@@ -189,16 +190,9 @@ void CRaceSelect::Loop(double timestep) {
 
 	DrawGUIBackground(1.0);
 
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, colBlack, 0.2);
-
-	// course selection
-	if (course->focussed()) col = colDYell;
-	else col = colWhite;
-	DrawFrameX (area.left, frametop, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	FT.AutoSizeN (4);
-	FT.SetColor (colDYell);
-	FT.DrawString (area.left+20, frametop, CourseList[course->GetValue()].name);
+	// selected course
+	name->Focussed(course->focussed());
+	name->SetString(CourseList[course->GetValue()].name);
 
 	if (CourseList[course->GetValue()].preview)
 		CourseList[course->GetValue()].preview->DrawFrame(area.left + 3, prevtop, prevwidth, prevheight, 3, colWhite);

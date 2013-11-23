@@ -45,6 +45,9 @@ static TCup2 *ecup = 0;
 static size_t curr_race = 0;
 static size_t curr_bonus = 0;
 static TWidget* textbuttons[3];
+static TLabel* headline;
+static TLabel* info1;
+static TLabel* info2;
 
 void StartRace () {
 	if (ready > 0) {
@@ -132,6 +135,10 @@ void UpdateCupRacing () {
 		Players.AddPassedCup (ecup->cup);
 		Players.SavePlayers ();
 	}
+
+	headline->SetVisible(ready == 0);
+	info1->SetVisible(ready == 0);
+	info2->SetVisible(ready == 0);
 }
 
 // --------------------------------------------------------------------
@@ -140,9 +147,6 @@ static TArea area;
 static int messtop, messtop2;
 static int bonustop, framewidth, frametop, framebottom;
 static int dist, texsize;
-static sf::Text* headline;
-static sf::Text* info1;
-static sf::Text* info2;
 
 void CEvent::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
@@ -169,8 +173,7 @@ void CEvent::Enter () {
 	textbuttons[2] = AddTextButton (Trans.Text(15), CENTER, AutoYPosN (80), siz);
 
 	FT.AutoSizeN(6);
-	headline = new sf::Text(ecup->name, FT.getCurrentFont(), FT.GetSize());
-	headline->setPosition((Winsys.resolution.width - headline->getLocalBounds().width) / 2, AutoYPosN(25));
+	headline = AddLabel(ecup->name, CENTER, AutoYPosN(25), colWhite);
 
 	FT.AutoSizeN(3);
 	int ddd = FT.AutoDistanceN(1);
@@ -178,28 +181,18 @@ void CEvent::Enter () {
 	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.x);
 	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.y);
 	info += "   " + Int_StrN(ecup->races[curr_race]->herrings.z);
-	info1 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
-	info1->setPosition((Winsys.resolution.width - info1->getLocalBounds().width) / 2, framebottom + 15);
-	info1->setColor(colDBlue);
+	info1 = AddLabel(info, CENTER, framebottom + 15, colDBlue);
 
 	info = Trans.Text(12);
 	info += "   " + Float_StrN(ecup->races[curr_race]->time.x, 0);
 	info += "   " + Float_StrN(ecup->races[curr_race]->time.y, 0);
 	info += "   " + Float_StrN(ecup->races[curr_race]->time.z, 0);
 	info += "  " + Trans.Text(14);
-	info2 = new sf::Text(info, FT.getCurrentFont(), FT.GetSize());
-	info2->setPosition((Winsys.resolution.width - info2->getLocalBounds().width) / 2, framebottom + 15 + ddd);
-	info2->setColor(colDBlue);
+	info2 = AddLabel(info, CENTER, framebottom + 15 + ddd, colDBlue);
 
 	Music.Play (param.menu_music, -1);
 	if (ready < 1) curr_focus = textbuttons[0];
 	else curr_focus = textbuttons[2];
-}
-
-void CEvent::Exit() {
-	delete headline;
-	delete info1;
-	delete info2;
 }
 
 int resultlevel (size_t num, size_t numraces) {
@@ -223,8 +216,6 @@ void CEvent::Loop (double timestep) {
 //			0, colMBackgr, colBlack, 0.2);
 
 	if (ready == 0) {			// cup not finished
-		Winsys.draw(*headline);
-
 		DrawBonusExt (bonustop, (int)ecup->races.size(), curr_bonus);
 
 		DrawFrameX (area.left, frametop, framewidth,
@@ -244,8 +235,6 @@ void CEvent::Loop (double timestep) {
 			checkbox.SetChecked(curr_race > i);
 			checkbox.Draw();
 		}
-		Winsys.draw(*info1);
-		Winsys.draw(*info2);
 	} else if (ready == 1) {		// cup successfully finished
 		FT.AutoSizeN (5);
 		FT.SetColor (colWhite);

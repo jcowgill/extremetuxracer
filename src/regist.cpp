@@ -84,10 +84,10 @@ void CRegist::Motion (int x, int y) {
 static int framewidth, frameheight, arrowwidth;
 static TArea area;
 static double texsize;
-static sf::Text* sHelpPlayer;
-static sf::Text* sHelpCharacter;
-static sf::Text* sPlayer;
-static sf::Text* sCharacter;
+static TLabel* sHelpPlayer;
+static TLabel* sHelpCharacter;
+static TFramedText* sPlayerFrame;
+static TFramedText* sCharFrame;
 
 void CRegist::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
@@ -109,33 +109,21 @@ void CRegist::Enter() {
 
 	FT.AutoSizeN(3);
 	int top = AutoYPosN(24);
-	sHelpPlayer = new sf::Text(Trans.Text(58), FT.getCurrentFont(), FT.GetSize());
-	sHelpPlayer->setPosition(area.left, top);
-	sHelpCharacter = new sf::Text(Trans.Text(59), FT.getCurrentFont(), FT.GetSize());
-	sHelpCharacter->setPosition(area.left + framewidth + arrowwidth, top);
+	sHelpPlayer = AddLabel(Trans.Text(58), area.left, top, colWhite);
+	sHelpCharacter = AddLabel(Trans.Text(59), area.left + framewidth + arrowwidth, top, colWhite);
 
 	FT.AutoSizeN(4);
-	sPlayer = new sf::Text("", FT.getCurrentFont(), FT.GetSize());
-	sPlayer->setPosition(area.left + 20, area.top);
-	sCharacter = new sf::Text("", FT.getCurrentFont(), FT.GetSize());
-	sCharacter->setPosition(area.left + framewidth + arrowwidth + 20, area.top);
+	sPlayerFrame = AddFramedText(area.left, area.top, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize());
+	sCharFrame = AddFramedText(area.left + framewidth + arrowwidth, area.top, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize());
 
 	if (Char.CharList.empty())
 		Winsys.Terminate(); // Characters are necessary - ETR is unusable otherwise
-}
-
-void CRegist::Exit() {
-	delete sHelpPlayer;
-	delete sHelpCharacter;
-	delete sPlayer;
-	delete sCharacter;
 }
 
 void CRegist::Loop (double timestep) {
 	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
-	sf::Color col;
 
 	if (param.ui_snow) {
 		update_ui_snow (timestep);
@@ -144,25 +132,13 @@ void CRegist::Loop (double timestep) {
 
 	DrawGUIBackground(Winsys.scale);
 
-	Winsys.draw(*sHelpPlayer);
-	Winsys.draw(*sHelpCharacter);
-
-	if (player->focussed()) col = colDYell;
-	else col = colWhite;
-	DrawFrameX(area.left, area.top, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	sPlayer->setString(Players.GetName(player->GetValue()));
-	sPlayer->setColor(col);
-	Winsys.draw(*sPlayer);
+	sPlayerFrame->SetString(Players.GetName(player->GetValue()));
+	sPlayerFrame->Focussed(player->focussed());
 	Players.GetAvatarTexture(player->GetValue())->DrawFrame(
 	    area.left + 60, AutoYPosN (40), texsize, texsize, 3, colWhite);
 
-	if (character->focussed()) col = colDYell;
-	else col = colWhite;
-	DrawFrameX (area.left + framewidth + arrowwidth, area.top,
-	            framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	sCharacter->setString(Char.CharList[character->GetValue()].name);
-	sCharacter->setColor(col);
-	Winsys.draw(*sCharacter);
+	sCharFrame->SetString(Char.CharList[character->GetValue()].name);
+	sCharFrame->Focussed(character->focussed());
 	if (Char.CharList[character->GetValue()].preview != NULL)
 		Char.CharList[character->GetValue()].preview->DrawFrame(
 		    area.right - texsize - 60 - arrowwidth,

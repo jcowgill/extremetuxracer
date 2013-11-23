@@ -48,22 +48,45 @@ protected:
 	TVector2i position;
 	bool active;
 	bool visible;
+	bool interactive;
 public:
 	bool focus;
 
-	TWidget(int x, int y, int width, int height);
+	TWidget(int x, int y, int width, int height, bool interactive_ = true);
 	virtual void Draw() const = 0;
 	virtual bool Click(int x, int y);
 	virtual void TextEnter(char text) {}
 	virtual void Key(sf::Keyboard::Key key, unsigned int mod, bool released) {}
 	virtual void MouseMove(int x, int y);
 	virtual void Focussed() {}
+	virtual void Activated() {}
 	bool focussed() const { return focus; }
-	void SetActive(bool a) { active = a; if (!a) focus = false; }
+	void SetActive(bool a) { active = a; if (!a) focus = false; Activated(); }
 	void SetVisible(bool v) { visible = v; if (!v) focus = false; }
 	bool GetActive() const { return active; }
 	bool GetVisible() const { return visible; }
 };
+
+class TLabel : public TWidget {
+	sf::Text text;
+public:
+	TLabel(const sf::String& string, int x, int y, const sf::Color& color);
+	void Draw() const;
+};
+TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color);
+
+class TFramedText : public TWidget {
+	sf::RectangleShape frame;
+	sf::Text text;
+	bool borderFocus;
+public:
+	TFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& string, float ftsize, bool borderFocus_ = false);
+	void Focussed(bool masterFocus);
+	void Activated();
+	void Draw() const;
+	void SetString(const sf::String& string) { text.setString(string); }
+};
+TFramedText* AddFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& text, float ftsize, bool borderFocus = false);
 
 class TTextButton : public TWidget {
 	sf::Text text;

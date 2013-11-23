@@ -86,24 +86,22 @@ void CEventSelect::Motion (int x, int y) {
 }
 
 // --------------------------------------------------------------------
-static TArea area;
-static int framewidth, frameheight, frametop1, frametop2;
-static sf::Text selectEvent;
-static sf::Text selectCup;
-static sf::Text selectedEvent;
-static sf::Text selectedCup;
-static sf::Text cupLocked;
+static TLabel* selectEvent;
+static TLabel* selectCup;
+static TFramedText* selectedEvent;
+static TFramedText* selectedCup;
+static TLabel* cupLocked;
 
 void CEventSelect::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
 	EventList = &Events.EventList[0];
 	CupList = &Events.CupList[0];
 
-	framewidth = 500 * Winsys.scale;
-	frameheight = 50 * Winsys.scale;
-	area = AutoAreaN (30, 80, framewidth);
-	frametop1 = AutoYPosN (35);
-	frametop2 = AutoYPosN (50);
+	int framewidth = 500 * Winsys.scale;
+	int frameheight = 50 * Winsys.scale;
+	TArea area = AutoAreaN(30, 80, framewidth);
+	int frametop1 = AutoYPosN(35);
+	int frametop2 = AutoYPosN(50);
 
 	ResetGUI();
 	event = AddUpDown(area.right+8, frametop1, 0, (int)Events.EventList.size() - 1, 0);
@@ -117,28 +115,13 @@ void CEventSelect::Enter () {
 	SetFocus(textbuttons[1]);
 
 	FT.AutoSizeN(3);
-	selectEvent.setString(Trans.Text(6));
-	selectEvent.setCharacterSize(FT.GetSize());
-	selectEvent.setFont(FT.getCurrentFont());
-	selectEvent.setPosition(area.left, AutoYPosN(30));
-	selectCup.setString(Trans.Text(7));
-	selectCup.setCharacterSize(FT.GetSize());
-	selectCup.setFont(FT.getCurrentFont());
-	selectCup.setPosition(area.left, AutoYPosN(45));
-	cupLocked.setString(Trans.Text(10));
-	cupLocked.setCharacterSize(FT.GetSize());
-	cupLocked.setFont(FT.getCurrentFont());
-	cupLocked.setColor(colLGrey);
-	cupLocked.setPosition((Winsys.resolution.width - cupLocked.getLocalBounds().width) / 2, AutoYPosN(58));
+	selectEvent = AddLabel(Trans.Text(6), area.left, AutoYPosN(30), colWhite);
+	selectCup = AddLabel(Trans.Text(7), area.left, AutoYPosN(45), colWhite);
+	cupLocked = AddLabel(Trans.Text(10), CENTER, AutoYPosN(58), colLGrey);
 
 	FT.AutoSizeN(4);
-	selectedEvent.setCharacterSize(FT.GetSize());
-	selectedEvent.setFont(FT.getCurrentFont());
-	selectedEvent.setPosition(area.left + 20, frametop1+2);
-	selectedEvent.setColor(colDYell);
-	selectedCup.setCharacterSize(FT.GetSize());
-	selectedCup.setFont(FT.getCurrentFont());
-	selectedCup.setPosition(area.left + 20, frametop2+2);
+	selectedEvent = AddFramedText(area.left, frametop1, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
+	selectedCup = AddFramedText(area.left, frametop2, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 
 	Events.MakeUnlockList (Players.GetCurrUnlocked());
 	Music.Play (param.menu_music, -1);
@@ -158,27 +141,14 @@ void CEventSelect::Loop (double timestep) {
 
 	DrawGUIBackground(Winsys.scale);
 
-	Winsys.draw(selectEvent);
-	Winsys.draw(selectCup);
-	if (Events.IsUnlocked(event->GetValue(), cup->GetValue()) == false)
-		Winsys.draw(cupLocked);
+	cupLocked->SetVisible(Events.IsUnlocked(event->GetValue(), cup->GetValue()) == false);
 
-	if (event->focussed()) col = colDYell;
-	else col = colWhite;
-	DrawFrameX(area.left, frametop1, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	selectedEvent.setString(EventList[event->GetValue()].name);
-	Winsys.draw(selectedEvent);
+	selectedEvent->Focussed(event->focussed());
+	selectedEvent->SetString(EventList[event->GetValue()].name);
 
-	if (cup->focussed()) col = colDYell;
-	else col = colWhite;
-	DrawFrameX (area.left, frametop2, framewidth, frameheight, 3, colMBackgr, col, 1.0);
-	if (Events.IsUnlocked (event->GetValue(), cup->GetValue()))
-		col = colDYell;
-	else
-		col = colLGrey;
-	selectedCup.setColor(col);
-	selectedCup.setString(Events.GetCupTrivialName(event->GetValue(), cup->GetValue()));
-	Winsys.draw(selectedCup);
+	selectedCup->SetActive(Events.IsUnlocked(event->GetValue(), cup->GetValue()));
+	selectedCup->Focussed(cup->focussed());
+	selectedCup->SetString(Events.GetCupTrivialName(event->GetValue(), cup->GetValue()));
 
 	textbuttons[0]->SetActive(Events.IsUnlocked (event->GetValue(), cup->GetValue()));
 	DrawGUI();
