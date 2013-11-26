@@ -49,8 +49,6 @@ CCourse::CCourse () {
 
 CCourse::~CCourse() {
 	for (size_t i = 0; i < PolyArr.size(); i++) {
-		for (size_t j = 0; j < PolyArr[i].num_polygons; j++)
-			delete[] PolyArr[i].polygons[j].vertices;
 		delete[] PolyArr[i].polygons;
 		FreePolyhedron(PolyArr[i]);
 	}
@@ -282,8 +280,7 @@ void CCourse::MakeStandardPolyhedrons () {
 	PolyArr[1].num_polygons = 8;
 	PolyArr[1].polygons = new TPolygon[8];
 	for (size_t i=0; i<PolyArr[1].num_polygons; i++) {
-		PolyArr[1].polygons[i].num_vertices = 3;
-		PolyArr[1].polygons[i].vertices = new int[3];
+		PolyArr[1].polygons[i].vertices.resize(3);
 	}
 	PolyArr[1].polygons[0].vertices[0] = 0;
 	PolyArr[1].polygons[0].vertices[1] = 1;
@@ -339,7 +336,7 @@ void CCourse::FreeObjectTextures () {
 bool CCourse::LoadElevMap () {
 	sf::Image img;
 
-	if (!img.loadFromFile(CourseDir + SEP + "elev.png")) {
+	if (!img.loadFromFile(CourseDir + SEP "elev.png")) {
 		Message ("unable to open elev.png");
 		return false;
 	}
@@ -410,15 +407,12 @@ void CCourse::LoadItemList () {
 			CollArr.back().diam = diam;
 			CollArr.back().tree_type = type;
 		} else if (coll == 0) {
-			NocollArr.push_back(TItem());
+			NocollArr.push_back(TItem(ObjTypes[type]));
 			NocollArr.back().pt.x = xx;
 			NocollArr.back().pt.z = zz;
 			NocollArr.back().pt.y = FindYCoord (xx, zz);
 			NocollArr.back().height = height;
 			NocollArr.back().diam = diam;
-			NocollArr.back().item_type = type;
-			NocollArr.back().collectable = ObjTypes[type].collectable;
-			NocollArr.back().drawable = ObjTypes[type].drawable;
 			ObjTypes[type].num_items++;
 		}
 	}
@@ -465,7 +459,7 @@ static void CalcRandomTrees (double baseheight, double basediam, double &height,
 bool CCourse::LoadAndConvertObjectMap () {
 	sf::Image treeImg;
 
-	if (!treeImg.loadFromFile (CourseDir + SEP + "trees.png")) {
+	if (!treeImg.loadFromFile (CourseDir + SEP "trees.png")) {
 		Message ("unable to open trees.png");
 		return false;
 	}
@@ -528,15 +522,12 @@ bool CCourse::LoadAndConvertObjectMap () {
 					CollArr.back().diam = diam;
 					CollArr.back().tree_type = type;
 				} else if (coll == 0) {
-					NocollArr.push_back(TItem());
+					NocollArr.push_back(TItem(ObjTypes[type]));
 					NocollArr.back().pt.x = xx;
 					NocollArr.back().pt.z = zz;
 					NocollArr.back().pt.y = FindYCoord (xx, zz);
 					NocollArr.back().height = height;
 					NocollArr.back().diam = diam;
-					NocollArr.back().item_type = type;
-					NocollArr.back().collectable = ObjTypes[type].collectable;
-					NocollArr.back().drawable = ObjTypes[type].drawable;
 					ObjTypes[type].num_items++;
 				}
 
@@ -551,7 +542,7 @@ bool CCourse::LoadAndConvertObjectMap () {
 		}
 		pad += (nx * depth) % 4;
 	}
-	string itemfile = CourseDir + SEP + "items.lst";
+	string itemfile = CourseDir + SEP "items.lst";
 	savelist.Save (itemfile); // Convert trees.png to items.lst
 	return true;
 }
@@ -653,7 +644,7 @@ bool CCourse::LoadTerrainTypes () {
 bool CCourse::LoadTerrainMap () {
 	sf::Image terrImage;
 
-	if (!terrImage.loadFromFile (CourseDir + SEP + "terrain.png")) {
+	if (!terrImage.loadFromFile (CourseDir + SEP "terrain.png")) {
 		Message ("unable to open terrain.png");
 		return false;
 	}
@@ -718,7 +709,7 @@ bool CCourse::LoadCourseList () {
 		string coursepath = param.common_course_dir + SEP + CourseList[i].dir;
 		if (DirExists (coursepath.c_str())) {
 			// preview
-			string previewfile = coursepath + SEP + "preview.png";
+			string previewfile = coursepath + SEP "preview.png";
 			CourseList[i].preview = new TTexture();
 			if (!CourseList[i].preview->Load(previewfile, false)) {
 				Message ("couldn't load previewfile");
@@ -726,7 +717,7 @@ bool CCourse::LoadCourseList () {
 			}
 
 			// params
-			string paramfile = coursepath + SEP + "course.dim";
+			string paramfile = coursepath + SEP "course.dim";
 			if (!paramlist.Load (paramfile)) {
 				Message ("could not load course.dim");
 			}
@@ -809,7 +800,7 @@ bool CCourse::LoadCourse (size_t idx) {
 		}
 
 		// ................................................................
-		string itemfile = CourseDir + SEP + "items.lst";
+		string itemfile = CourseDir + SEP "items.lst";
 		bool itemsexists = FileExists (itemfile);
 		const CControl *ctrl = Players.GetCtrl (g_game.player_id);
 

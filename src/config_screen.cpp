@@ -56,7 +56,6 @@ Then edit the below functions:
 CGameConfig GameConfig;
 static string res_names[NUM_RESOLUTIONS];
 
-static TLang *LangList;
 static TCheckbox* fullscreen;
 static TUpDown* language;
 static TUpDown* resolution;
@@ -156,8 +155,6 @@ void CGameConfig::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
 	Winsys.KeyRepeat (true);
 
-	LangList = &Trans.languages[0];
-
 	for (int i=0; i<NUM_RESOLUTIONS; i++) res_names[i] = Winsys.GetResName (i);
 
 	int framewidth = 550 * Winsys.scale;
@@ -223,7 +220,7 @@ void CGameConfig::Loop (double time_step) {
 	FT.DrawString (area.left+240, area.top + dd*2, Int_StrN (mus_vol->GetValue()));
 	FT.DrawString (area.left+240, area.top + dd*3, Int_StrN (sound_vol->GetValue()));
 	FT.DrawString (area.left+240, area.top + dd*4, Int_StrN (detail_level->GetValue()));
-	FT.DrawString (area.left+240, area.top + dd*5, LangList[language->GetValue()].language);
+	FT.DrawString (area.left+240, area.top + dd*5, Trans.languages[language->GetValue()].language);
 
 #if defined (_WIN32)
 	if (fullscreen->checked != param.fullscreen) {

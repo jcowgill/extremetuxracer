@@ -196,7 +196,7 @@ bool CPlayers::LoadPlayers () {
 
 	if (list.Load (param.config_dir, "players") == false) {
 		SetDefaultPlayers ();
-		Message ("coule not load players list, set default players");
+		Message ("could not load players list, set default players");
 		return false;
 	}
 
@@ -221,7 +221,7 @@ bool CPlayers::LoadPlayers () {
 }
 
 void CPlayers::SavePlayers () const {
-	string playerfile = param.config_dir + SEP + "players";
+	string playerfile = param.config_dir + SEP "players";
 	CSPList list(MAX_PLAYERS);
 	string item = "";
 	for (size_t i=0; i<plyr.size(); i++) {
@@ -344,7 +344,7 @@ void CCharacter::LoadCharacterList () {
 
 		string charpath = param.char_dir + SEP + CharList[i].dir;
 		if (DirExists (charpath.c_str())) {
-			string previewfile = charpath + SEP + "preview.png";
+			string previewfile = charpath + SEP "preview.png";
 
 			TCharacter* ch = &CharList[i];
 			ch->preview = new TTexture();

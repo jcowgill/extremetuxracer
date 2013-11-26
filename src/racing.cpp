@@ -67,7 +67,7 @@ static int lastsound = -1;
 
 void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	switch (key) {
-			// steering flipflops
+		// steering flipflops
 		case sf::Keyboard::Up:
 			key_paddling = !release;
 			break;
@@ -86,7 +86,7 @@ void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 		case sf::Keyboard::T:
 			trick_modifier = !release;
 			break;
-			// mode changing and other actions
+		// mode changing and other actions
 		case sf::Keyboard::Escape:
 			if (!release) {
 				g_game.raceaborted = true;
@@ -104,7 +104,7 @@ void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 			if (!release) ScreenshotN ();
 			break;
 
-			// view changing
+		// view changing
 		case sf::Keyboard::Num1:
 			if (!release) {
 				set_view_mode (Players.GetCtrl (g_game.player_id), ABOVE);
@@ -124,7 +124,7 @@ void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 			}
 			break;
 
-			// toggle
+		// toggle
 		case sf::Keyboard::H:
 			if (!release) param.show_hud = !param.show_hud;
 			break;

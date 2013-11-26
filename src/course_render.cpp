@@ -57,7 +57,6 @@ void RenderCourse () {
 // --------------------------------------------------------------------
 void DrawTrees() {
 	size_t			tree_type = -1;
-	size_t			item_type = -1;
 	TObjectType*	object_types = &Course.ObjTypes[0];
 	const CControl*	ctrl = Players.GetCtrl (g_game.player_id);
 
@@ -130,17 +129,18 @@ void DrawTrees() {
 //  items -----------------------------
 	TItem* itemLocs = &Course.NocollArr[0];
 	size_t numItems = Course.NocollArr.size();
+	const TObjectType* item_type = NULL;
 
 	for (size_t i = 0; i< numItems; i++) {
-		if (itemLocs[i].collectable == 0 || itemLocs[i].drawable == false) continue;
+		if (itemLocs[i].collectable == 0 || itemLocs[i].type.drawable == false) continue;
 		if (clip_course) {
 			if (ctrl->viewpos.z - itemLocs[i].pt.z > fwd_clip_limit) continue;
 			if (itemLocs[i].pt.z - ctrl->viewpos.z > bwd_clip_limit) continue;
 		}
 
-		if (itemLocs[i].item_type != item_type) {
-			item_type = itemLocs[i].item_type;
-			object_types[item_type].texture->Bind();
+		if (&itemLocs[i].type != item_type) {
+			item_type = &itemLocs[i].type;
+			item_type->texture->Bind();
 		}
 
 		glPushMatrix();
@@ -149,8 +149,8 @@ void DrawTrees() {
 		double itemHeight = itemLocs[i].height;
 
 		TVector3d normal;
-		if (object_types[item_type].use_normal) {
-			normal = object_types[item_type].normal;
+		if (item_type->use_normal) {
+			normal = item_type->normal;
 		} else {
 			normal = ctrl->viewpos - itemLocs[i].pt;
 			normal.Norm();

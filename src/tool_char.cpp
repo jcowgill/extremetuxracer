@@ -183,7 +183,7 @@ void CharKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) 
 			xposition += 0.03;
 			break;
 
-			// set rotations for view
+		// set rotations for view
 		case sf::Keyboard::Num1:
 			SetRotation (0, 0, 0);
 			break;
@@ -197,7 +197,7 @@ void CharKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) 
 			SetRotation (0, -80, 0);
 			break;
 
-			// select node
+		// select node
 		case sf::Keyboard::PageUp:
 			ChangeNode (-1);
 			break;
@@ -211,7 +211,7 @@ void CharKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) 
 			ChangeNode (-charbase);
 			break;
 
-			// select action
+		// select action
 		case sf::Keyboard::Down:
 			if (curr_act < lastact) curr_act++;
 			if (action->type[curr_act] == 4) comp = 0;
@@ -229,7 +229,7 @@ void CharKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) 
 			ChangeValue (type, 1);
 			break;
 
-			// select value
+		// select value
 		case sf::Keyboard::Space:
 			if (type == 0 || type == 4) {
 				comp++;

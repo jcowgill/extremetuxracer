@@ -376,11 +376,11 @@ bool IntersectPolygon (const TPolygon& p, TVector3d *v) {
 
 	if (fabs (d) > 1) return false;
 
-	for (int i=0; i < p.num_vertices; i++) {
+	for (size_t i=0; i < p.vertices.size(); i++) {
 		TVector3d *v0, *v1;
 
 		v0 = &v[p.vertices[i]];
-		v1 = &v[p.vertices[ (i+1) % p.num_vertices ]];
+		v1 = &v[p.vertices[(i + 1) % p.vertices.size()]];
 
 		TVector3d edge_vec = *v1 - *v0;
 		double edge_len = edge_vec.Norm();
@@ -402,9 +402,9 @@ bool IntersectPolygon (const TPolygon& p, TVector3d *v) {
 	s = - (d + DotProduct (nml, ray.pt)) / nuDotProd;
 	TVector3d pt = ray.pt + s * ray.vec;
 
-	for (int i=0; i < p.num_vertices; i++) {
+	for (size_t i = 0; i < p.vertices.size(); i++) {
 		TVector3d edge_nml = CrossProduct (nml,
-		                                   v[p.vertices[ (i+1) % p.num_vertices ]] - v[p.vertices[i]]);
+		                                   v[p.vertices[(i + 1) % p.vertices.size()]] - v[p.vertices[i]]);
 
 		double wec = DotProduct (pt - v[p.vertices[i]], edge_nml);
 		if (wec < 0) return false;
@@ -423,7 +423,7 @@ bool IntersectPolyhedron (const TPolyhedron& p) {
 
 TVector3d MakeNormal (const TPolygon& p, TVector3d *v) {
 	TVector3d v1 = v[p.vertices[1]] - v[p.vertices[0]];
-	TVector3d v2 = v[p.vertices[p.num_vertices-1]] - v[p.vertices[0]];
+	TVector3d v2 = v[p.vertices[p.vertices.size() - 1]] - v[p.vertices[0]];
 	TVector3d normal = CrossProduct (v1, v2);
 
 	normal.Norm();

@@ -29,9 +29,9 @@ class TTexture;
 
 
 enum vertex_loc_t {
-    East,
-    South,
-    Center
+	East,
+	South,
+	Center
 };
 
 struct HeightMapInfo {

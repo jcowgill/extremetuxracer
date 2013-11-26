@@ -38,7 +38,6 @@ static TEvent2 *EventList;
 static TUpDown* event;
 static TUpDown* cup;
 static TWidget* textbuttons[2];
-static TCup2 *CupList;
 
 void EnterEvent () {
 	g_game.game_type = CUPRACING;
@@ -95,7 +94,6 @@ static TLabel* cupLocked;
 void CEventSelect::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
 	EventList = &Events.EventList[0];
-	CupList = &Events.CupList[0];
 
 	int framewidth = 500 * Winsys.scale;
 	int frameheight = 50 * Winsys.scale;
@@ -105,7 +103,7 @@ void CEventSelect::Enter () {
 
 	ResetGUI();
 	event = AddUpDown(area.right+8, frametop1, 0, (int)Events.EventList.size() - 1, 0);
-	cup = AddUpDown(area.right+8, frametop2, 0, (int)EventList[0].cups.size() - 1, 0);
+	cup = AddUpDown(area.right + 8, frametop2, 0, (int)Events.EventList[0].cups.size() - 1, 0);
 
 	int siz = FT.AutoSizeN (5);
 

@@ -41,39 +41,6 @@ GNU General Public License for more details.
 
 class TTexture;
 
-struct TCollidable {
-	TVector3d pt;
-	double height;
-	double diam;
-	size_t tree_type;
-};
-
-struct TItem {
-	TVector3d pt;
-	double height;
-	double diam;
-	size_t item_type;
-	int collectable;
-	bool drawable;
-};
-
-struct TCourse {
-	string name;
-	string dir;
-	string author;
-	string desc[MAX_DESCRIPTION_LINES];
-	size_t num_lines;
-	TTexture* preview;
-	TVector2d size;
-	TVector2d play_size;
-	double angle;
-	double scale;
-	TVector2d start;
-	size_t env;
-	size_t music_theme;
-	bool use_keyframe;
-	double finish_brake;
-};
 
 struct TTerrType {
 	string textureFile;
@@ -104,6 +71,40 @@ struct TObjectType {
 	TVector3d	normal;
 	int			num_items;
 	int			poly;
+};
+
+struct TCollidable {
+	TVector3d pt;
+	double height;
+	double diam;
+	size_t tree_type;
+};
+
+struct TItem {
+	TVector3d pt;
+	double height;
+	double diam;
+	int collectable;
+	const TObjectType& type;
+	TItem(const TObjectType& type_) : type(type_), collectable(type_.collectable) {}
+};
+
+struct TCourse {
+	string name;
+	string dir;
+	string author;
+	string desc[MAX_DESCRIPTION_LINES];
+	size_t num_lines;
+	TTexture* preview;
+	TVector2d size;
+	TVector2d play_size;
+	double angle;
+	double scale;
+	TVector2d start;
+	size_t env;
+	size_t music_theme;
+	bool use_keyframe;
+	double finish_brake;
 };
 
 class CCourse {

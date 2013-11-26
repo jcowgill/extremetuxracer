@@ -21,8 +21,8 @@ GNU General Public License for more details.
 #include "vectors.h"
 
 enum Orientation {
-    OR_TOP = 0,			// top-orientated menu widgets
-    OR_BOTTOM = 1		// bottom-orientated
+	OR_TOP = 0,			// top-orientated menu widgets
+	OR_BOTTOM = 1		// bottom-orientated
 };
 
 struct TColor3 {
@@ -33,23 +33,23 @@ struct TColor3 {
 };
 
 enum TToolMode {
-    NONE,
-    TUXSHAPE,
-    KEYFRAME,
-    TREEGEN,
-    LEARN,
+	NONE,
+	TUXSHAPE,
+	KEYFRAME,
+	TREEGEN,
+	LEARN,
 };
 
 enum TGameType {
-    PRACTICING,
-    CUPRACING
+	PRACTICING,
+	CUPRACING
 };
 
 enum TViewMode {
-    BEHIND,
-    FOLLOW,
-    ABOVE,
-    NUM_VIEW_MODES
+	BEHIND,
+	FOLLOW,
+	ABOVE,
+	NUM_VIEW_MODES
 };
 
 struct TCup2;
