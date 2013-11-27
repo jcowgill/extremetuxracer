@@ -65,7 +65,7 @@ void CSplashScreen::Loop(double timestep) {
 	Trans.LoadTranslations (param.language); // Before first texts are being displayed
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
-	logo.setScale(Winsys.scale, Winsys.scale);
+	logo.setScale(Winsys.scale/2, Winsys.scale/2);
 	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 60);
 
 	FT.AutoSizeN(6);

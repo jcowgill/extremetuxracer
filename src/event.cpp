@@ -183,9 +183,9 @@ void CEvent::Enter () {
 	info1 = AddLabel(info, CENTER, framebottom + 15, colDBlue);
 
 	info = Trans.Text(12);
-	info += "   " + Float_StrN(ecup->races[curr_race]->time.x, 0);
-	info += "   " + Float_StrN(ecup->races[curr_race]->time.y, 0);
-	info += "   " + Float_StrN(ecup->races[curr_race]->time.z, 0);
+	info += "   " + Int_StrN((int)ecup->races[curr_race]->time.x);
+	info += "   " + Int_StrN((int)ecup->races[curr_race]->time.y);
+	info += "   " + Int_StrN((int)ecup->races[curr_race]->time.z);
 	info += "  " + Trans.Text(14);
 	info2 = AddLabel(info, CENTER, framebottom + 15 + ddd, colDBlue);
 

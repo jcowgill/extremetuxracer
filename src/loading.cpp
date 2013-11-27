@@ -55,7 +55,7 @@ void CLoading::Loop(double time_step) {
 
 	sf::Sprite logo;
 	logo.setTexture(Tex.GetSFTexture(TEXLOGO));
-	logo.setScale(0.7, 0.7);
+	logo.setScale(0.35, 0.35);
 	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 40);
 	Winsys.draw(logo);
 	DrawGUIFrame();

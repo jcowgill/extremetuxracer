@@ -293,7 +293,7 @@ void CalcSteeringControls (CControl *ctrl, double time_step) {
 
 void CalcFinishControls (CControl *ctrl, double timestep, bool airborne) {
 	double speed = ctrl->cvel.Length();
-	double dir_angle = atan(ctrl->cvel.x / ctrl->cvel.z) * 57.3;
+	double dir_angle = RADIANS_TO_ANGLES(atan(ctrl->cvel.x / ctrl->cvel.z));
 
 	if (fabs (dir_angle) > 5 && speed > 5) {
 		ctrl->turn_fact = dir_angle / 20;
