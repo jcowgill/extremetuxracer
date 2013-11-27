@@ -164,8 +164,7 @@ CPlayers::~CPlayers() {
 void CPlayers::AddPlayer (const string& name, const string& avatar) {
 	plyr.push_back(TPlayer());
 	plyr.back().name = name;
-	plyr.back().avatar = avatar;
-	plyr.back().texture = GetAvatarTexture(AvatarIndex[plyr.back().avatar]);
+	plyr.back().avatar = FindAvatar(avatar);
 	plyr.back().funlocked = "";
 	plyr.back().ctrl = NULL;
 }
@@ -174,14 +173,12 @@ void CPlayers::SetDefaultPlayers () {
 	plyr.resize(2);
 	plyr[0].funlocked = "";
 	plyr[0].name = "Racer";
-	plyr[0].avatar = "avatar01.png";
-	plyr[0].texture = GetAvatarTexture(AvatarIndex[plyr[0].avatar]);
+	plyr[0].avatar = FindAvatar("avatar01.png");
 	plyr[0].ctrl = NULL;
 
 	plyr[1].funlocked = "";
 	plyr[1].name = "Bunny";
-	plyr[1].avatar = "avatar02.png";
-	plyr[1].texture = GetAvatarTexture(AvatarIndex[plyr[1].avatar]);
+	plyr[1].avatar = FindAvatar("avatar02.png");
 	plyr[1].ctrl = NULL;
 }
 
@@ -206,8 +203,7 @@ bool CPlayers::LoadPlayers () {
 		const string& line = list.Line(i);
 		plyr[i].name = SPStrN (line, "name", "unknown");
 		plyr[i].funlocked = SPStrN (line, "unlocked");
-		plyr[i].avatar = SPStrN (line, "avatar");
-		plyr[i].texture = GetAvatarTexture(AvatarIndex[plyr[i].avatar]);
+		plyr[i].avatar = FindAvatar(SPStrN(line, "avatar"));
 		plyr[i].ctrl = NULL;
 		int active = SPIntN (line, "active", 0);
 		if (active > 0) g_game.start_player = plyr.size()-1;
@@ -226,13 +222,21 @@ void CPlayers::SavePlayers () const {
 	string item = "";
 	for (size_t i=0; i<plyr.size(); i++) {
 		item = "*[name]" + plyr[i].name;
-		item +="[avatar]" + plyr[i].avatar;
+		item +="[avatar]" + plyr[i].avatar->filename;
 		item += "[unlocked]" + plyr[i].funlocked;
 		if (i == g_game.player_id) item += "[active]1";
 		else item += "[active]0";
 		list.Add (item);
 	}
 	list.Save (playerfile);
+}
+
+const TAvatar* CPlayers::FindAvatar(const string& name)
+{
+	for (size_t i = 0; i < avatars.size(); i++)
+		if (avatars[i].filename == name)
+			return &avatars[i];
+	return 0;
 }
 
 const string& CPlayers::GetCurrUnlocked () const {
@@ -286,16 +290,12 @@ void CPlayers::LoadAvatars () {
 		return;
 	}
 
-	AvatarIndex.clear();
 	for (size_t i=0; i<list.Count(); i++) {
 		const string& line = list.Line(i);
 		string filename = SPStrN (line, "file", "unknown");
 		TTexture* texture = new TTexture();
 		if (texture && texture->Load(param.player_dir, filename)) {
-			avatars.push_back(TAvatar());
-			avatars.back().filename = filename;
-			avatars.back().texture = texture;
-			AvatarIndex[filename] = avatars.size()-1;
+			avatars.push_back(TAvatar(filename, texture));
 		} else
 			delete texture;
 	}
@@ -373,9 +373,10 @@ void CCharacter::LoadCharacterList () {
 	}
 }
 
-void CCharacter::FreeCharacterPreviews () {
+void CCharacter::FreeCharacterPreviews() {
 	for (size_t i=0; i<CharList.size(); i++) {
 		delete CharList[i].preview;
+		CharList[i].preview = 0;
 	}
 }
 

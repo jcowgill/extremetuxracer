@@ -41,10 +41,8 @@ struct TSphere		{ double radius; int divisions; };
 struct TRay			{ TVector3d pt; TVector3d vec; };
 
 struct TPolyhedron {
-	size_t num_vertices;
-	size_t num_polygons;
-	TVector3d *vertices;
-	TPolygon *polygons;
+	vector<TVector3d> vertices;
+	vector<TPolygon> polygons;
 };
 
 TVector3d	ProjectToPlane(const TVector3d& nml, const TVector3d& v);
@@ -64,12 +62,10 @@ TQuaternion MakeRotationQuaternion (const TVector3d& s, const TVector3d& t);
 TQuaternion InterpolateQuaternions (const TQuaternion& q, TQuaternion r, double t);
 TVector3d	RotateVector (const TQuaternion& q, const TVector3d& v);
 
-bool		IntersectPolygon (const TPolygon& p, TVector3d *v);
-bool		IntersectPolyhedron (const TPolyhedron& p);
-TVector3d	MakeNormal (const TPolygon& p, TVector3d *v);
-TPolyhedron	CopyPolyhedron (const TPolyhedron& ph);
-void		FreePolyhedron (const TPolyhedron& ph);
-void		TransPolyhedron(const TMatrix<4, 4>& mat, const TPolyhedron& ph);
+bool		IntersectPolygon (const TPolygon& p, vector<TVector3d>& v);
+bool		IntersectPolyhedron (TPolyhedron& p);
+TVector3d	MakeNormal (const TPolygon& p, const TVector3d *v);
+void		TransPolyhedron(const TMatrix<4, 4>& mat, TPolyhedron& ph);
 
 // --------------------------------------------------------------------
 //				ode solver

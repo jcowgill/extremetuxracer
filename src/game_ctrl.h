@@ -88,22 +88,24 @@ extern CEvents Events;
 struct TAvatar {
 	string filename;
 	TTexture* texture;
+
+	TAvatar(const string& filename_, TTexture* texture_) : filename(filename_), texture(texture_) {}
 };
 
 struct TPlayer {
 	string name;
 	CControl *ctrl;
 	string funlocked;
-	TTexture* texture;
-	string avatar;
+	const TAvatar* avatar;
 };
 
 class CPlayers {
 private:
 	vector<TPlayer> plyr;
 	void SetDefaultPlayers ();
-	map<string, size_t> AvatarIndex;
 	vector<TAvatar> avatars;
+
+	const TAvatar* FindAvatar(const string& name);
 public:
 	~CPlayers();
 
@@ -122,7 +124,7 @@ public:
 	size_t numPlayers() const { return plyr.size(); }
 
 	TTexture* GetAvatarTexture (size_t avatar) const;
-	const string& GetDirectAvatarName (size_t avatar) const;
+	const string& GetDirectAvatarName(size_t avatar) const;
 };
 
 extern CPlayers Players;

@@ -44,6 +44,7 @@ void QuitRegistration () {
 	g_game.player_id = player->GetValue();
 
 	g_game.char_id = character->GetValue();
+	Char.FreeCharacterPreviews(); // From here on, character previews are no longer required
 	State::manager.RequestEnterState (GameTypeSelect);
 }
 

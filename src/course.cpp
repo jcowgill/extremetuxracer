@@ -48,10 +48,6 @@ CCourse::CCourse () {
 }
 
 CCourse::~CCourse() {
-	for (size_t i = 0; i < PolyArr.size(); i++) {
-		delete[] PolyArr[i].polygons;
-		FreePolyhedron(PolyArr[i]);
-	}
 	FreeCourseList ();
 	ResetCourse ();
 }
@@ -262,14 +258,9 @@ void CCourse::MakeStandardPolyhedrons () {
 	PolyArr.resize(2);
 
 	// polyhedron "none"
-	PolyArr[0].num_vertices = 0;
-	PolyArr[0].num_polygons = 0;
-	PolyArr[0].vertices = NULL;
-	PolyArr[0].polygons = NULL;
 
 	// poyhedron "tree"
-	PolyArr[1].num_vertices = 6;
-	PolyArr[1].vertices = new TVector3d[6];
+	PolyArr[1].vertices.resize(6);
 	PolyArr[1].vertices[0] = TVector3d(0, 0, 0);
 	PolyArr[1].vertices[1] = TVector3d(0, 0.15, 0.5);
 	PolyArr[1].vertices[2] = TVector3d(0.5, 0.15, 0);
@@ -277,9 +268,8 @@ void CCourse::MakeStandardPolyhedrons () {
 	PolyArr[1].vertices[4] = TVector3d(-0.5, 0.15, 0);
 	PolyArr[1].vertices[5] = TVector3d(0, 1, 0);
 
-	PolyArr[1].num_polygons = 8;
-	PolyArr[1].polygons = new TPolygon[8];
-	for (size_t i=0; i<PolyArr[1].num_polygons; i++) {
+	PolyArr[1].polygons.resize(8);
+	for (size_t i = 0; i < 8; i++) {
 		PolyArr[1].polygons[i].vertices.resize(3);
 	}
 	PolyArr[1].polygons[0].vertices[0] = 0;
