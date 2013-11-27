@@ -59,7 +59,7 @@ void LoadConfigFile () {
 		param.fullscreen = SPBoolN (line, "fullscreen", false);
 		param.res_type = SPIntN (line, "res_type", 0);
 		param.framerate = SPIntN (line, "framerate", 60);
-		param.perf_level = SPIntN (line, "detail_level", 0);
+		param.perf_level = SPIntN (line, "detail_level", 3);
 		param.language = SPIntN (line, "language", 0);
 		param.sound_volume = SPIntN (line, "sound_volume", 100);
 		param.music_volume = SPIntN (line, "music_volume", 20);
