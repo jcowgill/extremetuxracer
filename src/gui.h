@@ -65,6 +65,7 @@ public:
 	void SetVisible(bool v) { visible = v; if (!v) focus = false; }
 	bool GetActive() const { return active; }
 	bool GetVisible() const { return visible; }
+	bool GetInteractive() const { return interactive; }
 };
 
 class TLabel : public TWidget {
@@ -151,6 +152,7 @@ class TArrow : public TWidget {
 public:
 	TArrow(int x, int y, bool down_);
 	bool down;
+	void Activated();
 	void Focussed();
 	void Draw() const;
 };

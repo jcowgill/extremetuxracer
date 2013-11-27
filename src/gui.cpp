@@ -31,6 +31,17 @@ GNU General Public License for more details.
 #define CURSOR_SIZE 10
 
 static vector<TWidget*> Widgets;
+static int lock_focussed = -1;
+static int focussed = -1;
+
+static TWidget* AddWidget(TWidget* widget) {
+	if (Widgets.size() == focussed) {
+		widget->focus = true;
+		widget->Focussed();
+	}
+	Widgets.push_back(widget);
+	return widget;
+}
 
 static bool Inside (int x, int y, const TRect& Rect) {
 	return (x >= Rect.left
@@ -79,8 +90,7 @@ void TLabel::Draw() const {
 }
 
 TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color) {
-	Widgets.push_back(new TLabel(string, x, y, color));
-	return static_cast<TLabel*>(Widgets.back());
+	return static_cast<TLabel*>(AddWidget(new TLabel(string, x, y, color)));
 }
 
 
@@ -128,8 +138,7 @@ void TFramedText::Draw() const {
 }
 
 TFramedText* AddFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& text, float ftsize, bool borderFocus) {
-	Widgets.push_back(new TFramedText(x, y, width, height, line, backcol, text, ftsize, borderFocus));
-	return static_cast<TFramedText*>(Widgets.back());
+	return static_cast<TFramedText*>(AddWidget(new TFramedText(x, y, width, height, line, backcol, text, ftsize, borderFocus)));
 }
 
 TTextButton::TTextButton(int x, int y, const sf::String& text_, float ftsize)
@@ -159,8 +168,7 @@ void TTextButton::Draw() const {
 }
 
 TTextButton* AddTextButton(const sf::String& text, int x, int y, float ftsize) {
-	Widgets.push_back(new TTextButton(x, y, text, ftsize));
-	return static_cast<TTextButton*>(Widgets.back());
+	return static_cast<TTextButton*>(AddWidget(new TTextButton(x, y, text, ftsize)));
 }
 
 TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize) {
@@ -250,8 +258,7 @@ void TTextField::UpdateCursor(double timestep) {
 }
 
 TTextField* AddTextField(const sf::String& text, int x, int y, int width, int height) {
-	Widgets.push_back(new TTextField(x, y, width, height, text));
-	return static_cast<TTextField*>(Widgets.back());
+	return static_cast<TTextField*>(AddWidget(new TTextField(x, y, width, height, text)));
 }
 
 TCheckbox::TCheckbox(int x, int y, int width, const sf::String& tag_)
@@ -303,8 +310,7 @@ void TCheckbox::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 }
 
 TCheckbox* AddCheckbox(int x, int y, int width, const sf::String& tag) {
-	Widgets.push_back(new TCheckbox(x, y, width, tag));
-	return static_cast<TCheckbox*>(Widgets.back());
+	return static_cast<TCheckbox*>(AddWidget(new TCheckbox(x, y, width, tag)));
 }
 
 TIconButton::TIconButton(int x, int y, const sf::Texture& texture, double size_, int max_, int value_)
@@ -374,8 +380,7 @@ void TIconButton::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 }
 
 TIconButton* AddIconButton(int x, int y, const sf::Texture& texture, double size, int maximum, int value) {
-	Widgets.push_back(new TIconButton(x, y, texture, size, maximum, value));
-	return static_cast<TIconButton*>(Widgets.back());
+	return static_cast<TIconButton*>(AddWidget(new TIconButton(x, y, texture, size, maximum, value)));
 }
 
 TArrow::TArrow(int x, int y, bool down_)
@@ -388,6 +393,10 @@ TArrow::TArrow(int x, int y, bool down_)
 }
 
 void TArrow::Focussed() {
+	SetTexture();
+}
+
+void TArrow::Activated() {
 	SetTexture();
 }
 
@@ -412,8 +421,7 @@ void TArrow::Draw() const {
 }
 
 TArrow* AddArrow(int x, int y, bool down) {
-	Widgets.push_back(new TArrow(x, y, down));
-	return static_cast<TArrow*>(Widgets.back());
+	return static_cast<TArrow*>(AddWidget(new TArrow(x, y, down)));
 }
 
 
@@ -499,8 +507,7 @@ void TUpDown::SetMaximum(int max_) {
 }
 
 TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distance) {
-	Widgets.push_back(new TUpDown(x, y, minimum, maximum, value, distance));
-	return static_cast<TUpDown*>(Widgets.back());
+	return static_cast<TUpDown*>(AddWidget(new TUpDown(x, y, minimum, maximum, value, distance)));
 }
 
 // ------------------ Elementary drawing ---------------------------------------------
@@ -615,7 +622,6 @@ TWidget* ClickGUI(int x, int y) {
 	return clicked;
 }
 
-static int focussed = -1;
 TWidget* MouseMoveGUI(int x, int y) {
 	if (x != 0 || y != 0) {
 		focussed = -1;
@@ -625,8 +631,14 @@ TWidget* MouseMoveGUI(int x, int y) {
 				focussed = (int)i;
 		}
 	}
-	if (focussed == -1)
+	if (focussed == -1) {
+		focussed = lock_focussed;
+		if (focussed != -1) {
+			Widgets[focussed]->focus = true;
+			Widgets[focussed]->Focussed();
+		}
 		return 0;
+	}
 
 	return Widgets[focussed];
 }
@@ -635,7 +647,10 @@ TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (!released) {
 		switch (key) {
 			case sf::Keyboard::Tab:
-				IncreaseFocus();
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+					DecreaseFocus();
+				else
+					IncreaseFocus();
 				break;
 			default:
 				break;
@@ -660,6 +675,8 @@ void SetFocus(TWidget* widget) {
 	else
 		for (int i = 0; i < (int)Widgets.size(); i++)
 			if (Widgets[i] == widget) {
+				Widgets[i]->focus = true;
+				Widgets[i]->Focussed();
 				focussed = i;
 				break;
 			}
@@ -677,7 +694,7 @@ void IncreaseFocus() {
 	int end = focussed;
 	// Select only active widgets
 	do {
-		if (Widgets[focussed]->GetActive())
+		if (Widgets[focussed]->GetActive() && Widgets[focussed]->GetInteractive())
 			break;
 
 		focussed++;
@@ -689,6 +706,7 @@ void IncreaseFocus() {
 		Widgets[focussed]->focus = true;
 		Widgets[focussed]->Focussed();
 	}
+	lock_focussed = focussed;
 }
 void DecreaseFocus() {
 	if (focussed >= 0) {
@@ -703,7 +721,7 @@ void DecreaseFocus() {
 	int end = focussed;
 	// Select only active widgets
 	do {
-		if (Widgets[focussed]->GetActive())
+		if (Widgets[focussed]->GetActive() && Widgets[focussed]->GetInteractive())
 			break;
 
 		if (focussed > 0)
@@ -716,6 +734,7 @@ void DecreaseFocus() {
 		Widgets[focussed]->focus = true;
 		Widgets[focussed]->Focussed();
 	}
+	lock_focussed = focussed;
 }
 
 void ResetGUI () {
@@ -723,6 +742,7 @@ void ResetGUI () {
 		delete Widgets[i];
 	Widgets.clear();
 	focussed = 0;
+	lock_focussed = -1;
 }
 
 // ------------------ new ---------------------------------------------
