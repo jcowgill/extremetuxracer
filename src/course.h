@@ -78,6 +78,9 @@ struct TCollidable {
 	double height;
 	double diam;
 	size_t tree_type;
+	TCollidable(double x, double y, double z, double height_, double diam_, size_t type)
+		: pt(x, y, z), height(height_), diam(diam_), tree_type(type)
+	{}
 };
 
 struct TItem {
@@ -86,7 +89,9 @@ struct TItem {
 	double diam;
 	int collectable;
 	const TObjectType& type;
-	TItem(const TObjectType& type_) : type(type_), collectable(type_.collectable) {}
+	TItem(double x, double y, double z, double height_, double diam_, const TObjectType& type_)
+		: pt(x, y, z), height(height_), diam(diam_), collectable(type_.collectable), type(type_)
+	{}
 };
 
 struct TCourse {
@@ -148,10 +153,11 @@ public:
 	GLubyte		*vnc_array;
 
 	void ResetCourse ();
-	size_t GetCourseIdx (const string& dir) const;
+	TCourse* GetCourse (const string& dir);
+	size_t GetCourseIdx(const TCourse* course) const;
 	bool LoadCourseList ();
 	void FreeCourseList ();
-	bool LoadCourse (size_t idx);
+	bool LoadCourse(TCourse* course);
 	bool LoadTerrainTypes ();
 	bool LoadObjectTypes ();
 	void MakeStandardPolyhedrons ();

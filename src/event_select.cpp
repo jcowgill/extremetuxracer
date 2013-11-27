@@ -34,7 +34,7 @@ GNU General Public License for more details.
 
 CEventSelect EventSelect;
 
-static TEvent2 *EventList;
+static TEvent *EventList;
 static TUpDown* event;
 static TUpDown* cup;
 static TWidget* textbuttons[2];
@@ -42,7 +42,6 @@ static TWidget* textbuttons[2];
 void EnterEvent () {
 	g_game.game_type = CUPRACING;
 	g_game.cup = EventList[event->GetValue()].cups[cup->GetValue()];
-	g_game.race_id = 0;
 	State::manager.RequestEnterState(Event);
 }
 
@@ -121,7 +120,7 @@ void CEventSelect::Enter () {
 	selectedEvent = AddFramedText(area.left, frametop1, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 	selectedCup = AddFramedText(area.left, frametop2, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 
-	Events.MakeUnlockList (Players.GetCurrUnlocked());
+	Events.MakeUnlockList (g_game.player->funlocked);
 	Music.Play (param.menu_music, -1);
 }
 

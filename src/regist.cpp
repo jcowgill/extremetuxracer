@@ -41,9 +41,9 @@ static TUpDown* character;
 void QuitRegistration () {
 	Players.ResetControls ();
 	Players.AllocControl (player->GetValue());
-	g_game.player_id = player->GetValue();
+	g_game.player = Players.GetPlayer(player->GetValue());
 
-	g_game.char_id = character->GetValue();
+	g_game.character = &Char.CharList[character->GetValue()];
 	Char.FreeCharacterPreviews(); // From here on, character previews are no longer required
 	State::manager.RequestEnterState (GameTypeSelect);
 }
@@ -57,7 +57,7 @@ void CRegist::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 			break;
 		case sf::Keyboard::Return:
 			if (focussed == textbuttons[1]) {
-				g_game.player_id = player->GetValue();
+				g_game.player = Players.GetPlayer(player->GetValue());
 				State::manager.RequestEnterState (NewPlayer);
 			} else QuitRegistration ();
 			break;
@@ -70,7 +70,7 @@ void CRegist::Mouse (int button, int state, int x, int y) {
 		if (focussed == textbuttons[0])
 			QuitRegistration ();
 		else if (focussed == textbuttons[1]) {
-			g_game.player_id = player->GetValue();
+			g_game.player = Players.GetPlayer(player->GetValue());
 			State::manager.RequestEnterState (NewPlayer);
 		}
 	}
@@ -133,7 +133,7 @@ void CRegist::Loop (double timestep) {
 
 	DrawGUIBackground(Winsys.scale);
 
-	sPlayerFrame->SetString(Players.GetName(player->GetValue()));
+	sPlayerFrame->SetString(Players.GetPlayer(player->GetValue())->name);
 	sPlayerFrame->Focussed(player->focussed());
 	Players.GetAvatarTexture(player->GetValue())->DrawFrame(
 	    area.left + 60, AutoYPosN (40), texsize, texsize, 3, colWhite);

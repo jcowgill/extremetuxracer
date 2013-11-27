@@ -52,7 +52,11 @@ enum TViewMode {
 	NUM_VIEW_MODES
 };
 
-struct TCup2;
+struct TCup;
+struct TPlayer;
+struct TCourse;
+struct TRace;
+struct TCharacter;
 
 struct TGameData {
 	TToolMode toolmode;
@@ -67,22 +71,18 @@ struct TGameData {
 	double finish_brake;
 
 	// course and race params
-	size_t player_id;
+	TPlayer* player;
 	size_t start_player;
-	TCup2* cup;
-	size_t race_id;
-	bool mirror_id;
-	size_t char_id;
-	size_t course_id;
+	TCup* cup;
+	bool mirrorred;
+	TCharacter* character;
+	TCourse* course;
 	size_t location_id;
 	size_t light_id;
 	int snow_id;
 	int wind_id;
 	size_t theme_id;
-
-	// requirements
-	TVector3i herring_req;	// 3 levels of needed herrings
-	TVector3d time_req;		// 3 levels of allowed time
+	TRace* race; // Only valid if not in practice mode
 
 	// race results (better in player.ctrl ?)
 	double time;			// reached time

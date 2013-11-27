@@ -36,6 +36,7 @@ GNU General Public License for more details.
 #include "reset.h"
 #include "winsys.h"
 #include "physics.h"
+#include "tux.h"
 #include <algorithm>
 
 #define MAX_JUMP_AMT 1.0
@@ -107,19 +108,19 @@ void CRacing::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 		// view changing
 		case sf::Keyboard::Num1:
 			if (!release) {
-				set_view_mode (Players.GetCtrl (g_game.player_id), ABOVE);
+				set_view_mode (g_game.player->ctrl, ABOVE);
 				param.view_mode = ABOVE;
 			}
 			break;
 		case sf::Keyboard::Num2:
 			if (!release) {
-				set_view_mode (Players.GetCtrl (g_game.player_id), FOLLOW);
+				set_view_mode (g_game.player->ctrl, FOLLOW);
 				param.view_mode = FOLLOW;
 			}
 			break;
 		case sf::Keyboard::Num3:
 			if (!release) {
-				set_view_mode (Players.GetCtrl (g_game.player_id), BEHIND);
+				set_view_mode (g_game.player->ctrl, BEHIND);
 				param.view_mode = BEHIND;
 			}
 			break;
@@ -166,7 +167,7 @@ void CRacing::Jbutt (int button, int state) {
 }
 
 void CalcJumpEnergy (double time_step) {
-	CControl *ctrl = Players.GetCtrl (g_game.player_id);
+	CControl *ctrl = g_game.player->ctrl;
 
 	if (ctrl->jump_charging) {
 		ctrl->jump_amt = min (MAX_JUMP_AMT, g_game.time - charge_start_time);
@@ -195,7 +196,7 @@ void SetSoundVolumes () {
 
 // ---------------------------- init ----------------------------------
 void CRacing::Enter() {
-	CControl *ctrl = Players.GetCtrl (g_game.player_id);
+	CControl *ctrl = g_game.player->ctrl;
 
 	if (param.view_mode < 0 || param.view_mode >= NUM_VIEW_MODES) {
 		param.view_mode = ABOVE;
@@ -338,7 +339,7 @@ void CalcTrickControls (CControl *ctrl, double time_step, bool airborne) {
 // ====================================================================
 
 void CRacing::Loop (double time_step) {
-	CControl *ctrl = Players.GetCtrl (g_game.player_id);
+	CControl *ctrl = g_game.player->ctrl;
 	double ycoord = Course.FindYCoord (ctrl->cpos.x, ctrl->cpos.z);
 	bool airborne = (bool) (ctrl->cpos.y > (ycoord + JUMP_MAX_START_HEIGHT));
 
@@ -370,7 +371,7 @@ void CRacing::Loop (double time_step) {
 		update_particles (time_step);
 		draw_particles (ctrl);
 	}
-	Char.Draw (g_game.char_id);
+	g_game.character->shape->Draw();
 	UpdateWind (time_step);
 	UpdateSnow (time_step, ctrl);
 	DrawSnow (ctrl);

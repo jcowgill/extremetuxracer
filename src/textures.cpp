@@ -361,7 +361,7 @@ void ScreenshotN () {
 
 	string path = param.screenshot_dir;
 	path += SEP;
-	path += Course.CourseList[g_game.course_id].dir;
+	path += g_game.course->dir;
 	path += "_";
 	path += GetTimeString();
 	int type = SCREENSHOT_PROC;

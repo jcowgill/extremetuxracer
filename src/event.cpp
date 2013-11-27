@@ -41,7 +41,7 @@ CEvent Event;
 // ready: 0 - racing  1 - ready with success  2 - ready with failure
 static int ready = 0; // indicates if last race is done
 static TWidget* curr_focus = 0;
-static TCup2 *ecup = 0;
+static TCup *ecup = 0;
 static size_t curr_race = 0;
 static size_t curr_bonus = 0;
 static TWidget* textbuttons[3];
@@ -54,14 +54,13 @@ void StartRace () {
 		State::manager.RequestEnterState (EventSelect);
 		return;
 	}
-	g_game.mirror_id = false;
-	g_game.course_id = ecup->races[curr_race]->course;
+	g_game.mirrorred = false;
+	g_game.course = ecup->races[curr_race]->course;
 	g_game.theme_id = ecup->races[curr_race]->music_theme;
 	g_game.light_id = ecup->races[curr_race]->light;
 	g_game.snow_id = ecup->races[curr_race]->snow;
 	g_game.wind_id = ecup->races[curr_race]->wind;
-	g_game.herring_req = ecup->races[curr_race]->herrings;
-	g_game.time_req = ecup->races[curr_race]->time;
+	g_game.race = ecup->races[curr_race];
 	g_game.game_type = CUPRACING;
 	State::manager.RequestEnterState (Loading);
 }
@@ -230,7 +229,7 @@ void CEvent::Loop (double timestep) {
 				FT.SetColor (colDYell);
 			else
 				FT.SetColor (colWhite);
-			FT.DrawString (area.left + 29, y, Course.CourseList[ecup->races[i]->course].name);
+			FT.DrawString (area.left + 29, y, ecup->races[i]->course->name);
 			checkbox.SetPosition(area.right - 50, y + 4);
 			checkbox.SetChecked(curr_race > i);
 			checkbox.Draw();

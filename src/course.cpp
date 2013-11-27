@@ -74,8 +74,15 @@ const TPolyhedron& CCourse::GetPoly (size_t type) const {
 	return PolyArr[ObjTypes[type].poly];
 }
 
-size_t CCourse::GetCourseIdx (const string& dir) const {
-	return CourseIndex.at(dir);
+TCourse* CCourse::GetCourse(const string& dir) {
+	return &CourseList[CourseIndex.at(dir)];
+}
+
+size_t CCourse::GetCourseIdx(const TCourse* course) const {
+	size_t idx = (course - &CourseList[0]) / sizeof(TCourse);
+	if (idx >= CourseList.size())
+		return -1;
+	return idx;
 }
 
 void CCourse::CalcNormals () {
@@ -387,24 +394,11 @@ void CCourse::LoadItemList () {
 			ObjTypes[type].texture = new TTexture();
 			ObjTypes[type].texture->Load(terrpath, false);
 		}
-		bool coll = ObjTypes[type].collidable;
-		if (coll == 1) {
-			CollArr.push_back(TCollidable());
-			CollArr.back().pt.x = xx;
-			CollArr.back().pt.z = zz;
-			CollArr.back().pt.y = FindYCoord (xx, zz);
-			CollArr.back().height = height;
-			CollArr.back().diam = diam;
-			CollArr.back().tree_type = type;
-		} else if (coll == 0) {
-			NocollArr.push_back(TItem(ObjTypes[type]));
-			NocollArr.back().pt.x = xx;
-			NocollArr.back().pt.z = zz;
-			NocollArr.back().pt.y = FindYCoord (xx, zz);
-			NocollArr.back().height = height;
-			NocollArr.back().diam = diam;
-			ObjTypes[type].num_items++;
-		}
+
+		if (ObjTypes[type].collidable)
+			CollArr.push_back(TCollidable(xx, FindYCoord(xx, zz), zz, height, diam, type));
+		else
+			NocollArr.push_back(TItem(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]));
 	}
 }
 
@@ -502,24 +496,10 @@ bool CCourse::LoadAndConvertObjectMap () {
 						break;
 				}
 
-				bool coll = ObjTypes[type].collidable;
-				if (coll == 1) {
-					CollArr.push_back(TCollidable());
-					CollArr.back().pt.x = xx;
-					CollArr.back().pt.z = zz;
-					CollArr.back().pt.y = FindYCoord (xx, zz);
-					CollArr.back().height = height;
-					CollArr.back().diam = diam;
-					CollArr.back().tree_type = type;
-				} else if (coll == 0) {
-					NocollArr.push_back(TItem(ObjTypes[type]));
-					NocollArr.back().pt.x = xx;
-					NocollArr.back().pt.z = zz;
-					NocollArr.back().pt.y = FindYCoord (xx, zz);
-					NocollArr.back().height = height;
-					NocollArr.back().diam = diam;
-					ObjTypes[type].num_items++;
-				}
+				if (ObjTypes[type].collidable)
+					CollArr.push_back(TCollidable(xx, FindYCoord(xx, zz), zz, height, diam, type));
+				else
+					NocollArr.push_back(TItem(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]));
 
 				string line = "*[name]";
 				line += ObjTypes[type].name;
@@ -757,24 +737,18 @@ void CCourse::ResetCourse () {
 	mirrored = false;
 }
 
-bool CCourse::LoadCourse (size_t idx) {
-	if (idx >= CourseList.size()) {
-		Message ("wrong course index");
-		curr_course = NULL;
-		return false;
-	}
-
-	if (&CourseList[idx] != curr_course || g_game.force_treemap) {
+bool CCourse::LoadCourse (TCourse* course) {
+	if (course != curr_course || g_game.force_treemap) {
 		ResetCourse ();
-		curr_course = &CourseList[idx];
+		curr_course = course;
 		CourseDir = param.common_course_dir + SEP + curr_course->dir;
 
-		start_pt.x = CourseList[idx].start.x;
-		start_pt.y = -CourseList[idx].start.y;
+		start_pt.x = course->start.x;
+		start_pt.y = -course->start.y;
 		base_height_value = 127;
 
-		g_game.use_keyframe = CourseList[idx].use_keyframe;
-		g_game.finish_brake = CourseList[idx].finish_brake;
+		g_game.use_keyframe = course->use_keyframe;
+		g_game.finish_brake = course->finish_brake;
 
 		if (!LoadElevMap ()) {
 			Message ("could not load course elev map");
@@ -792,7 +766,7 @@ bool CCourse::LoadCourse (size_t idx) {
 		// ................................................................
 		string itemfile = CourseDir + SEP "items.lst";
 		bool itemsexists = FileExists (itemfile);
-		const CControl *ctrl = Players.GetCtrl (g_game.player_id);
+		const CControl *ctrl = g_game.player->ctrl;
 
 		if (itemsexists && !g_game.force_treemap)
 			LoadItemList ();
@@ -810,9 +784,9 @@ bool CCourse::LoadCourse (size_t idx) {
 		    param.course_detail_level);
 	}
 
-	if (g_game.mirror_id != mirrored) {
+	if (g_game.mirrorred != mirrored) {
 		MirrorCourse ();
-		mirrored = g_game.mirror_id;
+		mirrored = g_game.mirrorred;
 	}
 	return true;
 }
@@ -858,7 +832,7 @@ void CCourse::MirrorCourseData () {
 
 	ResetQuadtree ();
 	if (nx > 0 && ny > 0) {
-		const CControl *ctrl = Players.GetCtrl (g_game.player_id);
+		const CControl *ctrl = g_game.player->ctrl;
 		InitQuadtree (elevation, nx, ny, curr_course->size.x/(nx-1),
 		              - curr_course->size.y/(ny-1), ctrl->viewpos, param.course_detail_level);
 	}
