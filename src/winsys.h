@@ -31,7 +31,7 @@ struct TScreenRes {
 
 class CWinsys {
 private:
-	size_t numJoysticks;
+	unsigned int numJoysticks;
 	bool joystick_active;
 
 	// sfml window

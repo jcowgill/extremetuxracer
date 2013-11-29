@@ -85,6 +85,14 @@ TLabel::TLabel(const sf::String& string, int x, int y, const sf::Color& color)
 	text.setColor(color);
 }
 
+void TLabel::Focussed(bool masterFocus) {
+	focus = masterFocus && active;
+	if (focus)
+		text.setColor(colDYell);
+	else
+		text.setColor(colWhite);
+}
+
 void TLabel::Draw() const {
 	Winsys.draw(text);
 }
@@ -119,7 +127,7 @@ void TFramedText::Activated() {
 		text.setColor(colWhite);
 }
 
-void TFramedText::Focussed(bool masterFocus)  {
+void TFramedText::Focussed(bool masterFocus) {
 	focus = masterFocus && active;
 	if (focus) {
 		frame.setOutlineColor(colDYell);

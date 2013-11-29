@@ -63,7 +63,7 @@ static TUpDown* mus_vol;
 static TUpDown* sound_vol;
 static TUpDown* detail_level;
 static TWidget* textbuttons[2];
-
+static TLabel* descriptions[5];
 
 void SetConfig () {
 	if (mus_vol->GetValue() != param.music_volume ||
@@ -164,20 +164,23 @@ void CGameConfig::Enter() {
 	if (dd < 36) dd = 36;
 	int rightpos = area.right -48;
 
-	ResetGUI ();
+	ResetGUI();
+	int siz = FT.AutoSizeN(5);
 	fullscreen = AddCheckbox (area.left, area.top, framewidth-16, Trans.Text(31));
 	fullscreen->checked = param.fullscreen;
 
 	resolution = AddUpDown(rightpos, area.top+dd*1, 0, NUM_RESOLUTIONS-1, (int)param.res_type);
 	mus_vol = AddUpDown(rightpos, area.top+dd*2, 0, 120, param.music_volume);
 	sound_vol = AddUpDown(rightpos, area.top+dd*3, 0, 120, param.sound_volume);
-	detail_level = AddUpDown(rightpos, area.top+dd*4, 1, 4, param.perf_level);
-	language = AddUpDown(rightpos, area.top+dd*5, 0, (int)Trans.languages.size() - 1, (int)param.language);
+	language = AddUpDown(rightpos, area.top+dd*4, 0, (int)Trans.languages.size() - 1, (int)param.language);
+	detail_level = AddUpDown(rightpos, area.top+dd*5, 1, 4, param.perf_level);
 
-	int siz = FT.AutoSizeN (5);
 	textbuttons[0] = AddTextButton (Trans.Text(28), area.left+50, AutoYPosN (80), siz);
 	double len = FT.GetTextWidth (Trans.Text(8));
 	textbuttons[1] = AddTextButton (Trans.Text(15), area.right-len-50, AutoYPosN (80), siz);
+
+	for (int i = 0; i < 5; i++)
+		descriptions[i] = AddLabel(Trans.Text(32 + i), area.left, area.top + dd*(i + 1), colWhite);
 
 	Music.Play (param.config_music, -1);
 }
@@ -199,28 +202,18 @@ void CGameConfig::Loop (double time_step) {
 
 	FT.AutoSizeN (4);
 
-	if (resolution->focussed()) FT.SetColor (colDYell);
-	else FT.SetColor (colWhite);
-	FT.DrawString (area.left, area.top + dd, Trans.Text(32));
-	if (mus_vol->focussed()) FT.SetColor (colDYell);
-	else FT.SetColor (colWhite);
-	FT.DrawString (area.left, area.top + dd*2, Trans.Text(33));
-	if (sound_vol->focussed()) FT.SetColor (colDYell);
-	else FT.SetColor (colWhite);
-	FT.DrawString (area.left, area.top + dd*3, Trans.Text(34));
-	if (detail_level->focussed()) FT.SetColor (colDYell);
-	else FT.SetColor (colWhite);
-	FT.DrawString (area.left, area.top + dd*4, Trans.Text(36));
-	if (language->focussed()) FT.SetColor (colDYell);
-	else FT.SetColor (colWhite);
-	FT.DrawString (area.left, area.top + dd*5, Trans.Text(35));
+	descriptions[0]->Focussed(resolution->focussed());
+	descriptions[1]->Focussed(mus_vol->focussed());
+	descriptions[2]->Focussed(sound_vol->focussed());
+	descriptions[3]->Focussed(language->focussed());
+	descriptions[4]->Focussed(detail_level->focussed());
 
 	FT.SetColor (colWhite);
-	FT.DrawString (area.left+240, area.top + dd, res_names[resolution->GetValue()]);
-	FT.DrawString (area.left+240, area.top + dd*2, Int_StrN (mus_vol->GetValue()));
-	FT.DrawString (area.left+240, area.top + dd*3, Int_StrN (sound_vol->GetValue()));
-	FT.DrawString (area.left+240, area.top + dd*4, Int_StrN (detail_level->GetValue()));
-	FT.DrawString (area.left+240, area.top + dd*5, Trans.languages[language->GetValue()].language);
+	FT.DrawString (area.left+240, area.top + dd + 3, res_names[resolution->GetValue()]);
+	FT.DrawString (area.left+240, area.top + dd*2 + 3, Int_StrN (mus_vol->GetValue()));
+	FT.DrawString (area.left+240, area.top + dd*3 + 3, Int_StrN (sound_vol->GetValue()));
+	FT.DrawString (area.left+240, area.top + dd*4 + 3, Trans.languages[language->GetValue()].language);
+	FT.DrawString (area.left+240, area.top + dd*5 + 3, Int_StrN (detail_level->GetValue()));
 
 #if defined (_WIN32)
 	if (fullscreen->checked != param.fullscreen) {

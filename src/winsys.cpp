@@ -159,7 +159,7 @@ void CWinsys::PrintJoystickInfo () const {
 		return;
 	}
 	cout << '\n';
-	for (int i = 0; i < numJoysticks; i++) {
+	for (unsigned int i = 0; i < numJoysticks; i++) {
 		cout << "Joystick " << i << '\n';
 		int buttons = sf::Joystick::getButtonCount(i);
 		cout << "Joystick has " << buttons << " button" << (buttons == 1 ? "" : "s") << '\n';

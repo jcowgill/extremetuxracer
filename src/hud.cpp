@@ -53,6 +53,8 @@ static const GLfloat speedbar_background_color[] = { 0.2, 0.2, 0.2, 0.0 };
 static const GLfloat hud_white[] = { 1.0, 1.0, 1.0, 1.0 };
 
 static void draw_time() {
+	Tex.Draw (T_TIME, 10, 10, 1);
+
 	int min, sec, hundr;
 	GetTimeComponents (g_game.time, &min, &sec, &hundr);
 	string timestr = Int_StrN (min, 2);
@@ -63,37 +65,30 @@ static void draw_time() {
 	timestr += secstr;
 
 	if (param.use_papercut_font < 2) {
-		Tex.DrawNumStr (timestr, 20, 10, 1, colWhite);
-		Tex.DrawNumStr (hundrstr, 136, 10, 0.7, colWhite);
+		Tex.DrawNumStr(timestr, 50, 12, 1, colWhite);
+		Tex.DrawNumStr (hundrstr, 176, 12, 0.7, colWhite);
 	} else {
-
-		/*
-			glEnable (GL_LINE_SMOOTH);
-			glEnable (GL_BLEND);
-			glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glHint (GL_LINE_SMOOTH_HINT, GL_DONT_CARE);
-			glLineWidth (1.5);
-		*/
-		glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
-
-		Tex.Draw (T_TIME, 16, 20, 1);
+		Winsys.beginSFML();
 		FT.SetColor (colDYell);
-		FT.SetSize (32);
-		FT.DrawString (160, 6, hundrstr);
+		FT.SetSize (30);
+		FT.DrawString (138, 3, hundrstr);
 		FT.SetSize (42);
-		FT.DrawString (70, 10, timestr);
+		FT.DrawString (53, 3, timestr);
+		Winsys.endSFML();
 	}
 }
 
-static void draw_herring_count (int herring_count) {
+static void draw_herring_count(int herring_count) {
+	Tex.Draw(HERRING_ICON, Winsys.resolution.width - 59, 12, 1);
+
 	string hcountstr = Int_StrN (herring_count, 3);
 	if (param.use_papercut_font < 2) {
-		Tex.DrawNumStr (hcountstr, Winsys.resolution.width - 90, 10, 1, colWhite);
-		Tex.Draw (HERRING_ICON, Winsys.resolution.width-160, -20, 1);
+		Tex.DrawNumStr(hcountstr, Winsys.resolution.width - 130, 12, 1, colWhite);
 	} else {
+		Winsys.beginSFML();
 		FT.SetColor (colDYell);
-		FT.DrawString ( Winsys.resolution.width - 90, 10, hcountstr);
-		Tex.Draw (T_YELLHERRING, Winsys.resolution.width-160, 12, 1);
+		FT.DrawString(Winsys.resolution.width - 125, 3, hcountstr);
+		Winsys.endSFML();
 	}
 }
 
@@ -222,10 +217,12 @@ void DrawSpeed (double speed) {
 	string speedstr = Int_StrN ((int)speed, 3);
 	if (param.use_papercut_font < 2) {
 		Tex.DrawNumStr (speedstr,
-		                Winsys.resolution.width - 85, Winsys.resolution.height-74, 1, colWhite);
+		                Winsys.resolution.width - 87, Winsys.resolution.height-73, 1, colWhite);
 	} else {
+		Winsys.beginSFML();
 		FT.SetColor (colDDYell);
-		FT.DrawString (Winsys.resolution.width-82, Winsys.resolution.height-80, speedstr);
+		FT.DrawString(Winsys.resolution.width - 82, Winsys.resolution.height - 80, speedstr);
+		Winsys.endSFML();
 	}
 }
 
@@ -287,8 +284,10 @@ void DrawWind(float dir, float speed, const CControl *ctrl) {
 	if (param.use_papercut_font < 2) {
 		Tex.DrawNumStr(windstr, 120, Winsys.resolution.height - 45, 1, colWhite);
 	} else {
-		FT.SetColor (colBlue);
-		FT.DrawString(120, Winsys.resolution.height - 45, windstr);
+		Winsys.beginSFML();
+		FT.SetColor(colDDYell);
+		FT.DrawString(120, Winsys.resolution.height - 50, windstr);
+		Winsys.endSFML();
 	}
 }
 
@@ -315,11 +314,13 @@ void DrawFps() {
 	if (param.use_papercut_font < 2) {
 		Tex.DrawNumStr (fpsstr, (Winsys.resolution.width - 60) / 2, 10, 1, colWhite);
 	} else {
+		Winsys.beginSFML();
 		if (averagefps >= 35)
 			FT.SetColor (colWhite);
 		else
 			FT.SetColor (colRed);
-		FT.DrawString ((Winsys.resolution.width - 60) / 2, 10, fpsstr);
+		FT.DrawString (-1, 3, fpsstr);
+		Winsys.endSFML();
 	}
 }
 

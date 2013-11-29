@@ -51,7 +51,7 @@ GNU General Public License for more details.
 #define MIRROR_BUTT 28
 #define CHAR_BUTT 29
 #define RANDOM_BUTT 30
-#define T_YELLHERRING 31
+
 #define T_TIME 32
 
 

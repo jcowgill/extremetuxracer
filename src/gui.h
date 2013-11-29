@@ -72,6 +72,7 @@ class TLabel : public TWidget {
 	sf::Text text;
 public:
 	TLabel(const sf::String& string, int x, int y, const sf::Color& color);
+	void Focussed(bool masterFocus);
 	void Draw() const;
 };
 TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color);

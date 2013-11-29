@@ -128,20 +128,7 @@ void GameOverMessage (const CControl *ctrl) {
 		if (param.use_papercut_font > 0) FT.SetSize (28);
 		else FT.SetSize (22);
 		if (g_game.game_type == CUPRACING) {
-			switch (g_game.race_result) {
-				case -1:
-					FT.DrawString (CENTER, topframe+150, Trans.Text(21));
-					break;
-				case 0:
-					FT.DrawString (CENTER, topframe+150, Trans.Text(22));
-					break;
-				case 1:
-					FT.DrawString (CENTER, topframe+150, Trans.Text(23));
-					break;
-				case 2:
-					FT.DrawString (CENTER, topframe+150,  Trans.Text(24));
-					break;
-			}
+			FT.DrawString(CENTER, topframe + 150, Trans.Text(22 + g_game.race_result)); // Text IDs 21 - 24; race_results is in [-1; 2]
 		} else {
 			if (highscore_pos < 5) {
 				line = "Position ";
