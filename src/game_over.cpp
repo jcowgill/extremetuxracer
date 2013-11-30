@@ -98,7 +98,7 @@ void GameOverMessage (const CControl *ctrl) {
 		if (g_game.game_type == CUPRACING) {
 			line += "  (";
 			line += Int_StrN (g_game.race->herrings.x);
-			line += ")";
+			line += ')';
 		}
 		FT.DrawString (leftframe+240, topframe+40, line);
 
@@ -109,7 +109,7 @@ void GameOverMessage (const CControl *ctrl) {
 		if (g_game.game_type == CUPRACING) {
 			line += "  (";
 			line += Float_StrN (g_game.race->time.x, 2);
-			line += ")";
+			line += ')';
 		}
 		FT.DrawString (leftframe+240, topframe+65, line);
 

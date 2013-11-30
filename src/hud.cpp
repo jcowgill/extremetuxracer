@@ -61,7 +61,7 @@ static void draw_time() {
 	string secstr = Int_StrN (sec, 2);
 	string hundrstr = Int_StrN (hundr, 2);
 
-	timestr += ":";
+	timestr += ':';
 	timestr += secstr;
 
 	if (param.use_papercut_font < 2) {

@@ -205,14 +205,12 @@ void GetTimeComponents (double time, int *min, int *sec, int *hundr) {
 
 string GetTimeString () {
 	time_t rawtime;
-	struct tm * timeinfo;
-
 	time (&rawtime);
-	timeinfo = localtime (&rawtime);
-//	line = Int_StrN (timeinfo->tm_year-100);
-	string line = Int_StrN (timeinfo->tm_mon + 1);
-	line += "_" + Int_StrN (timeinfo->tm_mday);
-	line += "_" + Int_StrN (timeinfo->tm_hour);
+	struct tm* timeinfo = localtime (&rawtime);
+
+	string line = Int_StrN(timeinfo->tm_mon + 1);
+	line += '_' + Int_StrN(timeinfo->tm_mday);
+	line += '_' + Int_StrN(timeinfo->tm_hour);
 	line += Int_StrN (timeinfo->tm_min);
 	line += Int_StrN (timeinfo->tm_sec);
 	return line;

@@ -223,7 +223,7 @@ const TAvatar* CPlayers::FindAvatar(const string& name) {
 
 void CPlayers::AddPassedCup (const string& cup) {
 	if (SPIntN (g_game.player->funlocked, cup, -1) > 0) return;
-	g_game.player->funlocked += " ";
+	g_game.player->funlocked += ' ';
 	g_game.player->funlocked += cup;
 }
 

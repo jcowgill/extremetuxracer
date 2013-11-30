@@ -82,18 +82,15 @@ double CWinsys::CalcScreenScale () const {
 void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
 	int bpp = 32;
 	switch (param.bpp_mode) {
+		case 16:
+		case 32:
+			bpp = param.bpp_mode;
+			break;
 		case 0:
-			bpp = 32;
-			break;
-		case 1:
-			bpp = 16;
-			break;
-		case 2:
-			bpp = 32;
-			break;
 		default:
 			param.bpp_mode = 0;
-			bpp = 32;
+			bpp = sf::VideoMode::getDesktopMode().bitsPerPixel;
+			break;
 	}
 	sf::Uint32 style = sf::Style::Close | sf::Style::Titlebar;
 	if (param.fullscreen)

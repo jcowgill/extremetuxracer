@@ -364,27 +364,27 @@ void CKeyframe::SaveTest (const string& dir, const string& filename) {
 		double ll = frame->val[9];
 		double rr = frame->val[10];
 		if (ll != 0 || rr != 0)
-			line += " [sh] " + Int_StrN((int) ll) + " " + Int_StrN((int)rr);
+			line += " [sh] " + Int_StrN((int)ll) + ' ' + Int_StrN((int)rr);
 
 		ll = frame->val[11];
 		rr = frame->val[12];
 		if (ll != 0 || rr != 0)
-			line += " [arm] " + Int_StrN((int)ll) + " " + Int_StrN((int)rr);
+			line += " [arm] " + Int_StrN((int)ll) + ' ' + Int_StrN((int)rr);
 
 		ll = frame->val[13];
 		rr = frame->val[14];
 		if (ll != 0 || rr != 0)
-			line += " [hip] " + Int_StrN((int)ll) + " " + Int_StrN((int)rr);
+			line += " [hip] " + Int_StrN((int)ll) + ' ' + Int_StrN((int)rr);
 
 		ll = frame->val[15];
 		rr = frame->val[16];
 		if (ll != 0 || rr != 0)
-			line += " [knee] " + Int_StrN((int)ll) + " " + Int_StrN((int)rr);
+			line += " [knee] " + Int_StrN((int)ll) + ' ' + Int_StrN((int)rr);
 
 		ll = frame->val[17];
 		rr = frame->val[18];
 		if (ll != 0 || rr != 0)
-			line += " [ankle] " + Int_StrN((int)ll) + " " + Int_StrN((int)rr);
+			line += " [ankle] " + Int_StrN((int)ll) + ' ' + Int_StrN((int)rr);
 
 		list.Add (line);
 	}

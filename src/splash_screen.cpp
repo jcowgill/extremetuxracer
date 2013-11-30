@@ -66,7 +66,7 @@ void CSplashScreen::Loop(double timestep) {
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
 	logo.setScale(Winsys.scale/2, Winsys.scale/2);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 60);
+	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width*(Winsys.scale / 2)) / 2, 60);
 
 	FT.AutoSizeN(6);
 	sf::Text t1(Trans.Text(67), FT.getCurrentFont(), FT.GetSize());

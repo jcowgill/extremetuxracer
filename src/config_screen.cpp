@@ -170,8 +170,8 @@ void CGameConfig::Enter() {
 	fullscreen->checked = param.fullscreen;
 
 	resolution = AddUpDown(rightpos, area.top+dd*1, 0, NUM_RESOLUTIONS-1, (int)param.res_type);
-	mus_vol = AddUpDown(rightpos, area.top+dd*2, 0, 120, param.music_volume);
-	sound_vol = AddUpDown(rightpos, area.top+dd*3, 0, 120, param.sound_volume);
+	mus_vol = AddUpDown(rightpos, area.top+dd*2, 0, 100, param.music_volume);
+	sound_vol = AddUpDown(rightpos, area.top+dd*3, 0, 100, param.sound_volume);
 	language = AddUpDown(rightpos, area.top+dd*4, 0, (int)Trans.languages.size() - 1, (int)param.language);
 	detail_level = AddUpDown(rightpos, area.top+dd*5, 1, 4, param.perf_level);
 

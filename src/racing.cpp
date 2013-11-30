@@ -181,7 +181,7 @@ void CalcJumpEnergy (double time_step) {
 
 int CalcSoundVol (float fact) {
 	float vv = (float) param.sound_volume * fact;
-	if (vv > 120) vv = 120;
+	if (vv > 100) vv = 100;
 	return (int) vv;
 }
 

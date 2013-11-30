@@ -42,7 +42,7 @@ void CLoading::Enter() {
 
 void CLoading::Loop(double time_step) {
 	TCourse *CourseList = &Course.CourseList[0];
-	string msg = Trans.Text(29) + " " + g_game.course->name;
+	string msg = Trans.Text(29) + ' ' + g_game.course->name;
 
 	check_gl_error ();
 	ScopedRenderMode rm(GUI);
@@ -56,7 +56,7 @@ void CLoading::Loop(double time_step) {
 	sf::Sprite logo;
 	logo.setTexture(Tex.GetSFTexture(TEXLOGO));
 	logo.setScale(0.35, 0.35);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, 40);
+	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width*0.35) / 2, 40);
 	Winsys.draw(logo);
 	DrawGUIFrame();
 

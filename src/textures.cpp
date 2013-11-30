@@ -362,7 +362,7 @@ void ScreenshotN () {
 	string path = param.screenshot_dir;
 	path += SEP;
 	path += g_game.course->dir;
-	path += "_";
+	path += '_';
 	path += GetTimeString();
 	int type = SCREENSHOT_PROC;
 
