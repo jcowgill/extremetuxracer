@@ -60,7 +60,8 @@ public:
 	void SetProps   (const string &fontname, float size);
 	void SetColor(const sf::Color& col) { curr_col = col; }
 	void SetSize    (float size) { curr_size = size; }
-	void SetFont    (const string& fontname);
+	void SetFont(const string& fontname);
+	void SetFontFromSettings();
 
 	// auto
 	int AutoSizeN     (int rel_val);	// rel_val = relative size, return: autosize

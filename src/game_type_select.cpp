@@ -125,7 +125,6 @@ void CGameTypeSelect::Enter () {
 }
 
 void CGameTypeSelect::Loop (double time_step) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

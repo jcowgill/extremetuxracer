@@ -122,7 +122,6 @@ void CRegist::Enter() {
 }
 
 void CRegist::Loop (double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

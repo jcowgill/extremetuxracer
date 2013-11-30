@@ -55,7 +55,6 @@ void CReset::Loop(double time_step) {
 	static bool tux_visible = true;
 	static int tux_visible_count = 0;
 
-	check_gl_error();
 	ClearRenderContext ();
 	Env.SetupFog ();
 	ctrl->UpdatePlayerPos (EPS);

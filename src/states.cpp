@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "states.h"
 #include "ogl.h"
 #include "winsys.h"
-#include <SFML/Window.hpp>
 
 State::Manager State::manager(Winsys);
 
@@ -118,6 +117,8 @@ void State::Manager::PollEvent() {
 }
 
 void State::Manager::CallLoopFunction() {
+	check_gl_error();
+
 	g_game.time_step = max(0.0001, timer.getElapsedTime().asSeconds());
 	timer.restart();
 	current->Loop(g_game.time_step);

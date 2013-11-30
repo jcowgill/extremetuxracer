@@ -44,7 +44,6 @@ void CLoading::Loop(double time_step) {
 	TCourse *CourseList = &Course.CourseList[0];
 	string msg = Trans.Text(29) + ' ' + g_game.course->name;
 
-	check_gl_error ();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

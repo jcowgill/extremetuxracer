@@ -118,6 +118,8 @@ void CCredits::Motion(int x, int y) {
 }
 
 void CCredits::Enter() {
+	LoadCreditList();
+
 	Music.Play (param.credits_music, -1);
 	y_offset = 0;
 	moving = true;
@@ -147,6 +149,7 @@ void CCredits::Enter() {
 void CCredits::Exit() {
 	delete RT;
 	RT = NULL;
+	CreditList.clear();
 }
 
 void CCredits::Loop(double time_step) {

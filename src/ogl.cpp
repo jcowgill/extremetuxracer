@@ -431,6 +431,10 @@ void glTexCoord2(const TVector2d& vec) {
 	glTexCoord2d(vec.x, vec.y);
 }
 
+void glLoadMatrix(const TMatrix<4, 4>& mat) {
+	glLoadMatrixd((const double*) mat.data());
+}
+
 void glMultMatrix(const TMatrix<4, 4>& mat) {
-	glMultMatrixd((const double*)mat.data());
+	glMultMatrixd((const double*) mat.data());
 }

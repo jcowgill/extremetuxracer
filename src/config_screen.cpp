@@ -46,11 +46,7 @@ Then edit the below functions:
 #include "audio.h"
 #include "ogl.h"
 #include "gui.h"
-#include "textures.h"
 #include "font.h"
-#include "translation.h"
-#include "course.h"
-#include "game_ctrl.h"
 #include "winsys.h"
 
 CGameConfig GameConfig;
@@ -92,7 +88,7 @@ void SetConfig () {
 		Music.SetVolume (param.music_volume);
 		param.sound_volume = sound_vol->GetValue();
 		param.perf_level = detail_level->GetValue();
-		Winsys.SetFonttype ();
+		FT.SetFontFromSettings();
 		if (param.language != language->GetValue()) {
 			param.language = language->GetValue();
 			Trans.LoadTranslations (param.language);
@@ -186,7 +182,6 @@ void CGameConfig::Enter() {
 }
 
 void CGameConfig::Loop (double time_step) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

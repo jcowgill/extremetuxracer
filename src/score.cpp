@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include "score.h"
 #include "ogl.h"
-#include "textures.h"
 #include "audio.h"
 #include "gui.h"
 #include "particles.h"
@@ -251,7 +250,6 @@ const string ordinals[10] =
 {"1:st", "2:nd", "3:rd", "4:th", "5:th", "6:th", "7:th", "8:th", "9:th", "10:th"};
 
 void CScore::Loop (double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

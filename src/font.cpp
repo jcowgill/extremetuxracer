@@ -169,6 +169,13 @@ void CFont::SetFont (const string& fontname) {
 	else curr_fact = 1.0;
 }
 
+void CFont::SetFontFromSettings() {
+	if (param.use_papercut_font > 0)
+		SetFont("pc20");
+	else
+		SetFont("bold");
+}
+
 // -------------------- auto ------------------------------------------
 
 int CFont::AutoSizeN (int rel_val) {

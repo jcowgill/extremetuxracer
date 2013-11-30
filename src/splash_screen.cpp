@@ -25,10 +25,8 @@ GNU General Public License for more details.
 #include "audio.h"
 #include "gui.h"
 #include "course.h"
-#include "tux.h"
 #include "env.h"
 #include "particles.h"
-#include "credits.h"
 #include "font.h"
 #include "game_ctrl.h"
 #include "translation.h"
@@ -53,12 +51,10 @@ void CSplashScreen::Keyb(sf::Keyboard::Key key, bool special, bool release, int 
 
 void CSplashScreen::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
-	init_ui_snow ();
 	Music.Play (param.menu_music, -1);
 }
 
 void CSplashScreen::Loop(double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 	Trans.LoadLanguages ();
@@ -81,9 +77,10 @@ void CSplashScreen::Loop(double timestep) {
 	Winsys.draw(t2);
 	Winsys.SwapBuffers();
 
+	init_ui_snow();
+
 	Course.MakeStandardPolyhedrons ();
 	Sound.LoadSoundList ();
-	Credits.LoadCreditList ();
 	Char.LoadCharacterList ();
 	Course.LoadObjectTypes ();
 	Course.LoadTerrainTypes ();

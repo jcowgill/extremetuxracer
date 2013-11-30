@@ -326,7 +326,6 @@ void DrawActionFloat (size_t nr, const string& s, int y, float f) {
 void RenderChar (double timestep) {
 	if (!must_render) return;
 	bool is_visible = false;
-	check_gl_error();
 
 	// ------------- 3d scenery ---------------------------------------
 	ScopedRenderMode rm1(TUX);

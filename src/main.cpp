@@ -82,7 +82,7 @@ int main(int argc, char **argv) {
 	// theses resources must or should be loaded before splashscreen starts
 	Tex.LoadTextureList ();
 	FT.LoadFontlist ();
-	Winsys.SetFonttype ();
+	FT.SetFontFromSettings();
 	Music.LoadMusicList ();
 	Music.SetVolume (param.music_volume);
 

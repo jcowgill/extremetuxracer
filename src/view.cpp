@@ -152,8 +152,7 @@ void setup_view_matrix (CControl *ctrl, bool save_mat) {
 	if (save_mat) {
 		stationary_matrix = view_mat;
 	}
-	glLoadIdentity();
-	glMultMatrix(view_mat);
+	glLoadMatrix(view_mat);
 }
 
 TVector3d MakeViewVector () {
@@ -168,8 +167,7 @@ TVector3d MakeViewVector () {
 
 void update_view (CControl *ctrl, double dt) {
 	if (is_stationary) {
-		glLoadIdentity();
-		glMultMatrix(stationary_matrix);
+		glLoadMatrix(stationary_matrix);
 		return;
 	}
 

@@ -113,7 +113,6 @@ void CNewPlayer::Enter() {
 void CNewPlayer::Loop(double timestep) {
 	sf::Color col;
 
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

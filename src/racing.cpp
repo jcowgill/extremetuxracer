@@ -343,7 +343,6 @@ void CRacing::Loop (double time_step) {
 	double ycoord = Course.FindYCoord (ctrl->cpos.x, ctrl->cpos.z);
 	bool airborne = (bool) (ctrl->cpos.y > (ycoord + JUMP_MAX_START_HEIGHT));
 
-	check_gl_error();
 	ClearRenderContext ();
 	Env.SetupFog ();
 	CalcTrickControls (ctrl, time_step, airborne);

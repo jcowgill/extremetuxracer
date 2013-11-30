@@ -20,15 +20,8 @@ GNU General Public License for more details.
 #endif
 
 #include "winsys.h"
-#include "ogl.h"
-#include "audio.h"
 #include "game_ctrl.h"
-#include "font.h"
 #include "score.h"
-#include "textures.h"
-#include "spx.h"
-#include "course.h"
-#include <SFML/Window.hpp>
 #include <iostream>
 
 #define USE_JOYSTICK true
@@ -129,18 +122,9 @@ void CWinsys::KeyRepeat (bool repeat) {
 	window.setKeyRepeatEnabled(repeat);
 }
 
-void CWinsys::SetFonttype () {
-	if (param.use_papercut_font > 0) {
-		FT.SetFont ("pc20");
-	} else {
-		FT.SetFont ("bold");
-	}
-}
-
 void CWinsys::Quit () {
 	Score.SaveHighScore ();
 	SaveMessages ();
-	FT.Clear ();
 	if (g_game.argument < 1) Players.SavePlayers ();
 	window.close();
 }

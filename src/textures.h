@@ -20,7 +20,6 @@ GNU General Public License for more details.
 
 #include "bh.h"
 #include <vector>
-#include <map>
 
 #define TEXLOGO 0
 #define SNOW_START 1
@@ -87,7 +86,6 @@ public:
 class CTexture {
 private:
 	vector<TTexture*> CommonTex;
-	map<string, TTexture*> Index;
 	Orientation forientation;
 
 	void DrawNumChr(char c, int x, int y, int w, int h);
@@ -99,21 +97,13 @@ public:
 
 	TTexture* GetTexture(size_t idx) const;
 	const sf::Texture& GetSFTexture(size_t idx) const;
-	TTexture* GetTexture (const string& name) const;
 	bool BindTex (size_t idx);
-	bool BindTex (const string& name);
 
 	void Draw (size_t idx);
-	void Draw (const string& name);
-
 	void Draw (size_t idx, int x, int y, float size);
-	void Draw (const string& name, int x, int y, float size);
-
 	void Draw (size_t idx, int x, int y, int width, int height);
-	void Draw (const string& name, int x, int y, int width, int height);
 
 	void DrawFrame(size_t idx, int x, int y, double w, double h, int frame, const sf::Color& col);
-	void DrawFrame(const string& name, int x, int y, double w, double h, int frame, const sf::Color& col);
 
 	void SetOrientation (Orientation orientation);
 	void DrawNumStr(const string& s, int x, int y, float size, const sf::Color& col);

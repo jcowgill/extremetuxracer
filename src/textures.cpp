@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include "winsys.h"
 #include "ogl.h"
 #include "gui.h"
-#include <SFML/Graphics.hpp>
 #include <cctype>
 
 
@@ -204,8 +203,6 @@ void CTexture::LoadTextureList () {
 			if (id >= 0) {
 				CommonTex[id] = new TTexture();
 				CommonTex[id]->Load(param.tex_dir, texfile, rep);
-
-				Index[name] = CommonTex[id];
 			} else Message ("wrong texture id in textures.lst");
 		}
 	} else Message ("failed to load common textures");
@@ -216,7 +213,6 @@ void CTexture::FreeTextureList () {
 		delete CommonTex[i];
 	}
 	CommonTex.clear();
-	Index.clear();
 }
 
 TTexture* CTexture::GetTexture (size_t idx) const {
@@ -228,22 +224,9 @@ const sf::Texture& CTexture::GetSFTexture(size_t idx) const {
 	return CommonTex[idx]->texture;
 }
 
-TTexture* CTexture::GetTexture (const string& name) const {
-	return Index.at(name);
-}
-
 bool CTexture::BindTex (size_t idx) {
 	if (idx >= CommonTex.size()) return false;
 	CommonTex[idx]->Bind();
-	return true;
-}
-
-bool CTexture::BindTex (const string& name) {
-	try {
-		Index.at(name)->Bind();
-	} catch (...) {
-		return false;
-	}
 	return true;
 }
 
@@ -254,17 +237,9 @@ void CTexture::Draw (size_t idx) {
 		CommonTex[idx]->Draw();
 }
 
-void CTexture::Draw (const string& name) {
-	Index[name]->Draw();
-}
-
 void CTexture::Draw (size_t idx, int x, int y, float size) {
 	if (CommonTex.size() > idx)
 		CommonTex[idx]->Draw(x, y, size, forientation);
-}
-
-void CTexture::Draw (const string& name, int x, int y, float size) {
-	Index[name]->Draw(x, y, size, forientation);
 }
 
 void CTexture::Draw (size_t idx, int x, int y, int width, int height) {
@@ -272,17 +247,9 @@ void CTexture::Draw (size_t idx, int x, int y, int width, int height) {
 		CommonTex[idx]->Draw (x, y, width, height, forientation);
 }
 
-void CTexture::Draw (const string& name, int x, int y, int width, int height) {
-	Index[name]->Draw (x, y, width, height, forientation);
-}
-
 void CTexture::DrawFrame(size_t idx, int x, int y, double w, double h, int frame, const sf::Color& col) {
 	if (CommonTex.size() > idx)
 		CommonTex[idx]->DrawFrame (x, y, w, h, frame, col);
-}
-
-void CTexture::DrawFrame(const string& name, int x, int y, double w, double h, int frame, const sf::Color& col) {
-	Index[name]->DrawFrame (x, y, w, h, frame, col);
 }
 
 void CTexture::SetOrientation (Orientation orientation) {
@@ -327,7 +294,7 @@ void CTexture::DrawNumChr(char c, int x, int y, int w, int h) {
 }
 
 void CTexture::DrawNumStr(const string& s, int x, int y, float size, const sf::Color& col) {
-	if (!BindTex ("ziff032")) {
+	if (!BindTex(NUMERIC_FONT)) {
 		Message ("DrawNumStr: missing texture");
 		return;
 	}

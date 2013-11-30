@@ -54,7 +54,6 @@ public:
 	void SetupVideoMode (size_t idx);
 	void SetupVideoMode (int width, int height);
 	void KeyRepeat (bool repeat);
-	void SetFonttype ();
 	void PrintJoystickInfo () const;
 	void ShowCursor(bool visible) { window.setMouseCursorVisible(visible); }
 	void SwapBuffers() { window.display(); }

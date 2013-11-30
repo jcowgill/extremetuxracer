@@ -175,25 +175,16 @@ void CTranslation::LoadLanguages () {
 		const string& line = list.Line(i-1);
 		languages[i].lang = SPStrN (line, "lang", "en_GB");
 		languages[i].language = UnicodeStr(SPStrN(line, "language", "English").c_str());
-		LangIndex[languages[i].lang] = i;
 	}
 
 	if (param.language == string::npos)
 		param.language = GetSystemDefaultLangIdx();
 }
 
-size_t CTranslation::GetLangIdx (const string& lang) const {
-	return LangIndex.at(lang);
-}
-
 const sf::String& CTranslation::GetLanguage (size_t idx) const {
 	static const sf::String error = "error";
 	if (idx >= languages.size()) return error;
 	return languages[idx].language;
-}
-
-const sf::String& CTranslation::GetLanguage(const string& lang) const {
-	return GetLanguage (GetLangIdx (lang));
 }
 
 void CTranslation::LoadTranslations (size_t langidx) {
@@ -232,9 +223,9 @@ string CTranslation::GetSystemDefaultLang() {
 }
 
 size_t CTranslation::GetSystemDefaultLangIdx() const {
-	try {
-		return GetLangIdx(GetSystemDefaultLang());
-	} catch (...) {
-		return 0;
-	}
+	std::string name = GetSystemDefaultLang();
+	for (size_t i = 0; i < languages.size(); i++)
+		if (languages[i].lang == name)
+			return i;
+	return 0;
 }

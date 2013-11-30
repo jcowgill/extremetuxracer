@@ -66,7 +66,7 @@ static void draw_time() {
 
 	if (param.use_papercut_font < 2) {
 		Tex.DrawNumStr(timestr, 50, 12, 1, colWhite);
-		Tex.DrawNumStr (hundrstr, 176, 12, 0.7, colWhite);
+		Tex.DrawNumStr (hundrstr, 170, 12, 0.7, colWhite);
 	} else {
 		Winsys.beginSFML();
 		FT.SetColor (colDYell);

@@ -179,7 +179,6 @@ void CRaceSelect::Enter() {
 }
 
 void CRaceSelect::Loop(double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

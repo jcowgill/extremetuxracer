@@ -57,8 +57,6 @@ void COglTest::Enter() {
 }
 
 void COglTest::Loop(double timestep) {
-	check_gl_error();
-
 	// ------------- 3d scenery ---------------------------------------
 	ScopedRenderMode rm(TUX);
 	ClearRenderContext (colDDBackgr);

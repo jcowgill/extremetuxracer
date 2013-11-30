@@ -95,7 +95,6 @@ void CIntro::Loop (double time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;
-	check_gl_error();
 
 	if (startframe->active) {
 		startframe->Update (time_step);

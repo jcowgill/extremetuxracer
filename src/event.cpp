@@ -201,7 +201,6 @@ int resultlevel (size_t num, size_t numraces) {
 }
 
 void CEvent::Loop (double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

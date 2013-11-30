@@ -227,7 +227,6 @@ void PrintFrameParams (int ytop, TKeyframe *frame) {
 
 void RenderSingleFrame (double timestep) {
 	if (!must_render) return;
-	check_gl_error ();
 
 	// ------------------ 3d scenery ----------------------------------
 	ScopedRenderMode rm1(TUX);
@@ -307,7 +306,6 @@ void SequenceMouse (int button, int state, int x, int y) {}
 void SequenceMotion (int x, int y) {}
 
 void RenderSequence (double timestep) {
-	check_gl_error();
 	ScopedRenderMode rm(TUX);
 	ClearRenderContext (colDDBackgr);
 
