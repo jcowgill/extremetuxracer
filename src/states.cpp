@@ -104,7 +104,6 @@ void State::Manager::PollEvent() {
 						Winsys.resolution.width = event.size.width;
 						Winsys.resolution.height = event.size.height;
 						Winsys.SetupVideoMode (param.res_type);
-						Reshape(event.size.width, event.size.height);
 					}
 					break;
 

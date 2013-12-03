@@ -43,7 +43,7 @@ GNU General Public License for more details.
 CGameOver GameOver;
 
 static CKeyframe *final_frame;
-static int highscore_pos = 999;
+static int highscore_pos = MAX_SCORES;
 
 void QuitGameOver () {
 	if (g_game.game_type == PRACTICING) {
@@ -79,6 +79,8 @@ void GameOverMessage (const CControl *ctrl) {
 		FT.SetColor (colDBlue);
 		FT.DrawString (CENTER, topframe+30, Trans.Text(25));
 	} else {
+		int firstMarker = leftframe + 60;
+		int secondMarker = leftframe + 310;
 		DrawFrameX(leftframe, topframe, fwidth, 210, 4, backcol, framecol, 0.5);
 
 		if (param.use_papercut_font > 0) FT.SetSize (20);
@@ -86,24 +88,24 @@ void GameOverMessage (const CControl *ctrl) {
 		if (g_game.race_result >= 0 || g_game.game_type != CUPRACING) FT.SetColor (colDBlue);
 		else FT.SetColor (colDRed);
 
-		string line = "Score:  ";
-		FT.DrawString (leftframe+80, topframe+15, line);
+		string line = Trans.Text(84) + ":  ";
+		FT.DrawString(firstMarker, topframe + 15, line);
 		line = Int_StrN (g_game.score);
 		line += "  pts";
-		FT.DrawString (leftframe+240, topframe+15, line);
+		FT.DrawString(secondMarker, topframe + 15, line);
 
-		line = "Herring:  ";
-		FT.DrawString (leftframe+80, topframe+40, line);
+		line = Trans.Text(85) + ":  ";
+		FT.DrawString(firstMarker, topframe + 40, line);
 		line = Int_StrN (g_game.herring);
 		if (g_game.game_type == CUPRACING) {
 			line += "  (";
 			line += Int_StrN (g_game.race->herrings.x);
 			line += ')';
 		}
-		FT.DrawString (leftframe+240, topframe+40, line);
+		FT.DrawString(secondMarker, topframe + 40, line);
 
-		line = "Time:  ";
-		FT.DrawString (leftframe+80, topframe+65, line);
+		line = Trans.Text(86) + ":  ";
+		FT.DrawString(firstMarker, topframe + 65, line);
 		line = Float_StrN (g_game.time, 2);
 		line += "  s";
 		if (g_game.game_type == CUPRACING) {
@@ -111,29 +113,29 @@ void GameOverMessage (const CControl *ctrl) {
 			line += Float_StrN (g_game.race->time.x, 2);
 			line += ')';
 		}
-		FT.DrawString (leftframe+240, topframe+65, line);
+		FT.DrawString(secondMarker, topframe + 65, line);
 
-		line = "Path length:  ";
-		FT.DrawString (leftframe+80, topframe+90, line);
+		line = Trans.Text(87) + ":  ";
+		FT.DrawString(firstMarker, topframe + 90, line);
 		line = Float_StrN (ctrl->way, 2);
 		line += "  m";
-		FT.DrawString (leftframe+240, topframe+90, line);
+		FT.DrawString(secondMarker, topframe + 90, line);
 
-		line = "Average speed:  ";
-		FT.DrawString (leftframe+80, topframe+115, line);
+		line = Trans.Text(88) + ":  ";
+		FT.DrawString(firstMarker, topframe + 115, line);
 		line = Float_StrN (ctrl->way / g_game.time * 3.6, 2);
 		line += "  km/h";
-		FT.DrawString (leftframe+240, topframe+115, line);
+		FT.DrawString(secondMarker, topframe + 115, line);
 
 		if (param.use_papercut_font > 0) FT.SetSize (28);
 		else FT.SetSize (22);
 		if (g_game.game_type == CUPRACING) {
 			FT.DrawString(CENTER, topframe + 150, Trans.Text(22 + g_game.race_result)); // Text IDs 21 - 24; race_results is in [-1; 2]
 		} else {
-			if (highscore_pos < 5) {
-				line = "Position ";
+			if (highscore_pos < MAX_SCORES) {
+				line = Trans.Text(89) + ' ';
 				line += Int_StrN (highscore_pos + 1);
-				line += " in highscore list";
+				line += ' ' + Trans.Text(90);
 				FT.DrawString (CENTER, topframe+150, line);
 			}
 		}
@@ -142,8 +144,6 @@ void GameOverMessage (const CControl *ctrl) {
 
 // =========================================================================
 void CGameOver::Enter() {
-	Sound.HaltAll ();
-
 	if (!g_game.raceaborted) highscore_pos = Score.CalcRaceResult ();
 
 	if (g_game.game_type == CUPRACING) {
@@ -168,7 +168,7 @@ void CGameOver::Enter() {
 			if (g_game.race_result < 0)
 				final_frame = g_game.character->GetKeyframe(LOSTRACE);
 			else final_frame = g_game.character->GetKeyframe(WONRACE);
-		} else final_frame = g_game.character->GetKeyframe( FINISH);
+		} else final_frame = g_game.character->GetKeyframe(FINISH);
 
 		if (!g_game.raceaborted) {
 			const CControl *ctrl = g_game.player->ctrl;
@@ -212,7 +212,6 @@ void CGameOver::Loop(double time_step) {
 			if (!final_frame->active) GameOverMessage(ctrl);
 		} else GameOverMessage(ctrl);
 	}
-	Setup2dScene();
 	DrawHud (ctrl);
 	Reshape (width, height);
 	Winsys.SwapBuffers ();

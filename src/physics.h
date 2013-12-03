@@ -81,7 +81,7 @@ private:
 	double ode_time_step;
 	double finish_speed;
 
-	bool     CheckTreeCollisions (const TVector3d& pos, TVector3d *tree_loc, double *tree_diam);
+	bool     CheckTreeCollisions (const TVector3d& pos, TVector3d *tree_loc);
 	void     AdjustTreeCollision (const TVector3d& pos, TVector3d *vel);
 	void     CheckItemCollection (const TVector3d& pos);
 

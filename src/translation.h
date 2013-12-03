@@ -27,7 +27,7 @@ An name convention:
 #include <vector>
 
 #define MAX_LANGUAGES 32
-#define NUM_COMMON_TEXTS 86
+#define NUM_COMMON_TEXTS 91
 #define MAX_COMMON_TEXT_LINES NUM_COMMON_TEXTS*2
 
 

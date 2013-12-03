@@ -97,7 +97,6 @@ void	PrintQuaternion (const TQuaternion& q);
 //				file utils
 // --------------------------------------------------------------------
 
-bool	FileExists (const char *filename);
 bool	FileExists (const string& filename);
 bool	FileExists (const string& dir, const string& filename);
 bool	DirExists (const char *dirname);

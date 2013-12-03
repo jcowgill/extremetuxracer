@@ -73,24 +73,27 @@ struct TObjectType {
 	int			poly;
 };
 
-struct TCollidable {
+struct TObject {
 	TVector3d pt;
 	double height;
 	double diam;
-	size_t tree_type;
-	TCollidable(double x, double y, double z, double height_, double diam_, size_t type)
-		: pt(x, y, z), height(height_), diam(diam_), tree_type(type)
+	TObject(double x, double y, double z, double height_, double diam_)
+		: pt(x, y, z), height(height_), diam(diam_)
 	{}
 };
 
-struct TItem {
-	TVector3d pt;
-	double height;
-	double diam;
+struct TCollidable : public TObject {
+	size_t tree_type;
+	TCollidable(double x, double y, double z, double height_, double diam_, size_t type)
+		: TObject(x, y, z, height_, diam_), tree_type(type)
+	{}
+};
+
+struct TItem : public TObject {
 	int collectable;
 	const TObjectType& type;
 	TItem(double x, double y, double z, double height_, double diam_, const TObjectType& type_)
-		: pt(x, y, z), height(height_), diam(diam_), collectable(type_.collectable), type(type_)
+		: TObject(x, y, z, height_, diam_), collectable(type_.collectable), type(type_)
 	{}
 };
 

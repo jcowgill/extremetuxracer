@@ -189,7 +189,15 @@ void Reshape (int w, int h) {
 //					GL options
 // ====================================================================
 
-TRenderMode currentMode = RM_UNINITIALIZED;
+static TRenderMode currentMode = RM_UNINITIALIZED;
+
+void ResetRenderMode() {
+	if (currentMode == GUI)
+		Winsys.endSFML();
+
+	currentMode = RM_UNINITIALIZED;
+}
+
 void set_gl_options (TRenderMode mode) {
 	if (currentMode == GUI)
 		Winsys.endSFML();

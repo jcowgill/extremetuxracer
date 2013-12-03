@@ -79,7 +79,7 @@ TCourse* CCourse::GetCourse(const string& dir) {
 }
 
 size_t CCourse::GetCourseIdx(const TCourse* course) const {
-	size_t idx = (course - &CourseList[0]) / sizeof(TCourse);
+	size_t idx = (course - &CourseList[0]);
 	if (idx >= CourseList.size())
 		return -1;
 	return idx;

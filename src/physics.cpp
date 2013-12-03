@@ -100,36 +100,28 @@ void CControl::Init () {
 //					collision
 // --------------------------------------------------------------------
 
-bool CControl::CheckTreeCollisions (const TVector3d& pos, TVector3d *tree_loc, double *tree_diam) {
+bool CControl::CheckTreeCollisions (const TVector3d& pos, TVector3d *tree_loc) {
 	// These variables are used to cache collision detection results
 	static bool last_collision = false;
 	static TVector3d last_collision_tree_loc(-999, -999, -999);
-	static double last_collision_tree_diam = 0;
 	static TVector3d last_collision_pos(-999, -999, -999);
 
 	TVector3d dist_vec = pos - last_collision_pos;
 	if (MAG_SQD (dist_vec) < COLL_TOLERANCE) {
 		if (last_collision && !cairborne) {
 			if (tree_loc != NULL) *tree_loc = last_collision_tree_loc;
-			if (tree_diam != NULL) *tree_diam = last_collision_tree_diam;
 			return true;
 		} else return false;
 	}
 
-	double diam = 0.0;
 	TVector3d loc(0, 0, 0);
 	bool hit = false;
 	TMatrix<4, 4> mat;
 
-	TCollidable *trees = &Course.CollArr[0];
-	size_t num_trees = Course.CollArr.size();
-	size_t tree_type = trees[0].tree_type;
-	const TPolyhedron* ph = &Course.GetPoly (tree_type);
-
-	for (size_t i=0; i<num_trees; i++) {
-		diam = trees[i].diam;
-		double height = trees[i].height;
-		loc = trees[i].pt;
+	for (size_t i = 0; i<Course.CollArr.size(); i++) {
+		double diam = Course.CollArr[i].diam;
+		double height = Course.CollArr[i].height;
+		loc = Course.CollArr[i].pt;
 		TVector3d distvec(loc.x - pos.x, 0.0, loc.z - pos.z);
 
 		// check distance from tree; .6 is the radius of a bounding sphere
@@ -137,42 +129,31 @@ bool CControl::CheckTreeCollisions (const TVector3d& pos, TVector3d *tree_loc, d
 		squared_dist *= squared_dist;
 		if (MAG_SQD(distvec) > squared_dist) continue;
 
-		// have to look at polyhedron - switch to correct one if necessary
-		if (tree_type != trees[i].tree_type) {
-			tree_type = trees[i].tree_type;
-			ph = &Course.GetPoly (tree_type);
-		}
-
-		TPolyhedron ph2 = *ph;
+		TPolyhedron ph2 = Course.GetPoly(Course.CollArr[i].tree_type);
 		mat.SetScalingMatrix(diam, height, diam);
 		TransPolyhedron (mat, ph2);
 		mat.SetTranslationMatrix(loc.x, loc.y, loc.z);
 		TransPolyhedron (mat, ph2);
-//		hit = TuxCollision2 (pos, ph2);
-		hit = g_game.character->shape->Collision(pos, ph2);
 
+		hit = g_game.character->shape->Collision(pos, ph2);
 		if (hit == true) {
 			if (tree_loc != NULL) *tree_loc = loc;
-			if (tree_diam != NULL) *tree_diam = diam;
 			Sound.Play ("tree_hit", 0);
 			break;
 		}
 	}
 
 	last_collision_tree_loc = loc;
-	last_collision_tree_diam = diam;
 	last_collision_pos = pos;
+	last_collision = hit;
 
-	if (hit) last_collision = true;
-	else last_collision = false;
 	return hit;
 }
 
 void CControl::AdjustTreeCollision (const TVector3d& pos, TVector3d *vel) {
 	TVector3d treeLoc;
-	double tree_diam;
 
-	if (CheckTreeCollisions (pos, &treeLoc, &tree_diam)) {
+	if (CheckTreeCollisions (pos, &treeLoc)) {
 		TVector3d treeNml(
 		    pos.x - treeLoc.x,
 		    0,
@@ -196,10 +177,6 @@ void CControl::AdjustTreeCollision (const TVector3d& pos, TVector3d *vel) {
 }
 
 void CControl::CheckItemCollection (const TVector3d& pos) {
-	static TVector3d last_collision_pos(-999, -999, -999);
-	TVector3d dist_vec = pos - last_collision_pos;
-	if (MAG_SQD (dist_vec) < COLL_TOLERANCE) return;
-
 	TItem *items = &Course.NocollArr[0];
 	size_t num_items = Course.NocollArr.size();
 
@@ -210,20 +187,15 @@ void CControl::CheckItemCollection (const TVector3d& pos) {
 		double height = items[i].height;
 		const TVector3d& loc = items[i].pt;
 
-		TVector3d distvec(loc.x - pos.x, 0.0, loc.z - pos.z);
-		double squared_dist =  (diam / 2. + 0.6);
+		TVector3d distvec(loc.x - pos.x, loc.y - pos.y, loc.z - pos.z);
+		double squared_dist = (diam / 2. + 0.7);
 		squared_dist *= squared_dist;
-		if (MAG_SQD (distvec) > squared_dist) continue;
-
-		if ((pos.y - 0.6 >= loc.y && pos.y - 0.6 <= loc.y + height) ||
-		        (pos.y + 0.6 >= loc.y && pos.y + 0.6 <= loc.y + height) ||
-		        (pos.y - 0.6 <= loc.y && pos.y + 0.6 >= loc.y + height)) {
+		if (MAG_SQD (distvec) <= squared_dist) { // Check collision using a bounding sphere
 			items[i].collectable = 0;
 			g_game.herring += 1;
-			Sound.HaltAll ();
-			Sound.Play ("pickup1", 0);
-			Sound.Play ("pickup2", 0);
-			Sound.Play ("pickup3", 0);
+			Sound.Play("pickup1", 0);
+			Sound.Play("pickup2", 0);
+			Sound.Play("pickup3", 0);
 		}
 	}
 }

@@ -72,14 +72,9 @@ void SetConfig () {
 		if (resolution->GetValue() != param.res_type || fullscreen->checked != param.fullscreen) {
 			// these changes require a new VideoMode
 			param.res_type = resolution->GetValue();
-#ifdef _WIN32
-			if (fullscreen->checked == param.fullscreen)
-				Winsys.SetupVideoMode(param.res_type);
-			param.fullscreen = fullscreen->checked;
-#else
 			param.fullscreen = fullscreen->checked;
 			Winsys.SetupVideoMode(param.res_type);
-#endif
+			init_ui_snow(); // Reinitialize UI snow to avoid ugly snow-free stripes at the borders
 		}
 
 		// the followind config params don't require a new VideoMode
@@ -210,24 +205,10 @@ void CGameConfig::Loop (double time_step) {
 	FT.DrawString (area.left+240, area.top + dd*4 + 3, Trans.languages[language->GetValue()].language);
 	FT.DrawString (area.left+240, area.top + dd*5 + 3, Int_StrN (detail_level->GetValue()));
 
-#if defined (_WIN32)
-	if (fullscreen->checked != param.fullscreen) {
-		FT.SetColor (colDYell);
-		FT.AutoSizeN (4);
-		FT.DrawString (CENTER, AutoYPosN (68), Trans.Text(84));
-		FT.DrawString (CENTER, AutoYPosN (72), Trans.Text(85));
-	} else {
-		FT.SetColor (colLGrey);
-		FT.AutoSizeN (3);
-		FT.DrawString (CENTER, AutoYPosN (68), Trans.Text(41));
-		FT.DrawString (CENTER, AutoYPosN (72), Trans.Text(42));
-	}
-#else
-	FT.SetColor (colWhite);
+	FT.SetColor (colLGrey);
 	FT.AutoSizeN (3);
 	FT.DrawString (CENTER, AutoYPosN (68), Trans.Text(41));
 	FT.DrawString (CENTER, AutoYPosN (72), Trans.Text(42));
-#endif
 
 	DrawGUI();
 

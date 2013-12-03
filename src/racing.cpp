@@ -201,7 +201,7 @@ void CRacing::Enter() {
 	if (param.view_mode < 0 || param.view_mode >= NUM_VIEW_MODES) {
 		param.view_mode = ABOVE;
 	}
-	set_view_mode (ctrl, (TViewMode)param.view_mode);
+	set_view_mode (ctrl, param.view_mode);
 	left_turn = right_turn = trick_modifier = false;
 
 	ctrl->turn_fact = 0.0;

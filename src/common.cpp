@@ -159,16 +159,12 @@ void Message (const string& msg) {
 //				file utils
 // --------------------------------------------------------------------
 
-bool FileExists (const char *filename) {
+bool FileExists(const string& filename) {
 	struct stat stat_info;
-	if (stat (filename, &stat_info) != 0) {
+	if (stat (filename.c_str(), &stat_info) != 0) {
 		if (errno != ENOENT) Message ("couldn't stat ", filename);
 		return false;
 	} else return true;
-}
-
-bool FileExists (const string& filename) {
-	return FileExists (filename.c_str());
 }
 
 bool FileExists (const string& dir, const string& filename) {

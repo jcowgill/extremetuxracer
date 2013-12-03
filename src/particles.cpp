@@ -37,7 +37,7 @@ GNU General Public License for more details.
 // ====================================================================
 
 #define MAX_num_snowparticles 4000
-#define BASE_num_snowparticles 1000
+#define BASE_snowparticles 1000.0/1024 // This is intentionally not divided by height*width to make particle count increasing slower than screen size
 #define GRAVITY_FACTOR 0.015
 #define BASE_VELOCITY 0.05
 #define VELOCITY_RANGE 0.02
@@ -128,8 +128,9 @@ void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d&
 	sprite.setPosition(x*Winsys.resolution.width, y*Winsys.resolution.height);
 }
 
-void init_ui_snow () {
-	for (int i=0; i<BASE_num_snowparticles; i++)
+void init_ui_snow() {
+	particles_2d.clear();
+	for (int i = 0; i < BASE_snowparticles * Winsys.resolution.width; i++)
 		particles_2d.push_back(TGuiParticle(FRandom(), FRandom()));
 	push_position = TVector2d(0.0, 0.0);
 }
@@ -159,7 +160,7 @@ void update_ui_snow(double time_step) {
 
 	for (list<TGuiParticle>::iterator p = particles_2d.begin(); p != particles_2d.end();) {
 		if (p->sprite.getPosition().y / static_cast<float>(Winsys.resolution.height) > 1.05) {
-			if (particles_2d.size() > BASE_num_snowparticles && FRandom() > 0.2) {
+			if (particles_2d.size() > BASE_snowparticles * Winsys.resolution.width && FRandom() > 0.2) {
 				p = particles_2d.erase(p);
 			} else {
 				p->sprite.setPosition(static_cast<float>(Winsys.resolution.width)*FRandom(), static_cast<float>(Winsys.resolution.height) * (-FRandom()*BASE_VELOCITY));

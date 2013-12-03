@@ -264,7 +264,7 @@ void SaveConfigFile () {
 
 // --------------------------------------------------------------------
 
-void InitConfig (const char *arg0) {
+void InitConfig () {
 #if defined (OS_WIN32_MINGW) || defined (OS_WIN32_MSC)
 	// the progdir is always the current dir
 	param.config_dir = "config";
@@ -291,7 +291,7 @@ void InitConfig (const char *arg0) {
 	struct passwd *pwent = getpwuid (getuid ());
 	param.config_dir = pwent->pw_dir;
 	param.config_dir += SEP;
-	param.config_dir += CONFIG_DIR;
+	param.config_dir += ".etr";
 	// or: param.config_dir = param.prog_dir + SEP "config";
 	if (!DirExists (param.config_dir.c_str()))
 		mkdir (param.config_dir.c_str(), 0775);

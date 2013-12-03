@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "winsys.h"
 #include "game_ctrl.h"
 #include "score.h"
+#include "ogl.h"
 #include <iostream>
 
 #define USE_JOYSTICK true
@@ -91,14 +92,16 @@ void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
 
 	resolution = resolution_;
 
+	ResetRenderMode();
+
 #ifdef USE_STENCIL_BUFFER
 	sf::ContextSettings ctx(bpp, 8, 0, 1, 2);
 #else
 	sf::ContextSettings ctx(bpp, 0, 0, 1, 2);
 #endif
 	window.create(sf::VideoMode(resolution.width, resolution.height, bpp), WINDOW_TITLE, style, ctx);
-	//if (param.framerate)
-	//window.setFramerateLimit(param.framerate);
+	if (param.framerate)
+		window.setFramerateLimit(param.framerate);
 
 	scale = CalcScreenScale ();
 	if (param.use_quad_scale) scale = sqrt (scale);

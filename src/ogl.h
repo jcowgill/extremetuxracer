@@ -53,6 +53,7 @@ void set_material(const sf::Color& diffuse_colour,
                   float specular_exp);
 
 
+void ResetRenderMode();
 void PushRenderMode(TRenderMode mode);
 void PopRenderMode();
 

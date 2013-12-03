@@ -55,7 +55,7 @@ void InitGame (int argc, char **argv) {
 	g_game.snow_id = 0;
 	g_game.cup = 0;
 	g_game.theme_id = 0;
-	g_game.force_treemap = 0;
+	g_game.force_treemap = false;
 	g_game.treesize = 3;
 	g_game.treevar = 3;
 }
@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
 	cout << "\n----------- (C) 2010-2013 Extreme Tuxracer Team  --------\n\n";
 
 	srand (time (NULL));
-	InitConfig(argv[0]);
+	InitConfig();
 	InitGame(argc, argv);
 	Winsys.Init ();
 	InitOpenglExtensions ();
