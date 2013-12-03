@@ -60,7 +60,7 @@ void LoadConfigFile () {
 		param.fullscreen = SPBoolN (line, "fullscreen", false);
 		param.res_type = SPIntN (line, "res_type", 0);
 		param.perf_level = SPIntN (line, "detail_level", 3);
-		param.language = SPIntN (line, "language", 0);
+		param.language = Trans.GetLangIdx(SPStrN(line, "language", "EN_en"));
 		param.sound_volume = SPIntN (line, "sound_volume", 90);
 		param.music_volume = SPIntN (line, "music_volume", 20);
 
@@ -155,9 +155,9 @@ void SaveConfigFile () {
 	AddItem(liste, "detail_level", param.perf_level);
 	liste.AddLine();
 
-	AddComment (liste, "Language code [0...]");
-	AddComment (liste, "0 = English etc.");
-	AddItem(liste, "language", param.language);
+	AddComment (liste, "Language code");
+	AddComment (liste, "en_GB = English etc.");
+	AddItem(liste, "language", Trans.languages[param.language].lang);
 	liste.AddLine();
 
 	AddComment (liste, "Sound volume [0...100]");
@@ -319,6 +319,8 @@ void InitConfig () {
 	param.view_mode = FOLLOW;
 	param.display_fps = false;
 	param.show_hud = true;
+
+	Trans.LoadLanguages();
 
 	if (FileExists (param.configfile)) {
 		LoadConfigFile ();

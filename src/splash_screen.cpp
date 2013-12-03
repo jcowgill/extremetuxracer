@@ -57,7 +57,6 @@ void CSplashScreen::Enter() {
 void CSplashScreen::Loop(double timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
-	Trans.LoadLanguages ();
 	Trans.LoadTranslations (param.language); // Before first texts are being displayed
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));

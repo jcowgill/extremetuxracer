@@ -229,8 +229,12 @@ string CTranslation::GetSystemDefaultLang() {
 
 size_t CTranslation::GetSystemDefaultLangIdx() const {
 	std::string name = GetSystemDefaultLang();
+	return GetLangIdx(name);
+}
+
+size_t CTranslation::GetLangIdx(const string& lang) const {
 	for (size_t i = 0; i < languages.size(); i++)
-		if (languages[i].lang == name)
+		if (languages[i].lang == lang)
 			return i;
 	return 0;
 }
