@@ -99,17 +99,17 @@ void interpolate_view_frame (const TVector3d& up1, const TVector3d& dir1,
 	TVector3d y1 = ProjectToPlane (z1, up1);
 	y1.Norm();
 	TVector3d x1 = CrossProduct (y1, z1);
-
 	TMatrix<4, 4> cob_mat1(x1, y1, z1);
 	TQuaternion q1 = MakeQuaternionFromMatrix (cob_mat1);
+
 	TVector3d z2 = -1.0 * *p_dir2;
 	z2.Norm();
 	TVector3d y2 = ProjectToPlane (z2, *p_up2);
 	y2.Norm();
 	TVector3d x2 = CrossProduct (y2, z2);
-
 	TMatrix<4, 4> cob_mat2(x2, y2, z2);
 	TQuaternion q2 = MakeQuaternionFromMatrix (cob_mat2);
+
 	double alpha = min (MAX_INTERPOLATION_VALUE, 1.0 - exp (-dt / time_constant));
 	q2 = InterpolateQuaternions (q1, q2, alpha);
 	cob_mat2 = MakeMatrixFromQuaternion(q2);

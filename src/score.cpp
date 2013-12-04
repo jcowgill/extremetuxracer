@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include "translation.h"
 #include "course.h"
 #include "spx.h"
-#include "game_type_select.h"
 #include "winsys.h"
 
 CScore Score;
@@ -180,7 +179,7 @@ void CScore::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(*State::manager.PreviousState());
 			break;
 		case sf::Keyboard::Q:
 			State::manager.RequestQuit();
@@ -192,7 +191,7 @@ void CScore::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int
 			Score.LoadHighScore ();
 			break;
 		case sf::Keyboard::Return:
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(*State::manager.PreviousState());
 			break;
 	}
 }
@@ -201,7 +200,7 @@ void CScore::Mouse (int button, int state, int x, int y) {
 	if (state == 1) {
 		TWidget* clicked = ClickGUI(x, y);
 		if (clicked == textbutton)
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(*State::manager.PreviousState());
 	}
 }
 
@@ -218,7 +217,7 @@ static int dd1, dd2, dd3, dd4;
 void CScore::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
 	Winsys.KeyRepeat (true);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 
 	int framewidth = 550 * Winsys.scale;
 	int frameheight = 50 * Winsys.scale;

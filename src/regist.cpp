@@ -92,7 +92,7 @@ static TFramedText* sCharFrame;
 
 void CRegist::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 
 	framewidth = (int) (Winsys.scale * 280);
 	frameheight = (int) (Winsys.scale * 50);

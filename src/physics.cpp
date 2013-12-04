@@ -203,7 +203,7 @@ void CControl::CheckItemCollection (const TVector3d& pos) {
 //				position and velocity  ***
 // --------------------------------------------------------------------
 
-void CControl::AdjustVelocity (const TPlane& surf_plane) {
+void CControl::AdjustVelocity () {
 	double speed = cvel.Norm();
 	speed = max (minSpeed, speed);
 	cvel *= speed;
@@ -616,7 +616,7 @@ void CControl::UpdatePlayerPos (double timestep) {
 	dist_from_surface = DistanceToPlane (surf_plane, cpos);
 
 	double speed = cvel.Length();
-	AdjustVelocity (surf_plane);
+	AdjustVelocity ();
 	AdjustPosition (surf_plane, dist_from_surface);
 	SetTuxPosition (speed);	// speed only to set finish_speed
 	shape->AdjustOrientation (this, timestep, dist_from_surface, surf_nml);

@@ -80,17 +80,14 @@ void CGameTypeSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, i
 		case sf::Keyboard::Escape:
 			State::manager.RequestQuit();
 			break;
-		case sf::Keyboard::Down:
-			IncreaseFocus();
-			break;
-		case sf::Keyboard::Up:
-			DecreaseFocus();
-			break;
 		case sf::Keyboard::Return:
 			QuitGameType();
 			break;
 		case sf::Keyboard::W:
 			Music.FreeMusics();
+			break;
+		default:
+			KeyGUI(key, 0, release);
 			break;
 	}
 }
@@ -121,7 +118,7 @@ void CGameTypeSelect::Enter () {
 	logo.setScale(Winsys.scale, Winsys.scale);
 	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, (5));
 
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 }
 
 void CGameTypeSelect::Loop (double time_step) {

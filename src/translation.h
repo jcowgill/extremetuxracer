@@ -14,11 +14,6 @@ but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 ---------------------------------------------------------------------*/
-/* --------------------------------------------------------------------
-An name convention:
-"lang" means the short identifier, e.g. "en_GB"
-"language" means the language name, e.g. "English"
----------------------------------------------------------------------*/
 
 #ifndef TRANSLATION_H
 #define TRANSLATION_H
@@ -30,6 +25,11 @@ An name convention:
 #define NUM_COMMON_TEXTS 91
 #define MAX_COMMON_TEXT_LINES NUM_COMMON_TEXTS*2
 
+/* --------------------------------------------------------------------
+Name convention:
+"lang" means the short identifier, e.g. "en_GB"
+"language" means the language name, e.g. "English"
+---------------------------------------------------------------------*/
 
 struct TLang {
 	string lang;

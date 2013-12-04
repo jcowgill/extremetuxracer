@@ -24,7 +24,6 @@ GNU General Public License for more details.
 class CSplashScreen : public State {
 	void Enter();
 	void Loop(double time_step);
-	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 public:
 };
 

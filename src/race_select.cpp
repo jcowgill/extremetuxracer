@@ -141,7 +141,7 @@ static int boxleft, boxwidth;
 
 void CRaceSelect::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 
 	CourseList = &Course.CourseList[0];
 

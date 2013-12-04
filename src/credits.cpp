@@ -26,7 +26,6 @@ GNU General Public License for more details.
 #include "font.h"
 #include "gui.h"
 #include "spx.h"
-#include "game_type_select.h"
 #include "winsys.h"
 
 #define TOP_Y 165
@@ -105,12 +104,12 @@ void CCredits::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, i
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(*State::manager.PreviousState());
 	}
 }
 
 void CCredits::Mouse (int button, int state, int x, int y) {
-	if (state == 1) State::manager.RequestEnterState (GameTypeSelect);
+	if (state == 1) State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
 void CCredits::Motion(int x, int y) {
@@ -120,7 +119,7 @@ void CCredits::Motion(int x, int y) {
 void CCredits::Enter() {
 	LoadCreditList();
 
-	Music.Play (param.credits_music, -1);
+	Music.Play(param.credits_music, true);
 	y_offset = 0;
 	moving = true;
 	RT = new sf::RenderTexture();

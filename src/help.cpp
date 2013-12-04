@@ -26,7 +26,6 @@ GNU General Public License for more details.
 #include "font.h"
 #include "gui.h"
 #include "translation.h"
-#include "game_type_select.h"
 #include "winsys.h"
 
 CHelp Help;
@@ -37,11 +36,11 @@ TLabel* texts[TEXT_LINES];
 TLabel* footnote;
 
 void CHelp::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
-	State::manager.RequestEnterState (GameTypeSelect);
+	State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
 void CHelp::Mouse(int button, int state, int x, int y) {
-	if (state == 1) State::manager.RequestEnterState (GameTypeSelect);
+	if (state == 1) State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
 void CHelp::Motion(int x, int y) {
@@ -51,7 +50,7 @@ void CHelp::Motion(int x, int y) {
 void CHelp::Enter() {
 	ResetGUI();
 	Winsys.ShowCursor (false);
-	Music.Play (param.credits_music, -1);
+	Music.Play(param.credits_music, true);
 
 	int ytop = AutoYPosN(15);
 

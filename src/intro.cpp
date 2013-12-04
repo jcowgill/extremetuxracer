@@ -38,13 +38,15 @@ GNU General Public License for more details.
 CIntro Intro;
 static CKeyframe *startframe;
 
-void abort_intro (CControl *ctrl) {
+void abort_intro() {
+	CControl *ctrl = g_game.player->ctrl;
 	const TVector2d& start_pt = Course.GetStartPoint();
-	State::manager.RequestEnterState (Racing);
 	ctrl->orientation_initialized = false;
 	ctrl->view_init = false;
 	ctrl->cpos.x = start_pt.x;
 	ctrl->cpos.z = start_pt.y;
+
+	State::manager.RequestEnterState(Racing);
 }
 
 // =================================================================
@@ -130,6 +132,6 @@ void CIntro::Loop (double time_step) {
 void CIntro::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release)
 		return;
-	CControl *ctrl = g_game.player->ctrl;
-	abort_intro (ctrl);
+
+	abort_intro ();
 }

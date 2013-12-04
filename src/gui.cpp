@@ -33,6 +33,8 @@ GNU General Public License for more details.
 static vector<TWidget*> Widgets;
 static int lock_focussed = -1;
 static int focussed = -1;
+static bool locked_LR = false;
+static bool locked_UD = false;
 
 static TWidget* AddWidget(TWidget* widget) {
 	if (Widgets.size() == focussed) {
@@ -188,10 +190,12 @@ TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize
 TTextField::TTextField(int x, int y, int width, int height, const sf::String& text_)
 	: TWidget(x, y, width, height)
 	, text(text_)
-	, cursorPos(0)
+	, cursorShape(sf::Vector2f(2, 26 * Winsys.scale))
 	, maxLng(32)
 	, time(0.0)
 	, cursor(false) {
+	cursorShape.setFillColor(colYellow);
+	SetCursorPos(0);
 }
 
 void TTextField::Draw() const {
@@ -202,36 +206,29 @@ void TTextField::Draw() const {
 	FT.DrawString (mouseRect.left+20, mouseRect.top, text);
 
 	if (cursor && focus) {
-		int x = mouseRect.left + 20 + 1;
-		if (cursorPos != 0) {
-			string temp = text.toAnsiString().substr (0, cursorPos);
-			x += FT.GetTextWidth (temp);
-		}
-		int w = 3;
-		int h = 26 * Winsys.scale;
-		int scrheight = Winsys.resolution.height;
-
-		glDisable (GL_TEXTURE_2D);
-		glColor(colYellow);
-		const GLshort vtx[] = {
-			x,     scrheight - mouseRect.top - h - 9,
-			x + w, scrheight - mouseRect.top - h - 9,
-			x + w, scrheight - mouseRect.top - 9,
-			x,     scrheight - mouseRect.top - 9
-		};
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glVertexPointer(2, GL_SHORT, 0, vtx);
-		glDrawArrays(GL_TRIANGLE_FAN, 0, 4);
-		glDisableClientState(GL_VERTEX_ARRAY);
-		glEnable (GL_TEXTURE_2D);
+		Winsys.draw(cursorShape);
 	}
 }
 
 void TTextField::TextEnter(char key) {
-	string text_ = text.toAnsiString();
-	text_.insert(cursorPos, 1, key);
-	text = text_;
-	cursorPos++;
+	if (key != '\b') {
+		string text_ = text.toAnsiString();
+		text_.insert(cursorPos, 1, key);
+		text = text_;
+		SetCursorPos(cursorPos+1);
+	}
+}
+
+void TTextField::SetCursorPos(size_t new_pos) {
+	cursorPos = new_pos;
+
+	int x = mouseRect.left + 20 - 2;
+	if (cursorPos != 0) {
+		string temp = text.toAnsiString().substr(0, cursorPos);
+		x += FT.GetTextWidth(temp);
+	}
+
+	cursorShape.setPosition(x, mouseRect.top + 9);
 }
 
 void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
@@ -240,19 +237,19 @@ void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 			if (cursorPos < text.getSize()) text.erase (cursorPos, 1);
 			break;
 		case sf::Keyboard::BackSpace:
-			if (cursorPos > 0) { text.erase (cursorPos-1, 1); cursorPos--; }
+			if (cursorPos > 0) { text.erase(cursorPos - 1, 1); SetCursorPos(cursorPos - 1); }
 			break;
 		case sf::Keyboard::Right:
-			if (cursorPos < text.getSize()) cursorPos++;
+			if (cursorPos < text.getSize()) SetCursorPos(cursorPos + 1);
 			break;
 		case sf::Keyboard::Left:
-			if (cursorPos > 0) cursorPos--;
+			if (cursorPos > 0) SetCursorPos(cursorPos - 1);
 			break;
 		case sf::Keyboard::Home:
-			cursorPos = 0;
+			SetCursorPos(0);
 			break;
 		case sf::Keyboard::End:
-			cursorPos = text.getSize();
+			SetCursorPos(text.getSize());
 			break;
 	}
 }
@@ -266,6 +263,7 @@ void TTextField::UpdateCursor(double timestep) {
 }
 
 TTextField* AddTextField(const sf::String& text, int x, int y, int width, int height) {
+	locked_LR = true;
 	return static_cast<TTextField*>(AddWidget(new TTextField(x, y, width, height, text)));
 }
 
@@ -312,7 +310,7 @@ bool TCheckbox::Click(int x, int y) {
 void TCheckbox::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (released) return;
 
-	if (key == sf::Keyboard::Space || key == sf::Keyboard::Right || key == sf::Keyboard::Left) {
+	if (key == sf::Keyboard::Space || key == sf::Keyboard::Return) {
 		checked = !checked;
 	}
 }
@@ -470,14 +468,14 @@ bool TUpDown::Click(int x, int y) {
 void TUpDown::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	if (released) return;
 
-	if (key == sf::Keyboard::Up || key == sf::Keyboard::Right) { // Arrow down/left
+	if (key == sf::Keyboard::Up) { // Arrow up
 		if (value > minimum) {
 			value--;
 			up.SetActive(true);
 			if (value == minimum)
 				down.SetActive(false);
 		}
-	} else if (key == sf::Keyboard::Down || key == sf::Keyboard::Left) { // Arrow up/right
+	} else if (key == sf::Keyboard::Down) { // Arrow down
 		if (value < maximum) {
 			value++;
 			down.SetActive(true);
@@ -515,6 +513,7 @@ void TUpDown::SetMaximum(int max_) {
 }
 
 TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distance) {
+	locked_UD = true;
 	return static_cast<TUpDown*>(AddWidget(new TUpDown(x, y, minimum, maximum, value, distance)));
 }
 
@@ -624,9 +623,12 @@ void DrawGUI() {
 
 TWidget* ClickGUI(int x, int y) {
 	TWidget* clicked = NULL;
-	for (size_t i = 0; i < Widgets.size(); i++)
-		if (Widgets[i]->Click(x, y))
+	for (size_t i = 0; i < Widgets.size(); i++) {
+		if (Widgets[i]->Click(x, y)) {
 			clicked = Widgets[i];
+			lock_focussed = focussed;
+		}
+	}
 	return clicked;
 }
 
@@ -660,6 +662,22 @@ TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released) {
 				else
 					IncreaseFocus();
 				break;
+			case sf::Keyboard::Up:
+				if (!locked_UD)
+					DecreaseFocus();
+				break;
+			case sf::Keyboard::Left:
+				if (!locked_LR)
+					DecreaseFocus();
+				break;
+			case sf::Keyboard::Down:
+				if (!locked_UD)
+					IncreaseFocus();
+				break;
+			case sf::Keyboard::Right:
+				if (!locked_LR)
+					IncreaseFocus();
+				break;
 			default:
 				break;
 		}
@@ -681,13 +699,18 @@ void SetFocus(TWidget* widget) {
 	if (!widget)
 		focussed = -1;
 	else
-		for (int i = 0; i < (int)Widgets.size(); i++)
+		for (int i = 0; i < (int) Widgets.size(); i++) {
 			if (Widgets[i] == widget) {
 				Widgets[i]->focus = true;
 				Widgets[i]->Focussed();
 				focussed = i;
 				break;
 			}
+			else if (Widgets[i]->focus) {
+				Widgets[i]->focus = false;
+				Widgets[i]->Focussed();
+			}
+		}
 }
 
 void IncreaseFocus() {
@@ -751,6 +774,7 @@ void ResetGUI () {
 	Widgets.clear();
 	focussed = 0;
 	lock_focussed = -1;
+	locked_LR = locked_UD = false;
 }
 
 // ------------------ new ---------------------------------------------

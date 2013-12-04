@@ -88,7 +88,7 @@ static int prevleft, prevtop, prevwidth;
 void CNewPlayer::Enter() {
 	Winsys.KeyRepeat (true);
 	Winsys.ShowCursor (!param.ice_cursor);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 
 	int framewidth = 400 * Winsys.scale;
 	int frameheight = 50 * Winsys.scale;

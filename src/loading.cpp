@@ -37,13 +37,10 @@ CLoading Loading;
 // ====================================================================
 void CLoading::Enter() {
 	Winsys.ShowCursor (false);
-	Music.Play ("loading", -1);
+	Music.Play ("loading", true);
 }
 
 void CLoading::Loop(double time_step) {
-	TCourse *CourseList = &Course.CourseList[0];
-	string msg = Trans.Text(29) + ' ' + g_game.course->name;
-
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 
@@ -52,16 +49,15 @@ void CLoading::Loop(double time_step) {
 		draw_ui_snow ();
 	}
 
-	sf::Sprite logo;
-	logo.setTexture(Tex.GetSFTexture(TEXLOGO));
+	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
 	logo.setScale(0.35, 0.35);
 	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width*0.35) / 2, 40);
 	Winsys.draw(logo);
 	DrawGUIFrame();
 
 	FT.SetColor (colDYell);
-	FT.AutoSizeN (5);
-	FT.DrawString (CENTER, AutoYPosN (60), msg);
+	FT.AutoSizeN(5);
+	FT.DrawString(CENTER, AutoYPosN(60), Trans.Text(29) + " '" + g_game.course->name + '\'');
 	FT.SetColor (colWhite);
 	FT.DrawString (CENTER, AutoYPosN (70), Trans.Text (30));
 	Winsys.SwapBuffers ();

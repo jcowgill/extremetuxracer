@@ -102,10 +102,13 @@ TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize
 
 class TTextField : public TWidget {
 	sf::String text;
+	sf::RectangleShape cursorShape;
 	size_t cursorPos;
 	size_t maxLng;
 	double time;
 	bool cursor;
+
+	void TTextField::SetCursorPos(size_t new_pos);
 public:
 	TTextField(int x, int y, int width, int height, const sf::String& text_);
 	void Draw() const;

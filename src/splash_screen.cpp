@@ -36,22 +36,10 @@ GNU General Public License for more details.
 
 CSplashScreen SplashScreen;
 
-void CSplashScreen::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
-	if (release) return;
-	switch (key) {
-		case sf::Keyboard::Escape:
-			State::manager.RequestQuit();
-			break;
-		case sf::Keyboard::Return:
-			State::manager.RequestEnterState (Regist);
-			break;
-	}
-}
-
 
 void CSplashScreen::Enter() {
 	Winsys.ShowCursor (!param.ice_cursor);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 }
 
 void CSplashScreen::Loop(double timestep) {

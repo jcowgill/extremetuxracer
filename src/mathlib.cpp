@@ -34,19 +34,17 @@ TVector3d ProjectToPlane (const TVector3d& nml, const TVector3d& v) {
 
 
 TVector3d TransformVector(const TMatrix<4, 4>& mat, const TVector3d& v) {
-	TVector3d r;
-	r.x = v.x * mat[0][0] + v.y * mat[1][0] + v.z * mat[2][0];
-	r.y = v.x * mat[0][1] + v.y * mat[1][1] + v.z * mat[2][1];
-	r.z = v.x * mat[0][2] + v.y * mat[1][2] + v.z * mat[2][2];
-	return r;
+	return TVector3d(
+		v.x * mat[0][0] + v.y * mat[1][0] + v.z * mat[2][0],
+		v.x * mat[0][1] + v.y * mat[1][1] + v.z * mat[2][1],
+		v.x * mat[0][2] + v.y * mat[1][2] + v.z * mat[2][2]);
 }
 
 TVector3d TransformNormal(const TVector3d& n, const TMatrix<4, 4>& mat) {
-	TVector3d r;
-	r.x = n.x * mat[0][0] + n.y * mat[0][1] + n.z * mat[0][2];
-	r.y = n.x * mat[1][0] + n.y * mat[1][1] + n.z * mat[1][2];
-	r.z = n.x * mat[2][0] + n.y * mat[2][1] + n.z * mat[2][2];
-	return r;
+	return TVector3d(
+		n.x * mat[0][0] + n.y * mat[0][1] + n.z * mat[0][2],
+		n.x * mat[1][0] + n.y * mat[1][1] + n.z * mat[1][2],
+		n.x * mat[2][0] + n.y * mat[2][1] + n.z * mat[2][2]);
 }
 
 TVector3d TransformPoint(const TMatrix<4, 4>& mat, const TVector3d& p) {
@@ -152,12 +150,11 @@ TMatrix<4, 4> RotateAboutVectorMatrix(const TVector3d& u, double angle) {
 }
 
 TQuaternion MultiplyQuaternions (const TQuaternion& q, const TQuaternion& r) {
-	TQuaternion res;
-	res.x = q.y * r.z - q.z * r.y + r.w * q.x + q.w * r.x;
-	res.y = q.z * r.x - q.x * r.z + r.w * q.y + q.w * r.y;
-	res.z = q.x * r.y - q.y * r.x + r.w * q.z + q.w * r.z;
-	res.w = q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z;
-	return res;
+	return TQuaternion(
+		q.y * r.z - q.z * r.y + r.w * q.x + q.w * r.x,
+		q.z * r.x - q.x * r.z + r.w * q.y + q.w * r.y,
+		q.x * r.y - q.y * r.x + r.w * q.z + q.w * r.z,
+		q.w * r.w - q.x * r.x - q.y * r.y - q.z * r.z);
 }
 
 TQuaternion ConjugateQuaternion (const TQuaternion& q) {

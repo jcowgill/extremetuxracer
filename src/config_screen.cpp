@@ -96,11 +96,9 @@ void SetConfig () {
 void CGameConfig::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 
-	if (key != sf::Keyboard::Up && key != sf::Keyboard::Down)
-		KeyGUI(key, 0, release);
 	switch (key) {
-		case sf::Keyboard::Q:
-			State::manager.RequestQuit();
+		case sf::Keyboard::U:
+			param.ui_snow = !param.ui_snow;
 			break;
 		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (*State::manager.PreviousState());
@@ -111,11 +109,8 @@ void CGameConfig::Keyb (sf::Keyboard::Key key, bool special, bool release, int x
 			else if (textbuttons[1]->focussed())
 				SetConfig ();
 			break;
-		case sf::Keyboard::Up:
-			DecreaseFocus();
-			break;
-		case sf::Keyboard::Down:
-			IncreaseFocus();
+		default:
+			KeyGUI(key, 0, release);
 			break;
 	}
 }
@@ -173,7 +168,7 @@ void CGameConfig::Enter() {
 	for (int i = 0; i < 5; i++)
 		descriptions[i] = AddLabel(Trans.Text(32 + i), area.left, area.top + dd*(i + 1), colWhite);
 
-	Music.Play (param.config_music, -1);
+	Music.Play(param.config_music, true);
 }
 
 void CGameConfig::Loop (double time_step) {

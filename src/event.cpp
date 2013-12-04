@@ -40,7 +40,6 @@ CEvent Event;
 
 // ready: 0 - racing  1 - ready with success  2 - ready with failure
 static int ready = 0; // indicates if last race is done
-static TWidget* curr_focus = 0;
 static TCup *ecup = 0;
 static size_t curr_race = 0;
 static size_t curr_bonus = 0;
@@ -69,29 +68,17 @@ void CEvent::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Return:
-			if (curr_focus == textbuttons[0] && ready < 1) StartRace ();
+			if (textbuttons[0]->focussed() && ready < 1) StartRace ();
 			else State::manager.RequestEnterState (EventSelect);
 			break;
 		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState (EventSelect);
 			break;
-		case sf::Keyboard::Tab:
-			if (ready > 0) {
-				curr_focus = textbuttons[2];
-			} else {
-				if (curr_focus == textbuttons[0]) curr_focus = textbuttons[1];
-				else curr_focus = textbuttons[0];
-			}
-			break;
-		case sf::Keyboard::Left:
-			if (curr_focus == textbuttons[0]) curr_focus = textbuttons[1];
-			break;
-		case sf::Keyboard::Right:
-			if (curr_focus == textbuttons[1]) curr_focus = textbuttons[0];
-			break;
 		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
 			break;
+		default:
+			KeyGUI(key, 0, release);
 	}
 }
 
@@ -107,8 +94,7 @@ void CEvent::Mouse (int button, int state, int x, int y) {
 }
 
 void CEvent::Motion (int x, int y) {
-	TWidget* foc = MouseMoveGUI(x, y);
-	if (foc != 0) curr_focus = foc;
+	MouseMoveGUI(x, y);
 
 	if (param.ui_snow) push_ui_snow (cursor_pos);
 }
@@ -118,7 +104,6 @@ void InitCupRacing () {
 	curr_race = 0;
 	curr_bonus = ecup->races.size();
 	ready = 0;
-	curr_focus = 0;
 }
 
 void UpdateCupRacing () {
@@ -144,7 +129,7 @@ void UpdateCupRacing () {
 
 static TArea area;
 static int messtop, messtop2;
-static int bonustop, framewidth, frametop, framebottom;
+static int bonustop, framewidth, frametop;
 static int dist, texsize;
 
 void CEvent::Enter () {
@@ -162,7 +147,7 @@ void CEvent::Enter () {
 	texsize = 32 * Winsys.scale;
 	if (texsize < 32) texsize = 32;
 	dist = texsize + 2 * 4;
-	framebottom = frametop + (int)ecup->races.size() * dist + 10;
+	int framebottom = frametop + (int) ecup->races.size() * dist + 10;
 
 	ResetGUI ();
 	int siz = FT.AutoSizeN (5);
@@ -189,9 +174,7 @@ void CEvent::Enter () {
 	info += "  " + Trans.Text(14);
 	info2 = AddLabel(info, CENTER, framebottom + 15 + ddd, colDBlue);
 
-	Music.Play (param.menu_music, -1);
-	if (ready < 1) curr_focus = textbuttons[0];
-	else curr_focus = textbuttons[2];
+	Music.Play(param.menu_music, true);
 }
 
 int resultlevel (size_t num, size_t numraces) {
@@ -251,6 +234,9 @@ void CEvent::Loop (double timestep) {
 	textbuttons[0]->SetVisible(ready < 1);
 	textbuttons[1]->SetVisible(ready < 1);
 	textbuttons[2]->SetVisible(!(ready < 1));
+	textbuttons[0]->SetActive(ready < 1);
+	textbuttons[1]->SetActive(ready < 1);
+	textbuttons[2]->SetActive(!(ready < 1));
 
 	DrawGUI ();
 	Winsys.SwapBuffers();

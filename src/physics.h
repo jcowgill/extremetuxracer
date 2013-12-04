@@ -97,7 +97,7 @@ private:
 	TVector3d CalcNetForce (const TVector3d& pos, const TVector3d& vel);
 	TVector3d CalcFinishForce (const TVector3d& pos, const TVector3d& vel);
 
-	void     AdjustVelocity (const TPlane& surf_plane);
+	void     AdjustVelocity ();
 	void     AdjustPosition (const TPlane& surf_plane, double dist_from_surface);
 	void     SetTuxPosition (double speed);
 	double   AdjustTimeStep (double h, const TVector3d& vel);

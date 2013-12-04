@@ -282,6 +282,8 @@ bool CMusic::PlayTheme (size_t theme, ESituation situation) {
 }
 
 void CMusic::Halt () {
-	curr_music->stop();
-	curr_music = NULL;
+	if (curr_music) {
+		curr_music->stop();
+		curr_music = NULL;
+	}
 }

@@ -34,14 +34,18 @@ GNU General Public License for more details.
 
 CEventSelect EventSelect;
 
-static TEvent *EventList;
 static TUpDown* event;
 static TUpDown* cup;
 static TWidget* textbuttons[2];
+static TLabel* selectEvent;
+static TLabel* selectCup;
+static TFramedText* selectedEvent;
+static TFramedText* selectedCup;
+static TLabel* cupLocked;
 
 void EnterEvent () {
 	g_game.game_type = CUPRACING;
-	g_game.cup = EventList[event->GetValue()].cups[cup->GetValue()];
+	g_game.cup = Events.EventList[event->GetValue()].cups[cup->GetValue()];
 	State::manager.RequestEnterState(Event);
 }
 
@@ -83,16 +87,8 @@ void CEventSelect::Motion (int x, int y) {
 	if (param.ui_snow) push_ui_snow (cursor_pos);
 }
 
-// --------------------------------------------------------------------
-static TLabel* selectEvent;
-static TLabel* selectCup;
-static TFramedText* selectedEvent;
-static TFramedText* selectedCup;
-static TLabel* cupLocked;
-
 void CEventSelect::Enter () {
 	Winsys.ShowCursor (!param.ice_cursor);
-	EventList = &Events.EventList[0];
 
 	int framewidth = 500 * Winsys.scale;
 	int frameheight = 50 * Winsys.scale;
@@ -121,7 +117,7 @@ void CEventSelect::Enter () {
 	selectedCup = AddFramedText(area.left, frametop2, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 
 	Events.MakeUnlockList (g_game.player->funlocked);
-	Music.Play (param.menu_music, -1);
+	Music.Play(param.menu_music, true);
 }
 
 void CEventSelect::Loop (double timestep) {
@@ -138,7 +134,7 @@ void CEventSelect::Loop (double timestep) {
 	cupLocked->SetVisible(Events.IsUnlocked(event->GetValue(), cup->GetValue()) == false);
 
 	selectedEvent->Focussed(event->focussed());
-	selectedEvent->SetString(EventList[event->GetValue()].name);
+	selectedEvent->SetString(Events.EventList[event->GetValue()].name);
 
 	selectedCup->SetActive(Events.IsUnlocked(event->GetValue(), cup->GetValue()));
 	selectedCup->Focussed(cup->focussed());
