@@ -42,30 +42,30 @@ sf::RenderTexture* RT = 0;
 sf::VertexArray arr(sf::Quads, 12);
 sf::RenderStates states(sf::BlendAlpha);
 
-void CCredits::LoadCreditList () {
+void CCredits::LoadCreditList() {
 	CSPList list(MAX_CREDITS);
 
-	if (!list.Load (param.data_dir, "credits.lst")) {
-		Message ("could not load credits list");
+	if (!list.Load(param.data_dir, "credits.lst")) {
+		Message("could not load credits list");
 		return;
 	}
 
 	for (size_t i=0; i<list.Count(); i++) {
 		const string& line = list.Line(i);
 		TCredits credit;
-		credit.text = SPStrN (line, "text");
+		credit.text = SPStrN(line, "text");
 
-		double offset = SPFloatN (line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
+		double offset = SPFloatN(line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
 		if (i>0) credit.offs = CreditList.back().offs + (int)offset;
 		else credit.offs = offset;
 
-		credit.col = SPIntN (line, "col", 0);
-		credit.size = SPFloatN (line, "size", 1.0);
+		credit.col = SPIntN(line, "col", 0);
+		credit.size = SPFloatN(line, "size", 1.0);
 		CreditList.push_back(credit);
 	}
 }
 
-void CCredits::DrawCreditsText (double time_step) {
+void CCredits::DrawCreditsText(double time_step) {
 	int h = Winsys.resolution.height;
 	double offs = 0.0;
 	if (moving) y_offset += time_step * 30;
@@ -94,7 +94,7 @@ void CCredits::DrawCreditsText (double time_step) {
 	if (offs < TOP_Y) y_offset = 0;
 }
 
-void CCredits::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CCredits::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::M:
@@ -108,12 +108,12 @@ void CCredits::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, i
 	}
 }
 
-void CCredits::Mouse (int button, int state, int x, int y) {
+void CCredits::Mouse(int button, int state, int x, int y) {
 	if (state == 1) State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
 void CCredits::Motion(int x, int y) {
-	if (param.ui_snow) push_ui_snow (cursor_pos);
+	if (param.ui_snow) push_ui_snow(cursor_pos);
 }
 
 void CCredits::Enter() {
@@ -156,9 +156,9 @@ void CCredits::Loop(double time_step) {
 	ClearRenderContext();
 	Winsys.clear();
 
-	DrawCreditsText (time_step);
+	DrawCreditsText(time_step);
 	if (param.ui_snow) {
-		update_ui_snow (time_step);
+		update_ui_snow(time_step);
 		draw_ui_snow();
 	}
 	DrawGUIBackground(Winsys.scale);

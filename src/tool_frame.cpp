@@ -42,19 +42,19 @@ static bool alt = false;
 static bool lastframe = 0;
 static bool keyrun = false;
 
-void InitFrameTools () {
+void InitFrameTools() {
 	framebase = (int)((Winsys.resolution.height - 350) / 18);
-	if (TestFrame.numFrames() < 1) TestFrame.AddFrame ();
+	if (TestFrame.numFrames() < 1) TestFrame.AddFrame();
 	curr_joint = 0;
-	last_joint = TestFrame.GetNumJoints () -1;
+	last_joint = TestFrame.GetNumJoints() -1;
 }
 
-void SingleFrameKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void SingleFrameKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 //PrintInt (key);
 	must_render = true;
 	int keyfact;
 	lastframe = TestFrame.numFrames() != 1;
-	TKeyframe *frame = TestFrame.GetFrame (curr_frame);
+	TKeyframe *frame = TestFrame.GetFrame(curr_frame);
 
 	// setting the camera change state
 	if (key == sf::Keyboard::F1) {GluCamera.turnright = !release; return;}
@@ -74,38 +74,38 @@ void SingleFrameKeys (sf::Keyboard::Key key, bool special, bool release, int x, 
 	switch (key) {
 		case sf::Keyboard::Y:
 		case sf::Keyboard::J:
-			if (ToolsFinalStage ()) {
-				SaveToolCharacter ();
-				SaveToolFrame ();
+			if (ToolsFinalStage()) {
+				SaveToolCharacter();
+				SaveToolFrame();
 				State::manager.RequestQuit();
 			}
 			break;
 		case sf::Keyboard::N:
-			if (ToolsFinalStage ()) State::manager.RequestQuit();
+			if (ToolsFinalStage()) State::manager.RequestQuit();
 			break;
 
 		case sf::Keyboard::Escape:
 		case sf::Keyboard::Q:
-			QuitTool ();
+			QuitTool();
 			break;
 		case sf::Keyboard::S:
-			SaveToolFrame ();
+			SaveToolFrame();
 			break;
 		case sf::Keyboard::Tab:
-			SetToolMode (0);
+			SetToolMode(0);
 			break;
 
 		case sf::Keyboard::A:
-			TestFrame.AddFrame ();
-			SetFrameChanged (true);
+			TestFrame.AddFrame();
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::Insert:
-			TestFrame.InsertFrame (curr_frame);
-			SetFrameChanged (true);
+			TestFrame.InsertFrame(curr_frame);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::Delete:
-			curr_frame = TestFrame.DeleteFrame (curr_frame);
-			SetFrameChanged (true);
+			curr_frame = TestFrame.DeleteFrame(curr_frame);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::PageDown:
 			if (curr_frame < TestFrame.numFrames()-1) curr_frame++;
@@ -122,26 +122,26 @@ void SingleFrameKeys (sf::Keyboard::Key key, bool special, bool release, int x, 
 		case sf::Keyboard::Right:
 			if (curr_joint < 4) frame->val[curr_joint] += 0.05;
 			else frame->val[curr_joint] += 1;
-			SetFrameChanged (true);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::Left:
 			if (curr_joint < 4) frame->val[curr_joint] -= 0.05;
 			else frame->val[curr_joint] -= 1;
-			SetFrameChanged (true);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::Num0:
 			frame->val[curr_joint] = 0.0;
-			SetFrameChanged (true);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::Space:
 			if (curr_joint < 4) frame->val[curr_joint] += 0.05 * keyfact;
 			else frame->val[curr_joint] += 1 * keyfact;
-			SetFrameChanged (true);
+			SetFrameChanged(true);
 			break;
 
 		case sf::Keyboard::Return:
-			TestFrame.InitTest (ref_position, &TestChar);
-			SetToolMode (2);
+			TestFrame.InitTest(ref_position, &TestChar);
+			SetToolMode(2);
 			must_render = true;
 			break;
 
@@ -152,20 +152,20 @@ void SingleFrameKeys (sf::Keyboard::Key key, bool special, bool release, int x, 
 			TestChar.useHighlighting = !TestChar.useHighlighting;
 			break;
 		case sf::Keyboard::C:
-			if (control) TestFrame.CopyToClipboard (curr_frame);
-			else TestFrame.ClearFrame (curr_frame);
-			SetFrameChanged (true);
+			if (control) TestFrame.CopyToClipboard(curr_frame);
+			else TestFrame.ClearFrame(curr_frame);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::V:
-			if (control) TestFrame.PasteFromClipboard (curr_frame);
-			SetFrameChanged (true);
+			if (control) TestFrame.PasteFromClipboard(curr_frame);
+			SetFrameChanged(true);
 			break;
 		case sf::Keyboard::P:
 			if (curr_frame>0)
-				TestFrame.CopyFrame (curr_frame-1, curr_frame);
+				TestFrame.CopyFrame(curr_frame-1, curr_frame);
 			break;
 		case sf::Keyboard::F10:
-			ScreenshotN ();
+			ScreenshotN();
 			break;
 
 		case sf::Keyboard::Num1:
@@ -195,9 +195,9 @@ void SingleFrameKeys (sf::Keyboard::Key key, bool special, bool release, int x, 
 	}
 }
 
-void SingleFrameMouse (int button, int state, int x, int y) {
+void SingleFrameMouse(int button, int state, int x, int y) {
 	must_render = true;
-	if (ToolsFinalStage ()) return;
+	if (ToolsFinalStage()) return;
 
 	if (button == 4) {
 		GluCamera.distance += 0.1;
@@ -206,77 +206,77 @@ void SingleFrameMouse (int button, int state, int x, int y) {
 	}
 }
 
-void SingleFrameMotion (int x, int y) {
+void SingleFrameMotion(int x, int y) {
 }
 
-void PrintFrameParams (int ytop, TKeyframe *frame) {
+void PrintFrameParams(int ytop, TKeyframe *frame) {
 	int offs = 18;
 
 	for (int i=0; i<=last_joint; i++) {
-		if (i == curr_joint) FT.SetColor (colYellow);
-		else FT.SetColor (colLGrey);
+		if (i == curr_joint) FT.SetColor(colYellow);
+		else FT.SetColor(colLGrey);
 
-		int x = ITrunc (i, jointbase) * 140 + 20;
-		int y = IFrac (i, jointbase) * offs + ytop;
+		int x = ITrunc(i, jointbase) * 140 + 20;
+		int y = IFrac(i, jointbase) * offs + ytop;
 
-		FT.DrawString (x, y, TestFrame.GetJointName(i));
-		if (i < 4) FT.DrawString (x+80, y, Float_StrN (frame->val[i], 2));
-		else FT.DrawString (x+80, y, Float_StrN (frame->val[i], 0));
+		FT.DrawString(x, y, TestFrame.GetJointName(i));
+		if (i < 4) FT.DrawString(x+80, y, Float_StrN(frame->val[i], 2));
+		else FT.DrawString(x+80, y, Float_StrN(frame->val[i], 0));
 	}
 }
 
-void RenderSingleFrame (double timestep) {
+void RenderSingleFrame(double timestep) {
 	if (!must_render) return;
 
 	// ------------------ 3d scenery ----------------------------------
 	ScopedRenderMode rm1(TUX);
-	ClearRenderContext (colDDBackgr);
+	ClearRenderContext(colDDBackgr);
 
-	const string& hlname = TestFrame.GetHighlightName (curr_joint);
-	TestChar.highlight_node = TestChar.GetNodeName (hlname);
+	const string& hlname = TestFrame.GetHighlightName(curr_joint);
+	TestChar.highlight_node = TestChar.GetNodeName(hlname);
 
-	glPushMatrix ();
-	SetToolLight ();
-	GluCamera.Update (timestep);
+	glPushMatrix();
+	SetToolLight();
+	GluCamera.Update(timestep);
 
-	TestFrame.CalcKeyframe (curr_frame, &TestChar, ref_position);
-	TestChar.Draw ();
-	glPopMatrix ();
+	TestFrame.CalcKeyframe(curr_frame, &TestChar, ref_position);
+	TestChar.Draw();
+	glPopMatrix();
 
 	// ----------------- 2d screen ------------------------------------
-	Setup2dScene ();
+	Setup2dScene();
 	ScopedRenderMode rm2(TEXFONT);
 
-	if (FrameHasChanged ()) DrawChanged ();
+	if (FrameHasChanged()) DrawChanged();
 
 	FT.SetProps("bold", 20, colYellow);
-	FT.DrawString (-1, 10, "Keyframe mode");
+	FT.DrawString(-1, 10, "Keyframe mode");
 
 	FT.SetProps("normal", 16);
 	for (size_t i=0; i<TestFrame.numFrames(); i++) {
 		if (i != curr_frame) {
-			FT.SetColor (colLGrey);
-			FT.SetFont ("normal");
+			FT.SetColor(colLGrey);
+			FT.SetFont("normal");
 		} else {
-			FT.SetColor (colYellow);
-			FT.SetFont ("bold");
+			FT.SetColor(colYellow);
+			FT.SetFont("bold");
 		}
-		int xl = ITrunc ((int)i, framebase) * 100 + 20;
-		int yt = IFrac ((int)i, framebase) * 18 + 20;
-		FT.DrawString (xl, yt, Int_StrN ((int)i));
+		int xl = ITrunc((int)i, framebase) * 100 + 20;
+		int yt = IFrac((int)i, framebase) * 18 + 20;
+		FT.DrawString(xl, yt, Int_StrN((int)i));
 	}
 
-	FT.SetFont ("normal");
-	FT.SetColor (colLGrey);
-	PrintFrameParams (Winsys.resolution.height - 330, TestFrame.GetFrame (curr_frame));
+	FT.SetFont("normal");
+	FT.SetColor(colLGrey);
+	PrintFrameParams(Winsys.resolution.height - 330, TestFrame.GetFrame(curr_frame));
 
-	if (ToolsFinalStage ()) {
-		FT.SetSize (20);
-		FT.SetColor (colYellow);
-		FT.DrawString (-1, Winsys.resolution.height - 50, "Quit program. Save character list (y/n)");
+	if (ToolsFinalStage()) {
+		FT.SetSize(20);
+		FT.SetColor(colYellow);
+		FT.DrawString(-1, Winsys.resolution.height - 50, "Quit program. Save character list (y/n)");
 	}
 
-	Reshape (Winsys.resolution.width, Winsys.resolution.height);
+	Reshape(Winsys.resolution.width, Winsys.resolution.height);
 	Winsys.SwapBuffers();
 	must_render = false;
 }
@@ -286,7 +286,7 @@ void RenderSingleFrame (double timestep) {
 //				frame sequence
 // --------------------------------------------------------------------
 
-void SequenceKeys (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void SequenceKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Return:
@@ -294,32 +294,32 @@ void SequenceKeys (sf::Keyboard::Key key, bool special, bool release, int x, int
 			break;
 		case sf::Keyboard::Escape:
 		case sf::Keyboard::Tab:
-			SetToolMode (1);
+			SetToolMode(1);
 			break;
 		case sf::Keyboard::Q:
-			QuitTool ();
+			QuitTool();
 			break;
 	}
 }
 
-void SequenceMouse (int button, int state, int x, int y) {}
-void SequenceMotion (int x, int y) {}
+void SequenceMouse(int button, int state, int x, int y) {}
+void SequenceMotion(int x, int y) {}
 
-void RenderSequence (double timestep) {
+void RenderSequence(double timestep) {
 	ScopedRenderMode rm(TUX);
-	ClearRenderContext (colDDBackgr);
+	ClearRenderContext(colDDBackgr);
 
-	GluCamera.Update (timestep);
-	if (TestFrame.active) TestFrame.UpdateTest (timestep, &TestChar);
+	GluCamera.Update(timestep);
+	if (TestFrame.active) TestFrame.UpdateTest(timestep, &TestChar);
 	else if (keyrun) {
-		TestFrame.InitTest (NullVec3, &TestChar);
+		TestFrame.InitTest(NullVec3, &TestChar);
 		keyrun = false;
 	}
 
-	glPushMatrix ();
-	TestChar.Draw ();
-	glPopMatrix ();
+	glPushMatrix();
+	TestChar.Draw();
+	glPopMatrix();
 
-	Reshape (Winsys.resolution.width, Winsys.resolution.height);
+	Reshape(Winsys.resolution.width, Winsys.resolution.height);
 	Winsys.SwapBuffers();
 }

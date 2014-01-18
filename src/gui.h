@@ -195,16 +195,16 @@ void ResetGUI();
 
 // --------------------------------------------------------------------
 
-void DrawFrameX (int x, int y, int w, int h, int line,
-                 const sf::Color& backcol, const sf::Color& framecol, double transp);
-void DrawBonusExt (int y, size_t numraces, size_t num);
+void DrawFrameX(int x, int y, int w, int h, int line,
+                const sf::Color& backcol, const sf::Color& framecol, double transp);
+void DrawBonusExt(int y, size_t numraces, size_t num);
 void DrawGUIBackground(float scale);
 void DrawGUIFrame();
 void DrawCursor();
 
 // --------------------------------------------------------------------
 
-int AutoYPosN (double percent);
-TArea AutoAreaN (double top_perc, double bott_perc, int w);
+int AutoYPosN(double percent);
+TArea AutoAreaN(double top_perc, double bott_perc, int w);
 
 #endif

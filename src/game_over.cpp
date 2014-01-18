@@ -45,25 +45,25 @@ CGameOver GameOver;
 static CKeyframe *final_frame;
 static int highscore_pos = MAX_SCORES;
 
-void QuitGameOver () {
+void QuitGameOver() {
 	if (g_game.game_type == PRACTICING) {
-		State::manager.RequestEnterState (RaceSelect);
+		State::manager.RequestEnterState(RaceSelect);
 	} else {
-		State::manager.RequestEnterState (Event);
+		State::manager.RequestEnterState(Event);
 	}
 }
 
-void CGameOver::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CGameOver::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
-	if (key == 13 || key == sf::Keyboard::Escape) QuitGameOver ();
+	if (key == 13 || key == sf::Keyboard::Escape) QuitGameOver();
 }
 
-void CGameOver::Mouse (int button, int state, int x, int y) {
-	QuitGameOver ();
+void CGameOver::Mouse(int button, int state, int x, int y) {
+	QuitGameOver();
 }
 
 
-void GameOverMessage (const CControl *ctrl) {
+void GameOverMessage(const CControl *ctrl) {
 	int fwidth = 500;
 
 	int leftframe = (Winsys.resolution.width - fwidth) / 2;
@@ -72,71 +72,71 @@ void GameOverMessage (const CControl *ctrl) {
 	const sf::Color& backcol = colWhite;
 	static const sf::Color framecol(0.7*255, 0.7*255, 1*255);
 
-	if (param.use_papercut_font > 0) FT.SetSize (28);
-	else FT.SetSize (22);
+	if (param.use_papercut_font > 0) FT.SetSize(28);
+	else FT.SetSize(22);
 	if (g_game.raceaborted) {
-		DrawFrameX (leftframe, topframe, fwidth, 100, 4, backcol, framecol, 0.5);
-		FT.SetColor (colDBlue);
-		FT.DrawString (CENTER, topframe+30, Trans.Text(25));
+		DrawFrameX(leftframe, topframe, fwidth, 100, 4, backcol, framecol, 0.5);
+		FT.SetColor(colDBlue);
+		FT.DrawString(CENTER, topframe+30, Trans.Text(25));
 	} else {
 		int firstMarker = leftframe + 60;
 		int secondMarker = leftframe + 310;
 		DrawFrameX(leftframe, topframe, fwidth, 210, 4, backcol, framecol, 0.5);
 
-		if (param.use_papercut_font > 0) FT.SetSize (20);
-		else FT.SetSize (14);
-		if (g_game.race_result >= 0 || g_game.game_type != CUPRACING) FT.SetColor (colDBlue);
-		else FT.SetColor (colDRed);
+		if (param.use_papercut_font > 0) FT.SetSize(20);
+		else FT.SetSize(14);
+		if (g_game.race_result >= 0 || g_game.game_type != CUPRACING) FT.SetColor(colDBlue);
+		else FT.SetColor(colDRed);
 
 		string line = Trans.Text(84) + ":  ";
 		FT.DrawString(firstMarker, topframe + 15, line);
-		line = Int_StrN (g_game.score);
+		line = Int_StrN(g_game.score);
 		line += "  pts";
 		FT.DrawString(secondMarker, topframe + 15, line);
 
 		line = Trans.Text(85) + ":  ";
 		FT.DrawString(firstMarker, topframe + 40, line);
-		line = Int_StrN (g_game.herring);
+		line = Int_StrN(g_game.herring);
 		if (g_game.game_type == CUPRACING) {
 			line += "  (";
-			line += Int_StrN (g_game.race->herrings.x);
+			line += Int_StrN(g_game.race->herrings.x);
 			line += ')';
 		}
 		FT.DrawString(secondMarker, topframe + 40, line);
 
 		line = Trans.Text(86) + ":  ";
 		FT.DrawString(firstMarker, topframe + 65, line);
-		line = Float_StrN (g_game.time, 2);
+		line = Float_StrN(g_game.time, 2);
 		line += "  s";
 		if (g_game.game_type == CUPRACING) {
 			line += "  (";
-			line += Float_StrN (g_game.race->time.x, 2);
+			line += Float_StrN(g_game.race->time.x, 2);
 			line += ')';
 		}
 		FT.DrawString(secondMarker, topframe + 65, line);
 
 		line = Trans.Text(87) + ":  ";
 		FT.DrawString(firstMarker, topframe + 90, line);
-		line = Float_StrN (ctrl->way, 2);
+		line = Float_StrN(ctrl->way, 2);
 		line += "  m";
 		FT.DrawString(secondMarker, topframe + 90, line);
 
 		line = Trans.Text(88) + ":  ";
 		FT.DrawString(firstMarker, topframe + 115, line);
-		line = Float_StrN (ctrl->way / g_game.time * 3.6, 2);
+		line = Float_StrN(ctrl->way / g_game.time * 3.6, 2);
 		line += "  km/h";
 		FT.DrawString(secondMarker, topframe + 115, line);
 
-		if (param.use_papercut_font > 0) FT.SetSize (28);
-		else FT.SetSize (22);
+		if (param.use_papercut_font > 0) FT.SetSize(28);
+		else FT.SetSize(22);
 		if (g_game.game_type == CUPRACING) {
 			FT.DrawString(CENTER, topframe + 150, Trans.Text(22 + g_game.race_result)); // Text IDs 21 - 24; race_results is in [-1; 2]
 		} else {
 			if (highscore_pos < MAX_SCORES) {
 				line = Trans.Text(89) + ' ';
-				line += Int_StrN (highscore_pos + 1);
+				line += Int_StrN(highscore_pos + 1);
 				line += ' ' + Trans.Text(90);
-				FT.DrawString (CENTER, topframe+150, line);
+				FT.DrawString(CENTER, topframe+150, line);
 			}
 		}
 	}
@@ -144,19 +144,19 @@ void GameOverMessage (const CControl *ctrl) {
 
 // =========================================================================
 void CGameOver::Enter() {
-	if (!g_game.raceaborted) highscore_pos = Score.CalcRaceResult ();
+	if (!g_game.raceaborted) highscore_pos = Score.CalcRaceResult();
 
 	if (g_game.game_type == CUPRACING) {
 		if (g_game.race_result >= 0) {
-			Music.PlayTheme (g_game.theme_id, MUS_WONRACE);
+			Music.PlayTheme(g_game.theme_id, MUS_WONRACE);
 		} else {
-			Music.PlayTheme (g_game.theme_id, MUS_LOSTRACE);
+			Music.PlayTheme(g_game.theme_id, MUS_LOSTRACE);
 		}
 	} else {
 		if (g_game.raceaborted) {
-			Music.PlayTheme (g_game.theme_id, MUS_LOSTRACE);
+			Music.PlayTheme(g_game.theme_id, MUS_LOSTRACE);
 		} else {
-			Music.PlayTheme (g_game.theme_id, MUS_WONRACE);
+			Music.PlayTheme(g_game.theme_id, MUS_WONRACE);
 		}
 	}
 
@@ -172,10 +172,10 @@ void CGameOver::Enter() {
 
 		if (!g_game.raceaborted) {
 			const CControl *ctrl = g_game.player->ctrl;
-			final_frame->Init (ctrl->cpos, -0.18);
+			final_frame->Init(ctrl->cpos, -0.18);
 		}
 	}
-	SetStationaryCamera (true);
+	SetStationaryCamera(true);
 }
 
 
@@ -184,25 +184,25 @@ void CGameOver::Loop(double time_step) {
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;
 
-	ClearRenderContext ();
-	Env.SetupFog ();
+	ClearRenderContext();
+	Env.SetupFog();
 
-	update_view (ctrl, 0);
+	update_view(ctrl, 0);
 
-	if (final_frame != NULL) final_frame->Update (time_step);
+	if (final_frame != NULL) final_frame->Update(time_step);
 
-	SetupViewFrustum (ctrl);
-	Env.DrawSkybox (ctrl->viewpos);
-	Env.DrawFog ();
-	Env.SetupLight ();
+	SetupViewFrustum(ctrl);
+	Env.DrawSkybox(ctrl->viewpos);
+	Env.DrawFog();
+	Env.SetupLight();
 
-	RenderCourse ();
-	DrawTrackmarks ();
-	DrawTrees ();
+	RenderCourse();
+	DrawTrackmarks();
+	DrawTrees();
 
-	UpdateWind (time_step);
-	UpdateSnow (time_step, ctrl);
-	DrawSnow (ctrl);
+	UpdateWind(time_step);
+	UpdateSnow(time_step, ctrl);
+	DrawSnow(ctrl);
 
 	g_game.character->shape->Draw();
 
@@ -212,7 +212,7 @@ void CGameOver::Loop(double time_step) {
 			if (!final_frame->active) GameOverMessage(ctrl);
 		} else GameOverMessage(ctrl);
 	}
-	DrawHud (ctrl);
-	Reshape (width, height);
-	Winsys.SwapBuffers ();
+	DrawHud(ctrl);
+	Reshape(width, height);
+	Winsys.SwapBuffers();
 }

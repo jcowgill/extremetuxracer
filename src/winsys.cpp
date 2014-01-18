@@ -31,7 +31,7 @@ TVector2i cursor_pos(0, 0);
 
 CWinsys Winsys;
 
-CWinsys::CWinsys ()
+CWinsys::CWinsys()
 	: sfmlRenders(false)
 	, auto_resolution(800, 600) {
 	for (int i = 0; i < 8; i++) {
@@ -54,26 +54,26 @@ CWinsys::CWinsys ()
 	resolutions[9] = TScreenRes(1680, 1050);
 }
 
-const TScreenRes& CWinsys::GetResolution (size_t idx) const {
+const TScreenRes& CWinsys::GetResolution(size_t idx) const {
 	if (idx >= NUM_RESOLUTIONS || (idx == 0 && !param.fullscreen)) return auto_resolution;
 	return resolutions[idx];
 }
 
-string CWinsys::GetResName (size_t idx) const {
+string CWinsys::GetResName(size_t idx) const {
 	if (idx >= NUM_RESOLUTIONS) return "800 x 600";
 	if (idx == 0) return ("auto");
-	string line = Int_StrN (resolutions[idx].width);
-	line += " x " + Int_StrN (resolutions[idx].height);
+	string line = Int_StrN(resolutions[idx].width);
+	line += " x " + Int_StrN(resolutions[idx].height);
 	return line;
 }
 
-double CWinsys::CalcScreenScale () const {
+double CWinsys::CalcScreenScale() const {
 	if (resolution.height < 768) return 0.78;
 	else if (resolution.height == 768) return 1.0;
 	else return (resolution.height / 768);
 }
 
-void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
+void CWinsys::SetupVideoMode(const TScreenRes& resolution_) {
 	int bpp = 32;
 	switch (param.bpp_mode) {
 		case 16:
@@ -103,41 +103,41 @@ void CWinsys::SetupVideoMode (const TScreenRes& resolution_) {
 	if (param.framerate)
 		window.setFramerateLimit(param.framerate);
 
-	scale = CalcScreenScale ();
-	if (param.use_quad_scale) scale = sqrt (scale);
+	scale = CalcScreenScale();
+	if (param.use_quad_scale) scale = sqrt(scale);
 }
 
-void CWinsys::SetupVideoMode (size_t idx) {
-	SetupVideoMode (GetResolution(idx));
+void CWinsys::SetupVideoMode(size_t idx) {
+	SetupVideoMode(GetResolution(idx));
 }
 
-void CWinsys::SetupVideoMode (int width, int height) {
-	SetupVideoMode (TScreenRes(width, height));
+void CWinsys::SetupVideoMode(int width, int height) {
+	SetupVideoMode(TScreenRes(width, height));
 }
 
-void CWinsys::Init () {
+void CWinsys::Init() {
 	SetupVideoMode(GetResolution(param.res_type));
 
-	KeyRepeat (false);
+	KeyRepeat(false);
 }
 
-void CWinsys::KeyRepeat (bool repeat) {
+void CWinsys::KeyRepeat(bool repeat) {
 	window.setKeyRepeatEnabled(repeat);
 }
 
-void CWinsys::Quit () {
-	Score.SaveHighScore ();
-	SaveMessages ();
-	if (g_game.argument < 1) Players.SavePlayers ();
+void CWinsys::Quit() {
+	Score.SaveHighScore();
+	SaveMessages();
+	if (g_game.argument < 1) Players.SavePlayers();
 	window.close();
 }
 
-void CWinsys::Terminate () {
+void CWinsys::Terminate() {
 	Quit();
 	exit(0);
 }
 
-void CWinsys::PrintJoystickInfo () const {
+void CWinsys::PrintJoystickInfo() const {
 	if (numJoysticks == 0) {
 		cout << "No joystick found\n";
 		return;

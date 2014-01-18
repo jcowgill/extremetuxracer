@@ -52,7 +52,7 @@ CSound::~CSound() {
 	FreeSounds();
 }
 
-bool CSound::LoadChunk (const std::string& name, const std::string& filename) {
+bool CSound::LoadChunk(const std::string& name, const std::string& filename) {
 	sounds.push_back(new TSound(param.sound_volume));
 	if (!sounds.back()->data.loadFromFile(filename)) // Try loading sound buffer
 		return false;
@@ -62,20 +62,20 @@ bool CSound::LoadChunk (const std::string& name, const std::string& filename) {
 }
 
 // Load all soundfiles listed in "/sounds/sounds.lst"
-void CSound::LoadSoundList () {
+void CSound::LoadSoundList() {
 	CSPList list(200);
-	if (list.Load (param.sounds_dir, "sounds.lst")) {
+	if (list.Load(param.sounds_dir, "sounds.lst")) {
 		for (size_t i=0; i<list.Count(); i++) {
 			const string& line = list.Line(i);
-			string name = SPStrN (line, "name");
-			string soundfile = SPStrN (line, "file");
-			string path = MakePathStr (param.sounds_dir, soundfile);
-			LoadChunk (name, path);
+			string name = SPStrN(line, "name");
+			string soundfile = SPStrN(line, "file");
+			string path = MakePathStr(param.sounds_dir, soundfile);
+			LoadChunk(name, path);
 		}
 	}
 }
 
-void CSound::FreeSounds () {
+void CSound::FreeSounds() {
 	HaltAll();
 	for (size_t i = 0; i < sounds.size(); i++)
 		delete sounds[i];
@@ -83,7 +83,7 @@ void CSound::FreeSounds () {
 	SoundIndex.clear();
 }
 
-size_t CSound::GetSoundIdx (const string& name) const {
+size_t CSound::GetSoundIdx(const string& name) const {
 	try {
 		return SoundIndex.at(name);
 	} catch (...) {
@@ -91,15 +91,15 @@ size_t CSound::GetSoundIdx (const string& name) const {
 	}
 }
 
-void CSound::SetVolume (size_t soundid, int volume) {
+void CSound::SetVolume(size_t soundid, int volume) {
 	if (soundid >= sounds.size()) return;
 
 	volume = clamp(0, volume, MIX_MAX_VOLUME);
 	sounds[soundid]->setVolume(volume);
 }
 
-void CSound::SetVolume (const string& name, int volume) {
-	SetVolume (GetSoundIdx (name), volume);
+void CSound::SetVolume(const string& name, int volume) {
+	SetVolume(GetSoundIdx(name), volume);
 }
 
 // ------------------- play -------------------------------------------
@@ -111,7 +111,7 @@ void CSound::Play(size_t soundid, bool loop) {
 }
 
 void CSound::Play(const string& name, bool loop) {
-	Play (GetSoundIdx (name), loop);
+	Play(GetSoundIdx(name), loop);
 }
 
 void CSound::Play(size_t soundid, bool loop, int volume) {
@@ -123,10 +123,10 @@ void CSound::Play(size_t soundid, bool loop, int volume) {
 }
 
 void CSound::Play(const string& name, bool loop, int volume) {
-	Play (GetSoundIdx (name), loop, volume);
+	Play(GetSoundIdx(name), loop, volume);
 }
 
-void CSound::Halt (size_t soundid) {
+void CSound::Halt(size_t soundid) {
 	if (soundid >= sounds.size()) return;
 
 	// loop_count must be -1 (endless loop) for halt
@@ -134,11 +134,11 @@ void CSound::Halt (size_t soundid) {
 		sounds[soundid]->player.stop();
 }
 
-void CSound::Halt (const string& name) {
-	Halt (GetSoundIdx (name));
+void CSound::Halt(const string& name) {
+	Halt(GetSoundIdx(name));
 }
 
-void CSound::HaltAll () {
+void CSound::HaltAll() {
 	for (size_t i = 0; i < sounds.size(); i++) {
 		sounds[i]->player.stop();
 	}
@@ -159,7 +159,7 @@ CMusic::~CMusic() {
 bool CMusic::LoadPiece(const string& name, const string& filename) {
 	sf::Music* m = new sf::Music();
 	if (!m->openFromFile(filename)) {
-		Message ("could not load music", filename);
+		Message("could not load music", filename);
 		return false;
 	}
 	MusicIndex[name] = musics.size();
@@ -167,43 +167,43 @@ bool CMusic::LoadPiece(const string& name, const string& filename) {
 	return true;
 }
 
-void CMusic::LoadMusicList () {
+void CMusic::LoadMusicList() {
 	// --- music ---
 	CSPList list(200);
-	if (list.Load (param.music_dir, "music.lst")) {
+	if (list.Load(param.music_dir, "music.lst")) {
 		for (size_t i=0; i<list.Count(); i++) {
 			const string& line = list.Line(i);
-			string name = SPStrN (line, "name");
-			string musicfile = SPStrN (line, "file");
-			string path = MakePathStr (param.music_dir, musicfile);
-			LoadPiece (name, path);
+			string name = SPStrN(line, "name");
+			string musicfile = SPStrN(line, "file");
+			string path = MakePathStr(param.music_dir, musicfile);
+			LoadPiece(name, path);
 		}
 	} else {
-		Message ("could not load music.lst");
+		Message("could not load music.lst");
 		return;
 	}
 
 	// --- racing themes ---
 	list.Clear();
 	ThemesIndex.clear();
-	if (list.Load (param.music_dir, "racing_themes.lst")) {
+	if (list.Load(param.music_dir, "racing_themes.lst")) {
 		themes.resize(list.Count());
 		for (size_t i=0; i<list.Count(); i++) {
 			const string& line = list.Line(i);
-			string name = SPStrN (line, "name");
+			string name = SPStrN(line, "name");
 			ThemesIndex[name] = i;
-			string item = SPStrN (line, "race", "race_1");
+			string item = SPStrN(line, "race", "race_1");
 			themes[i].situation[0] = musics[MusicIndex[item]];
-			item = SPStrN (line, "wonrace", "wonrace_1");
+			item = SPStrN(line, "wonrace", "wonrace_1");
 			themes[i].situation[1] = musics[MusicIndex[item]];
-			item = SPStrN (line, "lostrace", "lostrace_1");
+			item = SPStrN(line, "lostrace", "lostrace_1");
 			themes[i].situation[2] = musics[MusicIndex[item]];
 		}
-	} else Message ("could not load racing_themes.lst");
+	} else Message("could not load racing_themes.lst");
 }
 
-void CMusic::FreeMusics () {
-	Halt ();
+void CMusic::FreeMusics() {
+	Halt();
 	for (size_t i = 0; i < musics.size(); i++)
 		delete musics[i];
 	musics.clear();
@@ -215,7 +215,7 @@ void CMusic::FreeMusics () {
 	curr_music = NULL;
 }
 
-size_t CMusic::GetMusicIdx (const string& name) const {
+size_t CMusic::GetMusicIdx(const string& name) const {
 	try {
 		return MusicIndex.at(name);
 	} catch (...) {
@@ -223,7 +223,7 @@ size_t CMusic::GetMusicIdx (const string& name) const {
 	}
 }
 
-size_t CMusic::GetThemeIdx (const string& theme) const {
+size_t CMusic::GetThemeIdx(const string& theme) const {
 	try {
 		return ThemesIndex.at(theme);
 	} catch (...) {
@@ -231,14 +231,14 @@ size_t CMusic::GetThemeIdx (const string& theme) const {
 	}
 }
 
-void CMusic::SetVolume (int volume) {
+void CMusic::SetVolume(int volume) {
 	int vol = clamp(0, volume, MIX_MAX_VOLUME);
 	if (curr_music)
 		curr_music->setVolume(volume);
 	curr_volume = vol;
 }
 
-bool CMusic::Play (sf::Music* music, bool loop, int volume) {
+bool CMusic::Play(sf::Music* music, bool loop, int volume) {
 	if (!music)
 		return false;
 
@@ -261,7 +261,7 @@ bool CMusic::Play(size_t musid, bool loop) {
 }
 
 bool CMusic::Play(const string& name, bool loop) {
-	return Play (GetMusicIdx(name), loop);
+	return Play(GetMusicIdx(name), loop);
 }
 
 bool CMusic::Play(size_t musid, bool loop, int volume) {
@@ -271,17 +271,17 @@ bool CMusic::Play(size_t musid, bool loop, int volume) {
 }
 
 bool CMusic::Play(const string& name, bool loop, int volume) {
-	return Play (GetMusicIdx (name), loop, volume);
+	return Play(GetMusicIdx(name), loop, volume);
 }
 
-bool CMusic::PlayTheme (size_t theme, ESituation situation) {
+bool CMusic::PlayTheme(size_t theme, ESituation situation) {
 	if (theme >= themes.size()) return false;
 	if (situation >= SITUATION_COUNT) return false;
 	sf::Music* music = themes[theme].situation[situation];
-	return Play (music, -1, curr_volume);
+	return Play(music, -1, curr_volume);
 }
 
-void CMusic::Halt () {
+void CMusic::Halt() {
 	if (curr_music) {
 		curr_music->stop();
 		curr_music = NULL;

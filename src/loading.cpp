@@ -36,8 +36,8 @@ CLoading Loading;
 
 // ====================================================================
 void CLoading::Enter() {
-	Winsys.ShowCursor (false);
-	Music.Play ("loading", true);
+	Winsys.ShowCursor(false);
+	Music.Play("loading", true);
 }
 
 void CLoading::Loop(double time_step) {
@@ -45,8 +45,8 @@ void CLoading::Loop(double time_step) {
 	Winsys.clear();
 
 	if (param.ui_snow) {
-		update_ui_snow (time_step);
-		draw_ui_snow ();
+		update_ui_snow(time_step);
+		draw_ui_snow();
 	}
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
@@ -55,15 +55,15 @@ void CLoading::Loop(double time_step) {
 	Winsys.draw(logo);
 	DrawGUIFrame();
 
-	FT.SetColor (colDYell);
+	FT.SetColor(colDYell);
 	FT.AutoSizeN(5);
 	FT.DrawString(CENTER, AutoYPosN(60), Trans.Text(29) + " '" + g_game.course->name + '\'');
-	FT.SetColor (colWhite);
-	FT.DrawString (CENTER, AutoYPosN (70), Trans.Text (30));
-	Winsys.SwapBuffers ();
+	FT.SetColor(colWhite);
+	FT.DrawString(CENTER, AutoYPosN(70), Trans.Text(30));
+	Winsys.SwapBuffers();
 
-	Course.LoadCourse (g_game.course);
-	g_game.location_id = Course.GetEnv ();
-	Env.LoadEnvironment (g_game.location_id, g_game.light_id);
-	State::manager.RequestEnterState (Intro);
+	Course.LoadCourse(g_game.course);
+	g_game.location_id = Course.GetEnv();
+	Env.LoadEnvironment(g_game.location_id, g_game.light_id);
+	State::manager.RequestEnterState(Intro);
 }

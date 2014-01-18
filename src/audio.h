@@ -34,23 +34,23 @@ private:
 	map<string, size_t> SoundIndex;
 public:
 	~CSound();
-	bool LoadChunk (const std::string& name, const std::string& filename);
-	void LoadSoundList ();
-	size_t GetSoundIdx (const string& name) const;
+	bool LoadChunk(const std::string& name, const std::string& filename);
+	void LoadSoundList();
+	size_t GetSoundIdx(const string& name) const;
 
-	void SetVolume (size_t soundid, int volume);
-	void SetVolume (const string& name, int volume);
+	void SetVolume(size_t soundid, int volume);
+	void SetVolume(const string& name, int volume);
 
 	void Play(size_t soundid, bool loop);
 	void Play(const string& name, bool loop);
 	void Play(size_t soundid, bool loop, int volume);
 	void Play(const string& name, bool loop, int volume);
 
-	void Halt (size_t soundid);
-	void Halt (const string& name);
-	void HaltAll ();
+	void Halt(size_t soundid);
+	void Halt(const string& name);
+	void HaltAll();
 
-	void FreeSounds ();
+	void FreeSounds();
 };
 
 // --------------------------------------------------------------------
@@ -86,18 +86,18 @@ public:
 	~CMusic();
 
 	bool LoadPiece(const string& name, const string& filename);
-	void LoadMusicList ();
-	size_t GetMusicIdx (const string& name) const;
-	size_t GetThemeIdx (const string& theme) const;
+	void LoadMusicList();
+	size_t GetMusicIdx(const string& name) const;
+	size_t GetThemeIdx(const string& theme) const;
 
-	void SetVolume (int volume);
+	void SetVolume(int volume);
 	bool Play(size_t musid, bool loop);
 	bool Play(const string& name, bool loop);
 	bool Play(size_t musid, bool loop, int volume);
 	bool Play(const string& name, bool loop, int volume);
-	bool PlayTheme (size_t theme, ESituation situation);
-	void Halt ();
-	void FreeMusics ();
+	bool PlayTheme(size_t theme, ESituation situation);
+	void Halt();
+	void FreeMusics();
 };
 
 // --------------------------------------------------------------------

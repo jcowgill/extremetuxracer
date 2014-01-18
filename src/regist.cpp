@@ -38,17 +38,17 @@ static TWidget* textbuttons[2];
 static TUpDown* player;
 static TUpDown* character;
 
-void QuitRegistration () {
-	Players.ResetControls ();
-	Players.AllocControl (player->GetValue());
+void QuitRegistration() {
+	Players.ResetControls();
+	Players.AllocControl(player->GetValue());
 	g_game.player = Players.GetPlayer(player->GetValue());
 
 	g_game.character = &Char.CharList[character->GetValue()];
 	Char.FreeCharacterPreviews(); // From here on, character previews are no longer required
-	State::manager.RequestEnterState (GameTypeSelect);
+	State::manager.RequestEnterState(GameTypeSelect);
 }
 
-void CRegist::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CRegist::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	TWidget* focussed = KeyGUI(key, 0, release);
 	if (release) return;
 	switch (key) {
@@ -58,28 +58,28 @@ void CRegist::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 		case sf::Keyboard::Return:
 			if (focussed == textbuttons[1]) {
 				g_game.player = Players.GetPlayer(player->GetValue());
-				State::manager.RequestEnterState (NewPlayer);
-			} else QuitRegistration ();
+				State::manager.RequestEnterState(NewPlayer);
+			} else QuitRegistration();
 			break;
 	}
 }
 
-void CRegist::Mouse (int button, int state, int x, int y) {
+void CRegist::Mouse(int button, int state, int x, int y) {
 	if (state == 1) {
 		TWidget* focussed = ClickGUI(x, y);
 		if (focussed == textbuttons[0])
-			QuitRegistration ();
+			QuitRegistration();
 		else if (focussed == textbuttons[1]) {
 			g_game.player = Players.GetPlayer(player->GetValue());
-			State::manager.RequestEnterState (NewPlayer);
+			State::manager.RequestEnterState(NewPlayer);
 		}
 	}
 }
 
-void CRegist::Motion (int x, int y) {
+void CRegist::Motion(int x, int y) {
 	MouseMoveGUI(x, y);
 
-	if (param.ui_snow) push_ui_snow (cursor_pos);
+	if (param.ui_snow) push_ui_snow(cursor_pos);
 }
 
 static int framewidth, frameheight, arrowwidth;
@@ -91,22 +91,22 @@ static TFramedText* sPlayerFrame;
 static TFramedText* sCharFrame;
 
 void CRegist::Enter() {
-	Winsys.ShowCursor (!param.ice_cursor);
+	Winsys.ShowCursor(!param.ice_cursor);
 	Music.Play(param.menu_music, true);
 
-	framewidth = (int) (Winsys.scale * 280);
-	frameheight = (int) (Winsys.scale * 50);
+	framewidth = (int)(Winsys.scale * 280);
+	frameheight = (int)(Winsys.scale * 50);
 	arrowwidth = 50;
 	int sumwidth = framewidth * 2 + arrowwidth * 2;
-	area = AutoAreaN (30, 80, sumwidth);
+	area = AutoAreaN(30, 80, sumwidth);
 	texsize = 128 * Winsys.scale;
 
-	ResetGUI ();
+	ResetGUI();
 	player = AddUpDown(area.left + framewidth + 8, area.top, 0, (int)Players.numPlayers() - 1, (int)g_game.start_player);
 	character = AddUpDown(area.left + framewidth * 2 + arrowwidth + 8, area.top, 0, (int)Char.CharList.size() - 1, 0);
-	int siz = FT.AutoSizeN (5);
-	textbuttons[0] = AddTextButton (Trans.Text(60), CENTER, AutoYPosN (62), siz);
-	textbuttons[1] = AddTextButton (Trans.Text(61), CENTER, AutoYPosN (70), siz);
+	int siz = FT.AutoSizeN(5);
+	textbuttons[0] = AddTextButton(Trans.Text(60), CENTER, AutoYPosN(62), siz);
+	textbuttons[1] = AddTextButton(Trans.Text(61), CENTER, AutoYPosN(70), siz);
 
 	FT.AutoSizeN(3);
 	int top = AutoYPosN(24);
@@ -121,12 +121,12 @@ void CRegist::Enter() {
 		Winsys.Terminate(); // Characters are necessary - ETR is unusable otherwise
 }
 
-void CRegist::Loop (double timestep) {
+void CRegist::Loop(double timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 
 	if (param.ui_snow) {
-		update_ui_snow (timestep);
+		update_ui_snow(timestep);
 		draw_ui_snow();
 	}
 
@@ -135,14 +135,14 @@ void CRegist::Loop (double timestep) {
 	sPlayerFrame->SetString(Players.GetPlayer(player->GetValue())->name);
 	sPlayerFrame->Focussed(player->focussed());
 	Players.GetAvatarTexture(player->GetValue())->DrawFrame(
-	    area.left + 60, AutoYPosN (40), texsize, texsize, 3, colWhite);
+	    area.left + 60, AutoYPosN(40), texsize, texsize, 3, colWhite);
 
 	sCharFrame->SetString(Char.CharList[character->GetValue()].name);
 	sCharFrame->Focussed(character->focussed());
 	if (Char.CharList[character->GetValue()].preview != NULL)
 		Char.CharList[character->GetValue()].preview->DrawFrame(
 		    area.right - texsize - 60 - arrowwidth,
-		    AutoYPosN (40), texsize, texsize, 3, colWhite);
+		    AutoYPosN(40), texsize, texsize, 3, colWhite);
 
 	DrawGUI();
 

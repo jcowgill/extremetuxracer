@@ -128,19 +128,19 @@ private:
 	int			base_height_value;
 	bool		mirrored;
 
-	void		FreeTerrainTextures ();
-	void		FreeObjectTextures ();
-	void		CalcNormals ();
-	void		MakeCourseNormals ();
-	bool		LoadElevMap ();
-	void		LoadItemList ();
-	bool		LoadAndConvertObjectMap ();
-	bool		LoadTerrainMap ();
-	int			GetTerrain (const unsigned char* pixel) const;
+	void		FreeTerrainTextures();
+	void		FreeObjectTextures();
+	void		CalcNormals();
+	void		MakeCourseNormals();
+	bool		LoadElevMap();
+	void		LoadItemList();
+	bool		LoadAndConvertObjectMap();
+	bool		LoadTerrainMap();
+	int			GetTerrain(const unsigned char* pixel) const;
 
-	void		MirrorCourseData ();
+	void		MirrorCourseData();
 public:
-	CCourse ();
+	CCourse();
 	~CCourse();
 
 	vector<TCourse>		CourseList;
@@ -155,37 +155,37 @@ public:
 	TVector3d	*nmls;
 	GLubyte		*vnc_array;
 
-	void ResetCourse ();
-	TCourse* GetCourse (const string& dir);
+	void ResetCourse();
+	TCourse* GetCourse(const string& dir);
 	size_t GetCourseIdx(const TCourse* course) const;
-	bool LoadCourseList ();
-	void FreeCourseList ();
+	bool LoadCourseList();
+	void FreeCourseList();
 	bool LoadCourse(TCourse* course);
-	bool LoadTerrainTypes ();
-	bool LoadObjectTypes ();
-	void MakeStandardPolyhedrons ();
+	bool LoadTerrainTypes();
+	bool LoadObjectTypes();
+	void MakeStandardPolyhedrons();
 	GLubyte* GetGLArrays() const { return vnc_array; }
 	void FillGlArrays();
 
 	const TVector2d& GetDimensions() const { return curr_course->size; }
 	const TVector2d& GetPlayDimensions() const { return curr_course->play_size; }
-	void GetDivisions (int *nx, int *ny) const;
-	double GetCourseAngle () const { return curr_course->angle; }
-	double GetBaseHeight (double distance) const;
-	double GetMaxHeight (double distance) const;
-	size_t GetEnv () const;
-	const TVector2d& GetStartPoint () const { return start_pt; }
-	const TPolyhedron& GetPoly (size_t type) const;
-	void MirrorCourse ();
+	void GetDivisions(int *nx, int *ny) const;
+	double GetCourseAngle() const { return curr_course->angle; }
+	double GetBaseHeight(double distance) const;
+	double GetMaxHeight(double distance) const;
+	size_t GetEnv() const;
+	const TVector2d& GetStartPoint() const { return start_pt; }
+	const TPolyhedron& GetPoly(size_t type) const;
+	void MirrorCourse();
 
-	void GetIndicesForPoint (double x, double z, int *x0, int *y0, int *x1, int *y1) const;
-	void FindBarycentricCoords (double x, double z,
-	                            TVector2i *idx0, TVector2i *idx1, TVector2i *idx2, double *u, double *v) const;
-	TVector3d FindCourseNormal (double x, double z) const;
-	double FindYCoord (double x, double z) const;
-	void GetSurfaceType (double x, double z, double weights[]) const;
-	int GetTerrainIdx (double x, double z, double level) const;
-	TPlane GetLocalCoursePlane (TVector3d pt) const;
+	void GetIndicesForPoint(double x, double z, int *x0, int *y0, int *x1, int *y1) const;
+	void FindBarycentricCoords(double x, double z,
+	                           TVector2i *idx0, TVector2i *idx1, TVector2i *idx2, double *u, double *v) const;
+	TVector3d FindCourseNormal(double x, double z) const;
+	double FindYCoord(double x, double z) const;
+	void GetSurfaceType(double x, double z, double weights[]) const;
+	int GetTerrainIdx(double x, double z, double level) const;
+	TPlane GetLocalCoursePlane(TVector3d pt) const;
 };
 
 extern CCourse Course;

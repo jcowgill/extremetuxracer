@@ -52,7 +52,7 @@ void abort_intro() {
 // =================================================================
 void CIntro::Enter() {
 	CControl *ctrl = g_game.player->ctrl;
-	const TVector2d& start_pt = Course.GetStartPoint ();
+	const TVector2d& start_pt = Course.GetStartPoint();
 	ctrl->orientation_initialized = false;
 	ctrl->view_init = false;
 	ctrl->cpos.x = start_pt.x;
@@ -70,14 +70,14 @@ void CIntro::Enter() {
 	g_game.race_result = -1;
 	g_game.raceaborted = false;
 
-	ctrl->Init ();
+	ctrl->Init();
 
 	ctrl->cvel = TVector3d(0, 0, 0);
 	clear_particles();
-	set_view_mode (ctrl, ABOVE);
-	SetCameraDistance (4.0);
-	SetStationaryCamera (false);
-	update_view (ctrl, EPS);
+	set_view_mode(ctrl, ABOVE);
+	SetCameraDistance(4.0);
+	SetStationaryCamera(false);
+	update_view(ctrl, EPS);
 	size_t num_items = Course.NocollArr.size();
 	TItem* item_locs = &Course.NocollArr[0];
 	for (size_t i = 0; i < num_items; i++) {
@@ -86,52 +86,52 @@ void CIntro::Enter() {
 		}
 	}
 
-	InitSnow (ctrl);
-	InitWind ();
+	InitSnow(ctrl);
+	InitWind();
 
-	Music.PlayTheme (g_game.theme_id, MUS_RACING);
+	Music.PlayTheme(g_game.theme_id, MUS_RACING);
 	param.show_hud = true;
 }
 
-void CIntro::Loop (double time_step) {
+void CIntro::Loop(double time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;
 
 	if (startframe->active) {
-		startframe->Update (time_step);
-	} else State::manager.RequestEnterState (Racing);
+		startframe->Update(time_step);
+	} else State::manager.RequestEnterState(Racing);
 
-	ClearRenderContext ();
-	Env.SetupFog ();
+	ClearRenderContext();
+	Env.SetupFog();
 
-	update_view (ctrl, time_step);
-	SetupViewFrustum (ctrl);
+	update_view(ctrl, time_step);
+	SetupViewFrustum(ctrl);
 
-	Env.DrawSkybox (ctrl->viewpos);
+	Env.DrawSkybox(ctrl->viewpos);
 
-	Env.DrawFog ();
-	Env.SetupLight ();
-	RenderCourse ();
-	DrawTrackmarks ();
-	DrawTrees ();
+	Env.DrawFog();
+	Env.SetupLight();
+	RenderCourse();
+	DrawTrackmarks();
+	DrawTrees();
 
-	UpdateWind (time_step);
-	UpdateSnow (time_step, ctrl);
-	DrawSnow (ctrl);
+	UpdateWind(time_step);
+	UpdateSnow(time_step, ctrl);
+	DrawSnow(ctrl);
 
 	g_game.character->shape->Draw();
-	DrawHud (ctrl);
+	DrawHud(ctrl);
 
-	Reshape (width, height);
-	Winsys.SwapBuffers ();
+	Reshape(width, height);
+	Winsys.SwapBuffers();
 
 }
 // -----------------------------------------------------------------------
 
-void CIntro::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CIntro::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release)
 		return;
 
-	abort_intro ();
+	abort_intro();
 }

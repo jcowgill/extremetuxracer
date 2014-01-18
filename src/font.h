@@ -44,28 +44,28 @@ private:
 	void DrawText(float x, float y, const sf::String& text, size_t font, float size) const;
 	void GetTextSize(const sf::String& text, float &x, float &y, size_t font, float size) const;
 public:
-	CFont ();
-	~CFont ();
+	CFont();
+	~CFont();
 
-	void Clear ();
+	void Clear();
 	int  LoadFont(const string& name, const string& dir, const string& filename);
 	int  LoadFont(const string& name, const string& path);
-	bool LoadFontlist ();
-	size_t GetFontIdx (const string &name) const;
+	bool LoadFontlist();
+	size_t GetFontIdx(const string &name) const;
 	const sf::Font& getCurrentFont() const { return *fonts[curr_font]; }
 	float GetSize() const { return curr_size; }
 
 	// properties
 	void SetProps(const string &fontname, float size, const sf::Color& col);
-	void SetProps   (const string &fontname, float size);
+	void SetProps(const string &fontname, float size);
 	void SetColor(const sf::Color& col) { curr_col = col; }
-	void SetSize    (float size) { curr_size = size; }
+	void SetSize(float size) { curr_size = size; }
 	void SetFont(const string& fontname);
 	void SetFontFromSettings();
 
 	// auto
-	int AutoSizeN     (int rel_val);	// rel_val = relative size, return: autosize
-	int AutoDistanceN (int rel_val);	// rel_val = relative dist
+	int AutoSizeN(int rel_val);	// rel_val = relative size, return: autosize
+	int AutoDistanceN(int rel_val);	// rel_val = relative dist
 
 	// draw
 	void DrawString(float x, float y, const sf::String &s) const; // sf::String class
@@ -77,10 +77,10 @@ public:
 	float GetTextWidth(const sf::String& text) const;
 	float GetTextWidth(const sf::String& text, const string &fontname, float size) const;
 
-	float CenterX        (const char *text) const;
-	void  SetOrientation (Orientation orientation) { forientation = orientation; }
+	float CenterX(const char *text) const;
+	void  SetOrientation(Orientation orientation) { forientation = orientation; }
 
-	vector<string> MakeLineList (const char *source, float width);
+	vector<string> MakeLineList(const char *source, float width);
 };
 
 extern CFont FT;

@@ -33,7 +33,7 @@ GNU General Public License for more details.
 // CFont::MakeLineList. This bundle of functions generates
 // a vector<string> from a textstring and adapts the lines to the textbox
 
-static void MakeWordList (vector<string>& wordlist, const char *s) {
+static void MakeWordList(vector<string>& wordlist, const char *s) {
 	size_t start = 0;
 	for (size_t i = 0; s[i] != '\0'; i++) {
 		if (s[i] == ' ') {
@@ -48,7 +48,7 @@ static void MakeWordList (vector<string>& wordlist, const char *s) {
 		wordlist.push_back(string(s+start));
 }
 
-static size_t MakeLine (size_t first, const vector<string>& wordlist, vector<string>& linelist, float width) {
+static size_t MakeLine(size_t first, const vector<string>& wordlist, vector<string>& linelist, float width) {
 	if (first >= wordlist.size()) return wordlist.size()-1;
 
 	size_t last = first;
@@ -82,7 +82,7 @@ static size_t MakeLine (size_t first, const vector<string>& wordlist, vector<str
 
 CFont FT;
 
-CFont::CFont () {
+CFont::CFont() {
 	forientation = OR_TOP;
 
 	// setting default values
@@ -99,7 +99,7 @@ CFont::~CFont() {
 	Clear();
 }
 
-void CFont::Clear () {
+void CFont::Clear() {
 	for (size_t i = 0; i < fonts.size(); i++)
 		delete fonts[i];
 	fonts.clear();
@@ -110,10 +110,10 @@ void CFont::Clear () {
 //					public
 // --------------------------------------------------------------------
 
-int CFont::LoadFont (const string& name, const string& path) {
+int CFont::LoadFont(const string& name, const string& path) {
 	fonts.push_back(new sf::Font());
 	if (!fonts.back()->loadFromFile(path)) {
-		Message ("Failed to open font");
+		Message("Failed to open font");
 		return -1;
 	}
 
@@ -125,26 +125,26 @@ int CFont::LoadFont(const string& name, const string& dir, const string& filenam
 	string path = dir;
 	path += SEP;
 	path += filename;
-	return LoadFont (name, path);
+	return LoadFont(name, path);
 }
 
-bool CFont::LoadFontlist () {
+bool CFont::LoadFontlist() {
 	CSPList list(MAX_FONTS);
-	if (!list.Load ( param.font_dir, "fonts.lst")) return false;
+	if (!list.Load(param.font_dir, "fonts.lst")) return false;
 	for (size_t i=0; i<list.Count(); i++) {
 		const string& line = list.Line(i);
-		string fontfile = SPStrN (line, "file");
-		string name = SPStrN (line, "name");
+		string fontfile = SPStrN(line, "file");
+		string name = SPStrN(line, "name");
 
-		int ftidx = LoadFont (name, param.font_dir, fontfile);
+		int ftidx = LoadFont(name, param.font_dir, fontfile);
 		if (ftidx < 0) {
-			Message ("couldn't load font", name);
+			Message("couldn't load font", name);
 		}
 	}
 	return true;
 }
 
-size_t CFont::GetFontIdx (const string &name) const {
+size_t CFont::GetFontIdx(const string &name) const {
 	return fontindex.at(name);
 }
 
@@ -153,12 +153,12 @@ void CFont::SetProps(const string &fontname, float size, const sf::Color& col) {
 	curr_col  = col;
 }
 
-void CFont::SetProps (const string &fontname, float size) {
-	curr_font = (int)GetFontIdx (fontname);
+void CFont::SetProps(const string &fontname, float size) {
+	curr_font = (int)GetFontIdx(fontname);
 	curr_size = size;
 }
 
-void CFont::SetFont (const string& fontname) {
+void CFont::SetFont(const string& fontname) {
 	try {
 		curr_font = (int)fontindex[fontname];
 	} catch (...) {
@@ -178,15 +178,15 @@ void CFont::SetFontFromSettings() {
 
 // -------------------- auto ------------------------------------------
 
-int CFont::AutoSizeN (int rel_val) {
+int CFont::AutoSizeN(int rel_val) {
 	float size = (rel_val + 2) * 4;
 	size *= curr_fact;
 	size *= Winsys.scale;
-	SetSize (size);
+	SetSize(size);
 	return (int)size;
 }
 
-int CFont::AutoDistanceN (int rel_val) {
+int CFont::AutoDistanceN(int rel_val) {
 	float fact = (rel_val + 5) * 0.2;
 	float dist = curr_size * fact;
 	return (int) dist;
@@ -238,18 +238,18 @@ float CFont::GetTextWidth(const sf::String& text) const {
 	return x;
 }
 
-float CFont::GetTextWidth (const sf::String& text, const string &fontname, float size) const {
-	size_t temp_font = GetFontIdx (fontname);
+float CFont::GetTextWidth(const sf::String& text, const string &fontname, float size) const {
+	size_t temp_font = GetFontIdx(fontname);
 	float x, y;
 	GetTextSize(text, x, y, temp_font, size);
 	return x;
 }
 
-float CFont::CenterX (const char *text) const {
-	return (Winsys.resolution.width - GetTextWidth (text)) / 2.0;
+float CFont::CenterX(const char *text) const {
+	return (Winsys.resolution.width - GetTextWidth(text)) / 2.0;
 }
 
-vector<string> CFont::MakeLineList (const char *source, float width) {
+vector<string> CFont::MakeLineList(const char *source, float width) {
 	vector<string> wordlist;
 	MakeWordList(wordlist, source);
 	vector<string> linelist;

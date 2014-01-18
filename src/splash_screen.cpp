@@ -38,14 +38,14 @@ CSplashScreen SplashScreen;
 
 
 void CSplashScreen::Enter() {
-	Winsys.ShowCursor (!param.ice_cursor);
+	Winsys.ShowCursor(!param.ice_cursor);
 	Music.Play(param.menu_music, true);
 }
 
 void CSplashScreen::Loop(double timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
-	Trans.LoadTranslations (param.language); // Before first texts are being displayed
+	Trans.LoadTranslations(param.language);  // Before first texts are being displayed
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
 	logo.setScale(Winsys.scale/2, Winsys.scale/2);
@@ -56,7 +56,7 @@ void CSplashScreen::Loop(double timestep) {
 	int top = AutoYPosN(60);
 	t1.setPosition((Winsys.resolution.width - t1.getLocalBounds().width) / 2, top);
 	sf::Text t2(Trans.Text(68), FT.getCurrentFont(), FT.GetSize());
-	int dist = FT.AutoDistanceN (3);
+	int dist = FT.AutoDistanceN(3);
 	t2.setPosition((Winsys.resolution.width - t2.getLocalBounds().width) / 2, top + dist);
 
 	Winsys.draw(logo);
@@ -66,17 +66,17 @@ void CSplashScreen::Loop(double timestep) {
 
 	init_ui_snow();
 
-	Course.MakeStandardPolyhedrons ();
-	Sound.LoadSoundList ();
-	Char.LoadCharacterList ();
-	Course.LoadObjectTypes ();
-	Course.LoadTerrainTypes ();
-	Env.LoadEnvironmentList ();
-	Course.LoadCourseList ();
-	Score.LoadHighScore (); // after LoadCourseList !!!
-	Events.LoadEventList ();
-	Players.LoadAvatars (); // before LoadPlayers !!!
-	Players.LoadPlayers ();
+	Course.MakeStandardPolyhedrons();
+	Sound.LoadSoundList();
+	Char.LoadCharacterList();
+	Course.LoadObjectTypes();
+	Course.LoadTerrainTypes();
+	Env.LoadEnvironmentList();
+	Course.LoadCourseList();
+	Score.LoadHighScore();  // after LoadCourseList !!!
+	Events.LoadEventList();
+	Players.LoadAvatars();  // before LoadPlayers !!!
+	Players.LoadPlayers();
 
-	State::manager.RequestEnterState (Regist);
+	State::manager.RequestEnterState(Regist);
 }

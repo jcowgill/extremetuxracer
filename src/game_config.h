@@ -73,8 +73,8 @@ struct TParam {
 	TViewMode view_mode;
 };
 
-void InitConfig ();
-void SaveConfigFile ();
+void InitConfig();
+void SaveConfigFile();
 
 extern TParam param;
 

@@ -42,11 +42,11 @@ static bool fog = true;
 static bool terr = true;
 static bool trees = true;
 
-void CPaused::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CPaused::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::S:
-			ScreenshotN ();
+			ScreenshotN();
 			break;
 		case sf::Keyboard::F5:
 			sky = !sky;
@@ -61,39 +61,39 @@ void CPaused::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, in
 			trees = !trees;
 			break;
 		default:
-			State::manager.RequestEnterState (Racing);
+			State::manager.RequestEnterState(Racing);
 	}
 }
 
-void CPaused::Mouse (int button, int state, int x, int y) {
-	State::manager.RequestEnterState (Racing);
+void CPaused::Mouse(int button, int state, int x, int y) {
+	State::manager.RequestEnterState(Racing);
 }
 
 // ====================================================================
 
-void CPaused::Loop (double time_step) {
+void CPaused::Loop(double time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;
 
-	ClearRenderContext ();
-	Env.SetupFog ();
-	update_view (ctrl, 0);
-	SetupViewFrustum (ctrl);
+	ClearRenderContext();
+	Env.SetupFog();
+	update_view(ctrl, 0);
+	SetupViewFrustum(ctrl);
 
-	if (sky) Env.DrawSkybox (ctrl->viewpos);
-	if (fog) Env.DrawFog ();
-	Env.SetupLight ();
+	if (sky) Env.DrawSkybox(ctrl->viewpos);
+	if (fog) Env.DrawFog();
+	Env.SetupLight();
 	if (terr) RenderCourse();
-	DrawTrackmarks ();
+	DrawTrackmarks();
 	if (trees) DrawTrees();
 
-	DrawSnow (ctrl);
+	DrawSnow(ctrl);
 
-	if (param.perf_level > 2) draw_particles (ctrl);
+	if (param.perf_level > 2) draw_particles(ctrl);
 	g_game.character->shape->Draw();
 
-	DrawHud (ctrl);
-	Reshape (width, height);
-	Winsys.SwapBuffers ();
+	DrawHud(ctrl);
+	Reshape(width, height);
+	Winsys.SwapBuffers();
 }

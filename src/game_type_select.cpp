@@ -40,36 +40,36 @@ CGameTypeSelect GameTypeSelect;
 static TTextButton* textbuttons[7];
 static sf::Sprite logo;
 
-void EnterPractice () {
+void EnterPractice() {
 	g_game.game_type = PRACTICING;
-	State::manager.RequestEnterState (RaceSelect);
+	State::manager.RequestEnterState(RaceSelect);
 }
 
-void QuitGameType () {
+void QuitGameType() {
 	if (textbuttons[0]->focussed())
-		State::manager.RequestEnterState (EventSelect);
+		State::manager.RequestEnterState(EventSelect);
 	if (textbuttons[1]->focussed())
-		EnterPractice ();
+		EnterPractice();
 	if (textbuttons[2]->focussed())
-		State::manager.RequestEnterState (GameConfig);
+		State::manager.RequestEnterState(GameConfig);
 	if (textbuttons[3]->focussed())
-		State::manager.RequestEnterState (Score);
+		State::manager.RequestEnterState(Score);
 	if (textbuttons[4]->focussed())
-		State::manager.RequestEnterState (Help);
+		State::manager.RequestEnterState(Help);
 	if (textbuttons[5]->focussed())
-		State::manager.RequestEnterState (Credits);
+		State::manager.RequestEnterState(Credits);
 	if (textbuttons[6]->focussed())
 		State::manager.RequestQuit();
 }
 
-void CGameTypeSelect::Mouse (int button, int state, int x, int y) {
+void CGameTypeSelect::Mouse(int button, int state, int x, int y) {
 	if (state == 1) {
 		ClickGUI(x, y);
 		QuitGameType();
 	}
 }
 
-void CGameTypeSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CGameTypeSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 
 	KeyGUI(key, 0, release);
@@ -92,27 +92,27 @@ void CGameTypeSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, i
 	}
 }
 
-void CGameTypeSelect::Motion (int x, int y) {
+void CGameTypeSelect::Motion(int x, int y) {
 	MouseMoveGUI(x, y);
 
-	if (param.ui_snow) push_ui_snow (cursor_pos);
+	if (param.ui_snow) push_ui_snow(cursor_pos);
 }
 
 // ====================================================================
 
-void CGameTypeSelect::Enter () {
-	Winsys.ShowCursor (!param.ice_cursor);
+void CGameTypeSelect::Enter() {
+	Winsys.ShowCursor(!param.ice_cursor);
 
-	ResetGUI ();
-	int top = AutoYPosN (40);
-	int siz = FT.AutoSizeN (6);
-	int dist = FT.AutoDistanceN (2);
-	textbuttons[0] = AddTextButton (Trans.Text(1), CENTER, top, siz);
-	textbuttons[1] = AddTextButton (Trans.Text(2), CENTER, top + dist, siz);
-	textbuttons[2] = AddTextButton (Trans.Text(3), CENTER, top + dist * 2, siz);
-	textbuttons[3] = AddTextButton (Trans.Text(62), CENTER, top + dist * 3, siz);
-	textbuttons[4] = AddTextButton (Trans.Text(43), CENTER, top + dist * 4, siz);
-	textbuttons[5] = AddTextButton (Trans.Text(4), CENTER, top + dist * 5, siz);
+	ResetGUI();
+	int top = AutoYPosN(40);
+	int siz = FT.AutoSizeN(6);
+	int dist = FT.AutoDistanceN(2);
+	textbuttons[0] = AddTextButton(Trans.Text(1), CENTER, top, siz);
+	textbuttons[1] = AddTextButton(Trans.Text(2), CENTER, top + dist, siz);
+	textbuttons[2] = AddTextButton(Trans.Text(3), CENTER, top + dist * 2, siz);
+	textbuttons[3] = AddTextButton(Trans.Text(62), CENTER, top + dist * 3, siz);
+	textbuttons[4] = AddTextButton(Trans.Text(43), CENTER, top + dist * 4, siz);
+	textbuttons[5] = AddTextButton(Trans.Text(4), CENTER, top + dist * 5, siz);
 	textbuttons[6] = AddTextButton(Trans.Text(5), CENTER, top + dist * 6, siz);
 	logo.setTexture(Tex.GetSFTexture(T_TITLE));
 	logo.setScale(Winsys.scale, Winsys.scale);
@@ -121,12 +121,12 @@ void CGameTypeSelect::Enter () {
 	Music.Play(param.menu_music, true);
 }
 
-void CGameTypeSelect::Loop (double time_step) {
+void CGameTypeSelect::Loop(double time_step) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 
 	if (param.ui_snow) {
-		update_ui_snow (time_step);
+		update_ui_snow(time_step);
 		draw_ui_snow();
 	}
 
@@ -134,5 +134,5 @@ void CGameTypeSelect::Loop (double time_step) {
 	DrawGUIFrame();
 	DrawGUI();
 
-	Winsys.SwapBuffers ();
+	Winsys.SwapBuffers();
 }

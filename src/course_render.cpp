@@ -32,24 +32,24 @@ GNU General Public License for more details.
 #define TEX_SCALE 6
 static const bool clip_course = true;
 
-void setup_course_tex_gen () {
+void setup_course_tex_gen() {
 	static const GLfloat xplane[4] = {1.0 / TEX_SCALE, 0.0, 0.0, 0.0 };
 	static const GLfloat zplane[4] = {0.0, 0.0, 1.0 / TEX_SCALE, 0.0 };
-	glTexGenfv (GL_S, GL_OBJECT_PLANE, xplane);
-	glTexGenfv (GL_T, GL_OBJECT_PLANE, zplane);
+	glTexGenfv(GL_S, GL_OBJECT_PLANE, xplane);
+	glTexGenfv(GL_T, GL_OBJECT_PLANE, zplane);
 }
 
 // --------------------------------------------------------------------
 //							render course
 // --------------------------------------------------------------------
-void RenderCourse () {
+void RenderCourse() {
 	ScopedRenderMode rm(COURSE);
-	setup_course_tex_gen ();
-	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	set_material (colWhite, colBlack, 1.0);
+	setup_course_tex_gen();
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	set_material(colWhite, colBlack, 1.0);
 	const CControl *ctrl = g_game.player->ctrl;
-	UpdateQuadtree (ctrl->viewpos, param.course_detail_level);
-	RenderQuadtree ();
+	UpdateQuadtree(ctrl->viewpos, param.course_detail_level);
+	RenderQuadtree();
 }
 
 // --------------------------------------------------------------------
@@ -64,8 +64,8 @@ void DrawTrees() {
 	double fwd_clip_limit = param.forward_clip_distance;
 	double bwd_clip_limit = param.backward_clip_distance;
 
-	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-	set_material (colWhite, colBlack, 1.0);
+	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+	set_material(colWhite, colBlack, 1.0);
 
 
 //	-------------- trees ------------------------
@@ -82,7 +82,7 @@ void DrawTrees() {
 
 		glPushMatrix();
 		glTranslate(Course.CollArr[i].pt);
-		if (param.perf_level > 1) glRotatef (1, 0, 1, 0);
+		if (param.perf_level > 1) glRotatef(1, 0, 1, 0);
 
 		float treeRadius = Course.CollArr[i].diam / 2.0;
 		float treeHeight = Course.CollArr[i].height;

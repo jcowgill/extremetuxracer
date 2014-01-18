@@ -42,11 +42,11 @@ private:
 public:
 	vector<TLang> languages;
 
-	void LoadLanguages ();
+	void LoadLanguages();
 	const sf::String& GetLanguage(size_t idx) const;
-	void SetDefaultTranslations ();
+	void SetDefaultTranslations();
 	const sf::String& Text(size_t idx) const;
-	void LoadTranslations (size_t langidx);
+	void LoadTranslations(size_t langidx);
 	static string GetSystemDefaultLang();
 	size_t GetSystemDefaultLangIdx() const;
 	size_t GetLangIdx(const string& lang) const;

@@ -45,7 +45,7 @@ static TWidget* AddWidget(TWidget* widget) {
 	return widget;
 }
 
-static bool Inside (int x, int y, const TRect& Rect) {
+static bool Inside(int x, int y, const TRect& Rect) {
 	return (x >= Rect.left
 	        && x <= Rect.left + Rect.width
 	        && y >= Rect.top
@@ -182,8 +182,8 @@ TTextButton* AddTextButton(const sf::String& text, int x, int y, float ftsize) {
 }
 
 TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize) {
-	double siz = FT.AutoSizeN (rel_ftsize);
-	return AddTextButton (text, x, y, siz);
+	double siz = FT.AutoSizeN(rel_ftsize);
+	return AddTextButton(text, x, y, siz);
 }
 
 
@@ -200,10 +200,10 @@ TTextField::TTextField(int x, int y, int width, int height, const sf::String& te
 
 void TTextField::Draw() const {
 	const sf::Color& col = focus ? colDYell : colWhite;
-	FT.SetColor (col);
-	DrawFrameX (mouseRect.left, mouseRect.top, mouseRect.width, mouseRect.height, 3, colMBackgr, col, 1.0);
-	FT.AutoSizeN (5);
-	FT.DrawString (mouseRect.left+20, mouseRect.top, text);
+	FT.SetColor(col);
+	DrawFrameX(mouseRect.left, mouseRect.top, mouseRect.width, mouseRect.height, 3, colMBackgr, col, 1.0);
+	FT.AutoSizeN(5);
+	FT.DrawString(mouseRect.left+20, mouseRect.top, text);
 
 	if (cursor && focus) {
 		Winsys.draw(cursorShape);
@@ -234,7 +234,7 @@ void TTextField::SetCursorPos(size_t new_pos) {
 void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	switch (key) {
 		case sf::Keyboard::Delete:
-			if (cursorPos < text.getSize()) text.erase (cursorPos, 1);
+			if (cursorPos < text.getSize()) text.erase(cursorPos, 1);
 			break;
 		case sf::Keyboard::BackSpace:
 			if (cursorPos > 0) { text.erase(cursorPos - 1, 1); SetCursorPos(cursorPos - 1); }
@@ -330,7 +330,7 @@ TIconButton::TIconButton(int x, int y, const sf::Texture& texture, double size_,
 	SetValue(value_);
 }
 
-void TIconButton::SetValue (int _value) {
+void TIconButton::SetValue(int _value) {
 	value = _value;
 	if (value > maximum)
 		value = 0;
@@ -354,15 +354,15 @@ void TIconButton::SetValue (int _value) {
 	}
 }
 
-void TIconButton::Draw () const {
+void TIconButton::Draw() const {
 	sf::Color framecol = colWhite;
 	if (focus) framecol = colDYell;
 
 	int line = 3;
 	int framesize = size + 2 * line;
 
-	DrawFrameX (position.x-line, position.y-line,
-	            framesize, framesize, line, colBlack, framecol, 1.0);
+	DrawFrameX(position.x-line, position.y-line,
+	           framesize, framesize, line, colBlack, framecol, 1.0);
 
 	Winsys.draw(sprite);
 }
@@ -532,7 +532,7 @@ void DrawFrameX(int x, int y, int w, int h, int line, const sf::Color& backcol, 
 	Winsys.draw(shape);
 }
 
-void DrawBonusExt (int y, size_t numraces, size_t num) {
+void DrawBonusExt(int y, size_t numraces, size_t num) {
 	size_t maxtux = numraces * 3;
 	if (num > maxtux) return;
 
@@ -705,8 +705,7 @@ void SetFocus(TWidget* widget) {
 				Widgets[i]->Focussed();
 				focussed = i;
 				break;
-			}
-			else if (Widgets[i]->focus) {
+			} else if (Widgets[i]->focus) {
 				Widgets[i]->focus = false;
 				Widgets[i]->Focussed();
 			}
@@ -768,7 +767,7 @@ void DecreaseFocus() {
 	lock_focussed = focussed;
 }
 
-void ResetGUI () {
+void ResetGUI() {
 	for (size_t i = 0; i < Widgets.size(); i++)
 		delete Widgets[i];
 	Widgets.clear();
@@ -779,16 +778,16 @@ void ResetGUI () {
 
 // ------------------ new ---------------------------------------------
 
-int AutoYPosN (double percent) {
+int AutoYPosN(double percent) {
 	double hh = (double)Winsys.resolution.height;
 	double po = hh * percent / 100;
 	return (int)(po);
 }
 
-TArea AutoAreaN (double top_perc, double bott_perc, int w) {
+TArea AutoAreaN(double top_perc, double bott_perc, int w) {
 	TArea res;
-	res.top = AutoYPosN (top_perc);
-	res.bottom = AutoYPosN (bott_perc);
+	res.top = AutoYPosN(top_perc);
+	res.bottom = AutoYPosN(bott_perc);
 	if (w > Winsys.resolution.width) w = Winsys.resolution.width;
 	res.left = (Winsys.resolution.width - w) / 2;
 	res.right = Winsys.resolution.width - res.left;

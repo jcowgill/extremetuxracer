@@ -44,12 +44,12 @@ void CHelp::Mouse(int button, int state, int x, int y) {
 }
 
 void CHelp::Motion(int x, int y) {
-	if (param.ui_snow) push_ui_snow (cursor_pos);
+	if (param.ui_snow) push_ui_snow(cursor_pos);
 }
 
 void CHelp::Enter() {
 	ResetGUI();
-	Winsys.ShowCursor (false);
+	Winsys.ShowCursor(false);
 	Music.Play(param.credits_music, true);
 
 	int ytop = AutoYPosN(15);
@@ -72,7 +72,7 @@ void CHelp::Loop(double timestep) {
 	Winsys.clear();
 
 	if (param.ui_snow) {
-		update_ui_snow (timestep);
+		update_ui_snow(timestep);
 		draw_ui_snow();
 	}
 

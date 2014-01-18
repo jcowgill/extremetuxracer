@@ -44,21 +44,21 @@ public:
 	TScreenRes resolution;
 	double scale;			// scale factor for screen, see 'use_quad_scale'
 
-	CWinsys ();
+	CWinsys();
 
 	// sdl window
-	const TScreenRes& GetResolution (size_t idx) const;
-	string GetResName (size_t idx) const;
-	void Init ();
-	void SetupVideoMode (const TScreenRes& resolution);
-	void SetupVideoMode (size_t idx);
-	void SetupVideoMode (int width, int height);
-	void KeyRepeat (bool repeat);
-	void PrintJoystickInfo () const;
+	const TScreenRes& GetResolution(size_t idx) const;
+	string GetResName(size_t idx) const;
+	void Init();
+	void SetupVideoMode(const TScreenRes& resolution);
+	void SetupVideoMode(size_t idx);
+	void SetupVideoMode(int width, int height);
+	void KeyRepeat(bool repeat);
+	void PrintJoystickInfo() const;
 	void ShowCursor(bool visible) { window.setMouseCursorVisible(visible); }
 	void SwapBuffers() { window.display(); }
-	void Quit ();
-	void Terminate ();
+	void Quit();
+	void Terminate();
 	bool joystick_isActive() const { return joystick_active; }
 	void draw(const sf::Drawable& drawable, const sf::RenderStates& states = sf::RenderStates::Default) { window.draw(drawable, states); }
 	void clear() { window.clear(colBackgr); }

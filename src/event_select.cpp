@@ -43,24 +43,24 @@ static TFramedText* selectedEvent;
 static TFramedText* selectedCup;
 static TLabel* cupLocked;
 
-void EnterEvent () {
+void EnterEvent() {
 	g_game.game_type = CUPRACING;
 	g_game.cup = Events.EventList[event->GetValue()].cups[cup->GetValue()];
 	State::manager.RequestEnterState(Event);
 }
 
-void CEventSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CEventSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(GameTypeSelect);
 			break;
 		case sf::Keyboard::Q:
 			State::manager.RequestQuit();
 			break;
 		case sf::Keyboard::Return:
-			if (textbuttons[1]->focussed()) State::manager.RequestEnterState (GameTypeSelect);
-			else if (Events.IsUnlocked (event->GetValue(), cup->GetValue())) EnterEvent();
+			if (textbuttons[1]->focussed()) State::manager.RequestEnterState(GameTypeSelect);
+			else if (Events.IsUnlocked(event->GetValue(), cup->GetValue())) EnterEvent();
 			break;
 		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
@@ -70,25 +70,25 @@ void CEventSelect::Keyb (sf::Keyboard::Key key, bool special, bool release, int 
 	}
 }
 
-void CEventSelect::Mouse (int button, int state, int x, int y) {
+void CEventSelect::Mouse(int button, int state, int x, int y) {
 	if (state == 1) {
 		TWidget* clicked = ClickGUI(x, y);
 		if (textbuttons[0] == clicked) {
-			if (Events.IsUnlocked (event->GetValue(), cup->GetValue()))
+			if (Events.IsUnlocked(event->GetValue(), cup->GetValue()))
 				EnterEvent();
 		} else if (textbuttons[1] == clicked)
-			State::manager.RequestEnterState (GameTypeSelect);
+			State::manager.RequestEnterState(GameTypeSelect);
 	}
 }
 
-void CEventSelect::Motion (int x, int y) {
+void CEventSelect::Motion(int x, int y) {
 	MouseMoveGUI(x, y);
 
-	if (param.ui_snow) push_ui_snow (cursor_pos);
+	if (param.ui_snow) push_ui_snow(cursor_pos);
 }
 
-void CEventSelect::Enter () {
-	Winsys.ShowCursor (!param.ice_cursor);
+void CEventSelect::Enter() {
+	Winsys.ShowCursor(!param.ice_cursor);
 
 	int framewidth = 500 * Winsys.scale;
 	int frameheight = 50 * Winsys.scale;
@@ -100,11 +100,11 @@ void CEventSelect::Enter () {
 	event = AddUpDown(area.right+8, frametop1, 0, (int)Events.EventList.size() - 1, 0);
 	cup = AddUpDown(area.right + 8, frametop2, 0, (int)Events.EventList[0].cups.size() - 1, 0);
 
-	int siz = FT.AutoSizeN (5);
+	int siz = FT.AutoSizeN(5);
 
-	double len = FT.GetTextWidth (Trans.Text(9));
-	textbuttons[0] = AddTextButton (Trans.Text(9), area.right-len-50, AutoYPosN (70), siz);
-	textbuttons[1] = AddTextButton (Trans.Text(8), area.left+50, AutoYPosN (70), siz);
+	double len = FT.GetTextWidth(Trans.Text(9));
+	textbuttons[0] = AddTextButton(Trans.Text(9), area.right-len-50, AutoYPosN(70), siz);
+	textbuttons[1] = AddTextButton(Trans.Text(8), area.left+50, AutoYPosN(70), siz);
 	SetFocus(textbuttons[1]);
 
 	FT.AutoSizeN(3);
@@ -116,17 +116,17 @@ void CEventSelect::Enter () {
 	selectedEvent = AddFramedText(area.left, frametop1, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 	selectedCup = AddFramedText(area.left, frametop2, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 
-	Events.MakeUnlockList (g_game.player->funlocked);
+	Events.MakeUnlockList(g_game.player->funlocked);
 	Music.Play(param.menu_music, true);
 }
 
-void CEventSelect::Loop (double timestep) {
+void CEventSelect::Loop(double timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 
 	if (param.ui_snow) {
-		update_ui_snow (timestep);
-		draw_ui_snow ();
+		update_ui_snow(timestep);
+		draw_ui_snow();
 	}
 
 	DrawGUIBackground(Winsys.scale);
@@ -140,7 +140,7 @@ void CEventSelect::Loop (double timestep) {
 	selectedCup->Focussed(cup->focussed());
 	selectedCup->SetString(Events.GetCupTrivialName(event->GetValue(), cup->GetValue()));
 
-	textbuttons[0]->SetActive(Events.IsUnlocked (event->GetValue(), cup->GetValue()));
+	textbuttons[0]->SetActive(Events.IsUnlocked(event->GetValue(), cup->GetValue()));
 	DrawGUI();
 
 	Winsys.SwapBuffers();

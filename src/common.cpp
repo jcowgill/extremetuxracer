@@ -55,49 +55,49 @@ const sf::Color colSky =		TColor(0.82, 0.86, 0.88, 1.0);
 //				print utils
 // --------------------------------------------------------------------
 
-void PrintInt (const int val) {
+void PrintInt(const int val) {
 	cout << "Integer: " << val << '\n';
 }
 
-void PrintInt (const string& s, const int val) {
+void PrintInt(const string& s, const int val) {
 	cout << s << val << endl;
 }
 
-void PrintStr (const char *val) {
+void PrintStr(const char *val) {
 	cout << val << '\n';
 }
 
-void PrintString (const string& s) {
+void PrintString(const string& s) {
 	cout << s << endl;
 }
 
-void PrintDouble (const double val) {
+void PrintDouble(const double val) {
 	cout.precision(4);
 	cout << val << '\n';
 }
 
-void PrintVector4 (const TVector4d& v) {
+void PrintVector4(const TVector4d& v) {
 	cout.precision(3);
 	cout << v.x << "  " << v.y << "  " << v.z << "  " << v.w << '\n';
 }
 
-void PrintColor (const sf::Color& v) {
+void PrintColor(const sf::Color& v) {
 	cout.precision(3);
 	cout << v.r << "  " << v.g << "  " << v.b << '\n';
 }
 
-void PrintVector2 (const TVector2d& v) {
+void PrintVector2(const TVector2d& v) {
 	cout.precision(3);
 	cout << v.x << "  " << v.y << '\n';
 }
 
-void PrintVector (const TVector3d& v) {
+void PrintVector(const TVector3d& v) {
 	cout.precision(5);
 	cout << v.x << "  " << v.y << "  " << v.z << '\n';
 }
 
 template<int x, int y>
-void PrintMatrix (const TMatrix<x, y>& mat) {
+void PrintMatrix(const TMatrix<x, y>& mat) {
 	cout << '\n';
 	cout.precision(3);
 	for (int i=0; i<x; i++) {
@@ -112,7 +112,7 @@ void PrintMatrix (const TMatrix<x, y>& mat) {
 template void PrintMatrix<4, 4>(const TMatrix<4, 4>& mat);
 template void PrintMatrix<3, 3>(const TMatrix<3, 3>& mat);
 
-void PrintQuaternion (const TQuaternion& q) {
+void PrintQuaternion(const TQuaternion& q) {
 	cout.precision(5);
 	cout << "Quaternion: " << q.x << "  " << q.y << "  " << q.z << "  " << q.w << '\n';
 }
@@ -121,13 +121,13 @@ void PrintQuaternion (const TQuaternion& q) {
 //				message utils
 // --------------------------------------------------------------------
 
-static CSPList msg_list (100);
+static CSPList msg_list(100);
 
-void SaveMessages () {
-	msg_list.Save (param.config_dir, "messages");
+void SaveMessages() {
+	msg_list.Save(param.config_dir, "messages");
 }
 
-void Message (const char *msg, const char *desc) {
+void Message(const char *msg, const char *desc) {
 	if (*msg == 0 && *desc == 0) {
 		cout << '\n';
 		return;
@@ -136,23 +136,23 @@ void Message (const char *msg, const char *desc) {
 	string aa = msg;
 	string bb = desc;
 	cout << aa << "  " << bb << '\n';
-	msg_list.Add (aa + bb);
+	msg_list.Add(aa + bb);
 }
 
-void Message (const char *msg) {
+void Message(const char *msg) {
 	cout << msg << '\n';
 	if (*msg != 0)
-		msg_list.Add (msg);
+		msg_list.Add(msg);
 }
 
-void Message (const string& a, const string& b) {
+void Message(const string& a, const string& b) {
 	cout << a << ' ' << b << endl;
-	msg_list.Add (a + b);
+	msg_list.Add(a + b);
 }
 
-void Message (const string& msg) {
+void Message(const string& msg) {
 	cout << msg << endl;
-	msg_list.Add (msg);
+	msg_list.Add(msg);
 }
 
 // --------------------------------------------------------------------
@@ -161,26 +161,26 @@ void Message (const string& msg) {
 
 bool FileExists(const string& filename) {
 	struct stat stat_info;
-	if (stat (filename.c_str(), &stat_info) != 0) {
-		if (errno != ENOENT) Message ("couldn't stat ", filename);
+	if (stat(filename.c_str(), &stat_info) != 0) {
+		if (errno != ENOENT) Message("couldn't stat ", filename);
 		return false;
 	} else return true;
 }
 
-bool FileExists (const string& dir, const string& filename) {
-	return FileExists (dir + SEP + filename);
+bool FileExists(const string& dir, const string& filename) {
+	return FileExists(dir + SEP + filename);
 }
 
 #ifndef OS_WIN32_MSC
-bool DirExists (const char *dirname) {
+bool DirExists(const char *dirname) {
 	DIR *xdir;
-	if ((xdir = opendir (dirname)) == 0)
+	if ((xdir = opendir(dirname)) == 0)
 		return ((errno != ENOENT) && (errno != ENOTDIR));
-	if (closedir (xdir) != 0) Message ("Couldn't close directory", dirname);
+	if (closedir(xdir) != 0) Message("Couldn't close directory", dirname);
 	return true;
 }
 #else
-bool DirExists (const char *dirname) {
+bool DirExists(const char *dirname) {
 	DWORD typ = GetFileAttributesA(dirname);
 	if (typ == INVALID_FILE_ATTRIBUTES)
 		return false; // Doesn't exist
@@ -193,21 +193,21 @@ bool DirExists (const char *dirname) {
 //				date and time
 // --------------------------------------------------------------------
 
-void GetTimeComponents (double time, int *min, int *sec, int *hundr) {
-	*min = (int) (time / 60);
+void GetTimeComponents(double time, int *min, int *sec, int *hundr) {
+	*min = (int)(time / 60);
 	*sec = ((int) time) % 60;
-	*hundr = ((int) (time * 100 + 0.5) ) % 100;
+	*hundr = ((int)(time * 100 + 0.5)) % 100;
 }
 
-string GetTimeString () {
+string GetTimeString() {
 	time_t rawtime;
-	time (&rawtime);
-	struct tm* timeinfo = localtime (&rawtime);
+	time(&rawtime);
+	struct tm* timeinfo = localtime(&rawtime);
 
 	string line = Int_StrN(timeinfo->tm_mon + 1);
 	line += '_' + Int_StrN(timeinfo->tm_mday);
 	line += '_' + Int_StrN(timeinfo->tm_hour);
-	line += Int_StrN (timeinfo->tm_min);
-	line += Int_StrN (timeinfo->tm_sec);
+	line += Int_StrN(timeinfo->tm_min);
+	line += Int_StrN(timeinfo->tm_sec);
 	return line;
 }
