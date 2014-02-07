@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "font.h"
 #include "ogl.h"
 #include "winsys.h"
-#include <list>
 #include <vector>
 
 
@@ -55,8 +54,8 @@ static bool Inside(int x, int y, const TRect& Rect) {
 TWidget::TWidget(int x, int y, int width, int height, bool interactive_)
 	: active(true)
 	, visible(true)
-	, focus(false)
-	, interactive(interactive_) {
+	, interactive(interactive_)
+	, focus(false) {
 	mouseRect.top = y;
 	mouseRect.left = x;
 	mouseRect.height = height;

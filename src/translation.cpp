@@ -173,13 +173,13 @@ void CTranslation::LoadLanguages() {
 		return;
 	}
 
-	languages.resize(list.Count()+1);
+	languages.resize(list.size()+1);
 	languages[0].lang = "en_GB";
 	languages[0].language = "English";
-	for (size_t i=1; i<list.Count()+1; i++) {
-		const string& line = list.Line(i-1);
-		languages[i].lang = SPStrN(line, "lang", "en_GB");
-		languages[i].language = UnicodeStr(SPStrN(line, "language", "English").c_str());
+	size_t i = 1;
+	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line, i++) {
+		languages[i].lang = SPStrN(*line, "lang", "en_GB");
+		languages[i].language = UnicodeStr(SPStrN(*line, "language", "English").c_str());
 	}
 
 	if (param.language == string::npos)
@@ -203,11 +203,10 @@ void CTranslation::LoadTranslations(size_t langidx) {
 		return;
 	}
 
-	for (size_t i=0; i<list.Count(); i++) {
-		const string& line = list.Line(i);
-		int idx = SPIntN(line, "idx", -1);
+	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+		int idx = SPIntN(*line, "idx", -1);
 		if (idx >= 0 && idx < NUM_COMMON_TEXTS) {
-			texts[idx] = UnicodeStr(SPStrN(line, "trans", texts[idx]).c_str());
+			texts[idx] = UnicodeStr(SPStrN(*line, "trans", texts[idx]).c_str());
 		}
 	}
 }

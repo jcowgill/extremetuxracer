@@ -108,7 +108,7 @@ class TTextField : public TWidget {
 	double time;
 	bool cursor;
 
-	void TTextField::SetCursorPos(size_t new_pos);
+	void SetCursorPos(size_t new_pos);
 public:
 	TTextField(int x, int y, int width, int height, const sf::String& text_);
 	void Draw() const;

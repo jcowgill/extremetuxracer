@@ -65,10 +65,9 @@ bool CSound::LoadChunk(const std::string& name, const std::string& filename) {
 void CSound::LoadSoundList() {
 	CSPList list(200);
 	if (list.Load(param.sounds_dir, "sounds.lst")) {
-		for (size_t i=0; i<list.Count(); i++) {
-			const string& line = list.Line(i);
-			string name = SPStrN(line, "name");
-			string soundfile = SPStrN(line, "file");
+		for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+			string name = SPStrN(*line, "name");
+			string soundfile = SPStrN(*line, "file");
 			string path = MakePathStr(param.sounds_dir, soundfile);
 			LoadChunk(name, path);
 		}
@@ -171,10 +170,9 @@ void CMusic::LoadMusicList() {
 	// --- music ---
 	CSPList list(200);
 	if (list.Load(param.music_dir, "music.lst")) {
-		for (size_t i=0; i<list.Count(); i++) {
-			const string& line = list.Line(i);
-			string name = SPStrN(line, "name");
-			string musicfile = SPStrN(line, "file");
+		for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+			string name = SPStrN(*line, "name");
+			string musicfile = SPStrN(*line, "file");
 			string path = MakePathStr(param.music_dir, musicfile);
 			LoadPiece(name, path);
 		}
@@ -184,19 +182,19 @@ void CMusic::LoadMusicList() {
 	}
 
 	// --- racing themes ---
-	list.Clear();
+	list.clear();
 	ThemesIndex.clear();
 	if (list.Load(param.music_dir, "racing_themes.lst")) {
-		themes.resize(list.Count());
-		for (size_t i=0; i<list.Count(); i++) {
-			const string& line = list.Line(i);
-			string name = SPStrN(line, "name");
+		themes.resize(list.size());
+		size_t i = 0;
+		for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line, i++) {
+			string name = SPStrN(*line, "name");
 			ThemesIndex[name] = i;
-			string item = SPStrN(line, "race", "race_1");
+			string item = SPStrN(*line, "race", "race_1");
 			themes[i].situation[0] = musics[MusicIndex[item]];
-			item = SPStrN(line, "wonrace", "wonrace_1");
+			item = SPStrN(*line, "wonrace", "wonrace_1");
 			themes[i].situation[1] = musics[MusicIndex[item]];
-			item = SPStrN(line, "lostrace", "lostrace_1");
+			item = SPStrN(*line, "lostrace", "lostrace_1");
 			themes[i].situation[2] = musics[MusicIndex[item]];
 		}
 	} else Message("could not load racing_themes.lst");

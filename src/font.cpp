@@ -130,11 +130,12 @@ int CFont::LoadFont(const string& name, const string& dir, const string& filenam
 
 bool CFont::LoadFontlist() {
 	CSPList list(MAX_FONTS);
-	if (!list.Load(param.font_dir, "fonts.lst")) return false;
-	for (size_t i=0; i<list.Count(); i++) {
-		const string& line = list.Line(i);
-		string fontfile = SPStrN(line, "file");
-		string name = SPStrN(line, "name");
+	if (!list.Load(param.font_dir, "fonts.lst"))
+		return false;
+
+	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+		string fontfile = SPStrN(*line, "file");
+		string name = SPStrN(*line, "name");
 
 		int ftidx = LoadFont(name, param.font_dir, fontfile);
 		if (ftidx < 0) {
