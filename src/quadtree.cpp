@@ -9,6 +9,7 @@
 #include "ogl.h"
 
 #include <climits>
+#include <cstring>
 
 #define TERRAIN_ERROR_SCALE 0.1
 #define VERTEX_FORCE_THRESHOLD 100
