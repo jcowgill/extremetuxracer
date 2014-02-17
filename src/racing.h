@@ -23,7 +23,7 @@ GNU General Public License for more details.
 
 class CRacing : public State {
 	void Enter();
-	void Loop(double time_step);
+	void Loop(float time_step);
 	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 	void Jaxis(int axis, float value);
 	void Jbutt(int button, int state);

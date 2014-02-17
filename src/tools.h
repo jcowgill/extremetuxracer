@@ -60,7 +60,7 @@ public:
 	CGluCamera();
 	double distance;
 	double angle;
-	void Update(double timestep);
+	void Update(float timestep);
 
 	bool turnright;
 	bool turnleft;
@@ -87,7 +87,7 @@ void DrawChanged();
 
 
 class CTools : public State {
-	void Loop(double time_step);
+	void Loop(float time_step);
 	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 	void Mouse(int button, int state, int x, int y);
 	void Motion(int x, int y);

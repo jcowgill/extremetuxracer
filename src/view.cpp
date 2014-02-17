@@ -53,7 +53,7 @@ void SetStationaryCamera(bool stat) {
 }
 
 static double camera_distance = 4.0;
-void IncCameraDistance(double timestep) {
+void IncCameraDistance(float timestep) {
 	camera_distance += timestep * CAMERA_DISTANCE_INCREMENT;
 }
 
@@ -66,7 +66,7 @@ TVector3d interpolate_view_pos(const TVector3d& ctrl_pos1, const TVector3d& ctrl
                                double max_vec_angle,
                                const TVector3d& pos1, const TVector3d& pos2,
                                double dist, double dt,
-                               double time_constant) {
+                               float time_constant) {
 	static TVector3d y_vec(0.0, 1.0, 0.0);
 
 	TVector3d vec1 = pos1 - ctrl_pos1;
@@ -93,7 +93,7 @@ TVector3d interpolate_view_pos(const TVector3d& ctrl_pos1, const TVector3d& ctrl
 
 void interpolate_view_frame(const TVector3d& up1, const TVector3d& dir1,
                             TVector3d *p_up2, TVector3d *p_dir2,
-                            double dt, double time_constant) {
+                            float dt, double time_constant) {
 	TVector3d z1 = -1.0 * dir1;
 	z1.Norm();
 	TVector3d y1 = ProjectToPlane(z1, up1);

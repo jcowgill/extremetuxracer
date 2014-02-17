@@ -42,7 +42,7 @@ void CSplashScreen::Enter() {
 	Music.Play(param.menu_music, true);
 }
 
-void CSplashScreen::Loop(double timestep) {
+void CSplashScreen::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 	Trans.LoadTranslations(param.language);  // Before first texts are being displayed

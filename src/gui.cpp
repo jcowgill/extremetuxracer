@@ -253,7 +253,7 @@ void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	}
 }
 
-void TTextField::UpdateCursor(double timestep) {
+void TTextField::UpdateCursor(float timestep) {
 	time += timestep;
 	if (time > CRSR_PERIODE) {
 		time = 0;

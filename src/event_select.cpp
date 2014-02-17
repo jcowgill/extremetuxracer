@@ -120,7 +120,7 @@ void CEventSelect::Enter() {
 	Music.Play(param.menu_music, true);
 }
 
-void CEventSelect::Loop(double timestep) {
+void CEventSelect::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

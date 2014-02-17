@@ -121,7 +121,7 @@ void CRegist::Enter() {
 		Winsys.Terminate(); // Characters are necessary - ETR is unusable otherwise
 }
 
-void CRegist::Loop(double timestep) {
+void CRegist::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

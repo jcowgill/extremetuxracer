@@ -60,7 +60,7 @@ struct TCharacter;
 
 struct TGameData {
 	TToolMode toolmode;
-	double time_step;
+	float time_step;
 	TGameType game_type;
 	bool force_treemap;
 	int treesize;
@@ -85,7 +85,7 @@ struct TGameData {
 	size_t theme_id;
 
 	// race results (better in player.ctrl ?)
-	double time;			// reached time
+	float time;				// reached time
 	int score;				// reached score
 	int herring;			// catched herrings during the race
 	int race_result;		// tuxlifes, only for a single race, see game_ctrl

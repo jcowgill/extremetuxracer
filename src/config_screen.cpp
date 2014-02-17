@@ -171,7 +171,7 @@ void CGameConfig::Enter() {
 	Music.Play(param.config_music, true);
 }
 
-void CGameConfig::Loop(double time_step) {
+void CGameConfig::Loop(float time_step) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

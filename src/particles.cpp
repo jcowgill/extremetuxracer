@@ -124,7 +124,7 @@ void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d&
 	x += vel.x * time_step * (size / PARTICLE_SIZE_RANGE);
 	y += vel.y * time_step * (size / PARTICLE_SIZE_RANGE);
 
-	x = clamp(-0.05, x, 1);
+	x = clamp(-0.05f, x, 1.f);
 	sprite.setPosition(x*Winsys.resolution.width, y*Winsys.resolution.height);
 }
 
@@ -135,7 +135,7 @@ void init_ui_snow() {
 	push_position = TVector2d(0.0, 0.0);
 }
 
-void update_ui_snow(double time_step) {
+void update_ui_snow(float time_step) {
 	static sf::Clock timer;
 	float time = timer.getElapsedTime().asSeconds();
 	timer.restart();
@@ -337,7 +337,7 @@ void create_new_particles(const TVector3d& loc, const TVector3d& vel, int num) {
 		                      VARIANCE_FACTOR * (FRandom() - 0.5) * speed);
 	}
 }
-void update_particles(double time_step) {
+void update_particles(float time_step) {
 	for (list<Particle>::iterator p = particles.begin(); p != particles.end();) {
 		p->age += time_step;
 		if (p->age < 0) {
@@ -345,7 +345,7 @@ void update_particles(double time_step) {
 			continue;
 		}
 
-		p->pt += time_step * p->vel;
+		p->pt += static_cast<double>(time_step) * p->vel;
 		double ycoord = Course.FindYCoord(p->pt.x, p->pt.z);
 		if (p->pt.y < ycoord - 3) {p->age = p->death + 1;}
 		if (p->age >= p->death) {
@@ -646,7 +646,7 @@ void CFlakes::Init(int grade, const CControl *ctrl) {
 	GenerateSnowFlakes(ctrl);
 }
 
-void CFlakes::Update(double timestep, const CControl *ctrl) {
+void CFlakes::Update(float timestep, const CControl *ctrl) {
 	if (g_game.snow_id < 1)
 		return;
 
@@ -703,7 +703,7 @@ void InitChanges() {
 	}
 }
 
-void UpdateChanges(double timestep) {
+void UpdateChanges(float timestep) {
 	for (int i=0; i<NUM_CHANGES; i++) {
 		TChange* ch = &changes[i];
 		if (ch->forward) {
@@ -1105,7 +1105,7 @@ void InitSnow(const CControl *ctrl) {
 	Curtain.Init(ctrl);
 }
 
-void UpdateSnow(double timestep, const CControl *ctrl) {
+void UpdateSnow(float timestep, const CControl *ctrl) {
 	if (g_game.snow_id < 1 || g_game.snow_id > 3) return;
 	Flakes.Update(timestep, ctrl);
 	Curtain.Update(timestep, ctrl);
@@ -1121,6 +1121,6 @@ void InitWind() {
 	Wind.Init(g_game.wind_id);
 }
 
-void UpdateWind(double timestep) {
+void UpdateWind(float timestep) {
 	Wind.Update(timestep);
 }

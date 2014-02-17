@@ -102,7 +102,7 @@ CGluCamera::CGluCamera() {
 	farther = false;
 }
 
-void CGluCamera::Update(double timestep) {
+void CGluCamera::Update(float timestep) {
 	if (turnright) angle += timestep * 2000;
 	if (turnleft) angle -= timestep * 2000;
 	if (nearer) distance -= timestep * 100;
@@ -281,7 +281,7 @@ void CTools::Motion(int x, int y) {
 	}
 }
 
-void CTools::Loop(double timestep) {
+void CTools::Loop(float timestep) {
 	switch (tool_mode) {
 		case 0:
 			RenderChar(timestep);

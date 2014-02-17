@@ -49,7 +49,7 @@ void CReset::Enter() {
 	position_reset = false;
 }
 
-void CReset::Loop(double time_step) {
+void CReset::Loop(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	float elapsed_time = reset_timer.getElapsedTime().asSeconds();
 	static bool tux_visible = true;

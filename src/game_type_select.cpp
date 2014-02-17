@@ -121,7 +121,7 @@ void CGameTypeSelect::Enter() {
 	Music.Play(param.menu_music, true);
 }
 
-void CGameTypeSelect::Loop(double time_step) {
+void CGameTypeSelect::Loop(float time_step) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

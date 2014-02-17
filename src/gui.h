@@ -53,6 +53,7 @@ public:
 	bool focus;
 
 	TWidget(int x, int y, int width, int height, bool interactive_ = true);
+	virtual ~TWidget() {}
 	virtual void Draw() const = 0;
 	virtual bool Click(int x, int y);
 	virtual void TextEnter(char text) {}
@@ -105,7 +106,7 @@ class TTextField : public TWidget {
 	sf::RectangleShape cursorShape;
 	size_t cursorPos;
 	size_t maxLng;
-	double time;
+	float time;
 	bool cursor;
 
 	void SetCursorPos(size_t new_pos);
@@ -114,7 +115,7 @@ public:
 	void Draw() const;
 	void TextEnter(char text);
 	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
-	void UpdateCursor(double timestep);
+	void UpdateCursor(float timestep);
 	const sf::String& Text() const { return text; }
 };
 TTextField* AddTextField(const sf::String& text, int x, int y, int width, int height);

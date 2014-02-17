@@ -162,7 +162,7 @@ void Message(const string& msg) {
 bool FileExists(const string& filename) {
 	struct stat stat_info;
 	if (stat(filename.c_str(), &stat_info) != 0) {
-		if (errno != ENOENT) Message("couldn't stat ", filename);
+		if (errno != ENOENT) Message("couldn't stat", filename);
 		return false;
 	} else return true;
 }

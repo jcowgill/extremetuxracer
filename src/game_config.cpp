@@ -39,14 +39,11 @@ Then edit the below functions:
 #include <etr_config.h>
 #endif
 
-#ifdef HAVE_SYS_STAT_H
-#include <sys/stat.h>
-#endif
-
 #include "game_config.h"
 #include "spx.h"
 #include "translation.h"
 #include <sstream>
+#include <sys/stat.h>
 
 TParam param;
 

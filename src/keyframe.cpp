@@ -256,7 +256,7 @@ void CKeyframe::CalcKeyframe(size_t idx, CCharShape *shape, const TVector3d& ref
 	shape->RotateNode("right_ankle", 3, vv);
 }
 
-void CKeyframe::Update(double timestep) {
+void CKeyframe::Update(float timestep) {
 	if (!loaded) return;
 	if (!active) return;
 
@@ -293,7 +293,7 @@ void CKeyframe::Update(double timestep) {
 	InterpolateKeyframe(keyidx, frac, shape);
 }
 
-void CKeyframe::UpdateTest(double timestep, CCharShape *shape) {
+void CKeyframe::UpdateTest(float timestep, CCharShape *shape) {
 	if (!active) return;
 
 	keytime += timestep;

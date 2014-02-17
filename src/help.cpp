@@ -67,7 +67,7 @@ void CHelp::Enter() {
 	footnote = AddLabel(Trans.Text(65), CENTER, AutoYPosN(90), colWhite);
 }
 
-void CHelp::Loop(double timestep) {
+void CHelp::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

@@ -56,7 +56,7 @@ public:
 	static Manager manager;
 
 	virtual void Enter() {}
-	virtual void Loop(double time_step) {}
+	virtual void Loop(float time_step) {}
 	virtual void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {}
 	virtual void Mouse(int button, int state, int x, int y) {}
 	virtual void Motion(int x, int y) {}

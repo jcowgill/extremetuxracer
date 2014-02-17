@@ -24,7 +24,7 @@ void InitFrameTools();
 void SingleFrameKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 void SingleFrameMouse(int button, int state, int x, int y);
 void SingleFrameMotion(int x, int y);
-void RenderSingleFrame(double timestep);
+void RenderSingleFrame(float timestep);
 
 // --------------------------------------------------------------------
 //				frame sequence
@@ -33,7 +33,7 @@ void RenderSingleFrame(double timestep);
 void SequenceKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 void SequenceMouse(int button, int state, int x, int y);
 void SequenceMotion(int x, int y);
-void RenderSequence(double timestep);
+void RenderSequence(float timestep);
 
 #endif
 

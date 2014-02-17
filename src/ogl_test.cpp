@@ -56,7 +56,7 @@ void COglTest::Enter() {
 	Winsys.KeyRepeat(true);
 }
 
-void COglTest::Loop(double timestep) {
+void COglTest::Loop(float timestep) {
 	// ------------- 3d scenery ---------------------------------------
 	ScopedRenderMode rm(TUX);
 	ClearRenderContext(colDDBackgr);

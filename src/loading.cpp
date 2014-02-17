@@ -40,7 +40,7 @@ void CLoading::Enter() {
 	Music.Play("loading", true);
 }
 
-void CLoading::Loop(double time_step) {
+void CLoading::Loop(float time_step) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

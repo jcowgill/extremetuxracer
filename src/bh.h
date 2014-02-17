@@ -55,7 +55,7 @@ GNU General Public License for more details.
 #	define SEP "\\"
 #	undef DrawText
 #	undef GetObject
-#elif defined OS_WON32_MINGW
+#elif defined OS_WIN32_MINGW
 #	include <dirent.h>
 #	include <GL/glext.h>
 #	define SEP "/"

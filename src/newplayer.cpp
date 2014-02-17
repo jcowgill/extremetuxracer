@@ -110,7 +110,7 @@ void CNewPlayer::Enter() {
 	textfield = AddTextField(emptyString, area.left, frametop, framewidth, frameheight);
 }
 
-void CNewPlayer::Loop(double timestep) {
+void CNewPlayer::Loop(float timestep) {
 	sf::Color col;
 
 	ScopedRenderMode rm(GUI);

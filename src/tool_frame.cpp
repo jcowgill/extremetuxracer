@@ -225,7 +225,7 @@ void PrintFrameParams(int ytop, TKeyframe *frame) {
 	}
 }
 
-void RenderSingleFrame(double timestep) {
+void RenderSingleFrame(float timestep) {
 	if (!must_render) return;
 
 	// ------------------ 3d scenery ----------------------------------
@@ -305,7 +305,7 @@ void SequenceKeys(sf::Keyboard::Key key, bool special, bool release, int x, int 
 void SequenceMouse(int button, int state, int x, int y) {}
 void SequenceMotion(int x, int y) {}
 
-void RenderSequence(double timestep) {
+void RenderSequence(float timestep) {
 	ScopedRenderMode rm(TUX);
 	ClearRenderContext(colDDBackgr);
 

@@ -183,7 +183,7 @@ int resultlevel(size_t num, size_t numraces) {
 	return q + 1;
 }
 
-void CEvent::Loop(double timestep) {
+void CEvent::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

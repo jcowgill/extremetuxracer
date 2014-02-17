@@ -178,7 +178,7 @@ void CRaceSelect::Enter() {
 	name = AddFramedText(area.left, frametop, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize(), true);
 }
 
-void CRaceSelect::Loop(double timestep) {
+void CRaceSelect::Loop(float timestep) {
 	ScopedRenderMode rm(GUI);
 	Winsys.clear();
 

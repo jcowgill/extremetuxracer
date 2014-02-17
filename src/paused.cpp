@@ -71,7 +71,7 @@ void CPaused::Mouse(int button, int state, int x, int y) {
 
 // ====================================================================
 
-void CPaused::Loop(double time_step) {
+void CPaused::Loop(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;

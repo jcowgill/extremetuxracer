@@ -592,7 +592,7 @@ void CControl::SolveOdeSystem(double timestep) {
 //				update tux position
 // --------------------------------------------------------------------
 
-void CControl::UpdatePlayerPos(double timestep) {
+void CControl::UpdatePlayerPos(float timestep) {
 	CCharShape *shape = g_game.character->shape;
 	double paddling_factor;
 	double flap_factor;

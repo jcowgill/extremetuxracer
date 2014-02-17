@@ -64,7 +64,7 @@ void CCredits::LoadCreditList() {
 	}
 }
 
-void CCredits::DrawCreditsText(double time_step) {
+void CCredits::DrawCreditsText(float time_step) {
 	int h = Winsys.resolution.height;
 	double offs = 0.0;
 	if (moving) y_offset += time_step * 30;
@@ -150,7 +150,7 @@ void CCredits::Exit() {
 	CreditList.clear();
 }
 
-void CCredits::Loop(double time_step) {
+void CCredits::Loop(float time_step) {
 	check_gl_error();
 	ClearRenderContext();
 	Winsys.clear();

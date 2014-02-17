@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "states.h"
 
 class CPaused : public State {
-	void Loop(double time_step);
+	void Loop(float time_step);
 	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 	void Mouse(int button, int state, int x, int y);
 public:

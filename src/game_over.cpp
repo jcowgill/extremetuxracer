@@ -179,7 +179,7 @@ void CGameOver::Enter() {
 }
 
 
-void CGameOver::Loop(double time_step) {
+void CGameOver::Loop(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;

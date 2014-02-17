@@ -66,7 +66,7 @@ void CIntro::Enter() {
 	// reset of result values
 	g_game.herring = 0;
 	g_game.score = 0;
-	g_game.time = 0.0;
+	g_game.time = 0.f;
 	g_game.race_result = -1;
 	g_game.raceaborted = false;
 
@@ -93,7 +93,7 @@ void CIntro::Enter() {
 	param.show_hud = true;
 }
 
-void CIntro::Loop(double time_step) {
+void CIntro::Loop(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	int width = Winsys.resolution.width;
 	int height = Winsys.resolution.height;

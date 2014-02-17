@@ -148,7 +148,7 @@ public:
 	double minFrictspeed;
 
 	void Init();
-	void UpdatePlayerPos(double timestep);
+	void UpdatePlayerPos(float timestep);
 };
 
 #endif

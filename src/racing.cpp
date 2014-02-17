@@ -166,7 +166,7 @@ void CRacing::Jbutt(int button, int state) {
 	}
 }
 
-void CalcJumpEnergy(double time_step) {
+void CalcJumpEnergy(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 
 	if (ctrl->jump_charging) {
@@ -250,7 +250,7 @@ void PlayTerrainSound(CControl *ctrl, bool airborne) {
 }
 
 // ----------------------- controls -----------------------------------
-void CalcSteeringControls(CControl *ctrl, double time_step) {
+void CalcSteeringControls(CControl *ctrl, float time_step) {
 	if (stick_turn) {
 		ctrl->turn_fact = stick_turnfact;
 		ctrl->turn_animation += ctrl->turn_fact * 2 * time_step;
@@ -291,7 +291,7 @@ void CalcSteeringControls(CControl *ctrl, double time_step) {
 	}
 }
 
-void CalcFinishControls(CControl *ctrl, double timestep, bool airborne) {
+void CalcFinishControls(CControl *ctrl, float timestep, bool airborne) {
 	double speed = ctrl->cvel.Length();
 	double dir_angle = RADIANS_TO_ANGLES(atan(ctrl->cvel.x / ctrl->cvel.z));
 
@@ -310,7 +310,7 @@ void CalcFinishControls(CControl *ctrl, double timestep, bool airborne) {
 
 // ----------------------- trick --------------------------------------
 
-void CalcTrickControls(CControl *ctrl, double time_step, bool airborne) {
+void CalcTrickControls(CControl *ctrl, float time_step, bool airborne) {
 	if (airborne && trick_modifier) {
 		if (left_turn) ctrl->roll_left = true;
 		if (right_turn) ctrl->roll_right = true;
@@ -338,7 +338,7 @@ void CalcTrickControls(CControl *ctrl, double time_step, bool airborne) {
 //					loop
 // ====================================================================
 
-void CRacing::Loop(double time_step) {
+void CRacing::Loop(float time_step) {
 	CControl *ctrl = g_game.player->ctrl;
 	double ycoord = Course.FindYCoord(ctrl->cpos.x, ctrl->cpos.z);
 	bool airborne = (bool)(ctrl->cpos.y > (ycoord + JUMP_MAX_START_HEIGHT));

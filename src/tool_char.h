@@ -26,7 +26,7 @@ void InitCharTools();
 void CharKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y);
 void CharMouse(int button, int state, int x, int y);
 void CharMotion(int x, int y);
-void RenderChar(double timestep);
+void RenderChar(float timestep);
 void StoreAction(TCharAction *act);
 
 #endif

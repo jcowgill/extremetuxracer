@@ -140,13 +140,13 @@ const sf::String& CTranslation::Text(size_t idx) const {
 	return texts[idx];
 }
 
-static wstring UnicodeStr(const char *s) {
-	size_t len = strlen(s);
+static wstring UnicodeStr(const std::string& s) {
+	size_t len = s.length();
 	wstring res;
 	res.resize(len);
 
 	for (size_t i = 0, j = 0; i < len; ++i, ++j) {
-		wchar_t ch = ((const unsigned char *) s)[i];
+		wchar_t ch = (unsigned char)s[i];
 		if (ch >= 0xF0) {
 			ch = (wchar_t)(s[i] & 0x07) << 18;
 			ch |= (wchar_t)(s[++i] & 0x3F) << 12;
@@ -179,7 +179,7 @@ void CTranslation::LoadLanguages() {
 	size_t i = 1;
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line, i++) {
 		languages[i].lang = SPStrN(*line, "lang", "en_GB");
-		languages[i].language = UnicodeStr(SPStrN(*line, "language", "English").c_str());
+		languages[i].language = UnicodeStr(SPStrN(*line, "language", "English"));
 	}
 
 	if (param.language == string::npos)
@@ -206,7 +206,7 @@ void CTranslation::LoadTranslations(size_t langidx) {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
 		int idx = SPIntN(*line, "idx", -1);
 		if (idx >= 0 && idx < NUM_COMMON_TEXTS) {
-			texts[idx] = UnicodeStr(SPStrN(*line, "trans", texts[idx]).c_str());
+			texts[idx] = UnicodeStr(SPStrN(*line, "trans", texts[idx]));
 		}
 	}
 }

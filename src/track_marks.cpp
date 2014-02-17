@@ -291,7 +291,7 @@ void add_track_mark(const CControl *ctrl, int *id) {
 			q->t4 = TVector2d(1.0, q->t2.y + tex_end);
 		}
 	}
-	q->alpha = min((2*comp_depth-dist_from_surface)/(4*comp_depth)*255, 255);
+	q->alpha = min(static_cast<uint8_t>((2*comp_depth-dist_from_surface)/(4*comp_depth)*255), 255);
 	continuing_track = true;
 }
 
