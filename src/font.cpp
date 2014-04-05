@@ -38,14 +38,14 @@ static void MakeWordList(vector<string>& wordlist, const char *s) {
 	for (size_t i = 0; s[i] != '\0'; i++) {
 		if (s[i] == ' ') {
 			if (i != start)
-				wordlist.push_back(string(s+start, i-start));
+				wordlist.emplace_back(s + start, i - start);
 			while (s[i+1] == ' ')
 				i++;
 			start = i+1;
 		}
 	}
 	if (s[start] != '0')
-		wordlist.push_back(string(s+start));
+		wordlist.emplace_back(s + start);
 }
 
 static size_t MakeLine(size_t first, const vector<string>& wordlist, vector<string>& linelist, float width) {

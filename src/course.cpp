@@ -395,9 +395,9 @@ void CCourse::LoadItemList() {
 		}
 
 		if (ObjTypes[type].collidable)
-			CollArr.push_back(TCollidable(xx, FindYCoord(xx, zz), zz, height, diam, type));
+			CollArr.emplace_back(xx, FindYCoord(xx, zz), zz, height, diam, type);
 		else
-			NocollArr.push_back(TItem(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]));
+			NocollArr.emplace_back(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]);
 	}
 }
 
@@ -496,9 +496,9 @@ bool CCourse::LoadAndConvertObjectMap() {
 				}
 
 				if (ObjTypes[type].collidable)
-					CollArr.push_back(TCollidable(xx, FindYCoord(xx, zz), zz, height, diam, type));
+					CollArr.emplace_back(xx, FindYCoord(xx, zz), zz, height, diam, type);
 				else
-					NocollArr.push_back(TItem(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]));
+					NocollArr.emplace_back(xx, FindYCoord(xx, zz), zz, height, diam, ObjTypes[type]);
 
 				string line = "*[name]";
 				line += ObjTypes[type].name;

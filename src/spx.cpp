@@ -363,6 +363,12 @@ void CSPList::Add(const string& line) {
 	}
 }
 
+void CSPList::Add(string&& line) {
+	if (size() < fmax) {
+		push_back(line);
+	}
+}
+
 void CSPList::Print() const {
 	for (const_iterator line = cbegin(); line != cend(); ++line)
 		cout << *line << endl;

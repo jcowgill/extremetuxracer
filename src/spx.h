@@ -101,6 +101,7 @@ public:
 	CSPList(size_t maxlines, bool newlineflag = false);
 
 	void Add(const string& line = emptyString);
+	void Add(string&& line);
 	void Print() const;
 	bool Load(const string &filepath);
 	bool Load(const string& dir, const string& filename);

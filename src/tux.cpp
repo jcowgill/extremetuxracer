@@ -343,7 +343,7 @@ void CCharShape::CreateMaterial(const string& line) {
 	float exp = SPFloatN(line, "exp", 50);
 	std::string mat = SPStrN(line, "mat");
 
-	Materials.push_back(TCharMaterial());
+	Materials.emplace_back();
 	Materials.back().diffuse.r = diff.x * 255;
 	Materials.back().diffuse.g = diff.y * 255;
 	Materials.back().diffuse.b = diff.z * 255;
@@ -924,7 +924,7 @@ void CCharShape::SaveCharNodes(const string& dir, const string& filename) {
 						rotflag = true;
 						break;
 					case 5:
-						line += " [vis] " + Float_StrN(act->dval[ii], 0);
+						line += " [vis] " + Int_StrN((int)act->dval[ii]);
 						break;
 					case 9:
 						rotation.z = act->dval[ii];

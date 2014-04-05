@@ -45,14 +45,13 @@ bool CEvents::LoadEventList() {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
 		int type = SPIntN(*line, "struct", -1);
 		if (type == 0) {
-			RaceList.push_back(TRace(
-			                       Course.GetCourse(SPStrN(*line, "course")),
-			                       Env.GetLightIdx(SPStrN(*line, "light")),
-			                       SPIntN(*line, "snow", 0),
-			                       SPIntN(*line, "wind", 0),
-			                       SPVector3i(*line, "herring"),
-			                       SPVector3d(*line, "time"),
-			                       Music.GetThemeIdx(SPStrN(*line, "theme", "normal"))));
+			RaceList.emplace_back(Course.GetCourse(SPStrN(*line, "course")),
+			                      Env.GetLightIdx(SPStrN(*line, "light")),
+			                      SPIntN(*line, "snow", 0),
+			                      SPIntN(*line, "wind", 0),
+			                      SPVector3i(*line, "herring"),
+			                      SPVector3d(*line, "time"),
+			                      Music.GetThemeIdx(SPStrN(*line, "theme", "normal")));
 		}
 	}
 	list.MakeIndex(RaceIndex, "race");
@@ -61,10 +60,9 @@ bool CEvents::LoadEventList() {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
 		int type = SPIntN(*line, "struct", -1);
 		if (type == 1) {
-			CupList.push_back(TCup(
-			                      SPStrN(*line, "cup", errorString),
-			                      SPStrN(*line, "name", "unknown"),
-			                      SPStrN(*line, "desc", "unknown")));
+			CupList.emplace_back(SPStrN(*line, "cup", errorString),
+			                     SPStrN(*line, "name", "unknown"),
+			                     SPStrN(*line, "desc", "unknown"));
 			int num = SPIntN(*line, "num", 0);
 			CupList.back().races.resize(num);
 			for (int ii=0; ii<num; ii++) {
@@ -79,7 +77,7 @@ bool CEvents::LoadEventList() {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
 		int type = SPIntN(*line, "struct", -1);
 		if (type == 2) {
-			EventList.push_back(TEvent(SPStrN(*line, "name", "unknown")));
+			EventList.emplace_back(SPStrN(*line, "name", "unknown"));
 			int num = SPIntN(*line, "num", 0);
 			EventList.back().cups.resize(num);
 			for (int ii=0; ii<num; ii++) {
@@ -156,12 +154,12 @@ CPlayers::~CPlayers() {
 }
 
 void CPlayers::AddPlayer(const string& name, const string& avatar) {
-	plyr.push_back(TPlayer(name, FindAvatar(avatar)));
+	plyr.emplace_back(name, FindAvatar(avatar));
 }
 
 void CPlayers::SetDefaultPlayers() {
-	plyr.push_back(TPlayer("Racer", FindAvatar("avatar01.png")));
-	plyr.push_back(TPlayer("Bunny", FindAvatar("avatar02.png")));
+	plyr.emplace_back("Racer", FindAvatar("avatar01.png"));
+	plyr.emplace_back("Bunny", FindAvatar("avatar02.png"));
 }
 
 bool CPlayers::LoadPlayers() {
@@ -252,7 +250,7 @@ void CPlayers::LoadAvatars() {
 		string filename = SPStrN(*line, "file", "unknown");
 		TTexture* texture = new TTexture();
 		if (texture && texture->Load(param.player_dir, filename)) {
-			avatars.push_back(TAvatar(filename, texture));
+			avatars.emplace_back(filename, texture);
 		} else
 			delete texture;
 	}

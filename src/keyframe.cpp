@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "game_ctrl.h"
 #include "physics.h"
 #include <cstring>
+#include <iterator>
 
 static const int numJoints = 19;
 
@@ -324,7 +325,7 @@ void CKeyframe::UpdateTest(float timestep, CCharShape *shape) {
 }
 
 void CKeyframe::ResetFrame2(TKeyframe *frame) {
-	for (int i=1; i<32; i++) frame->val[i] = 0.0;
+	for (int i = 1; i<32; i++) frame->val[i] = 0.0;
 	frame->val[0] = 0.5; // time
 }
 
@@ -399,34 +400,25 @@ void CKeyframe::CopyFrame(size_t prim_idx, size_t sec_idx) {
 }
 
 void CKeyframe::AddFrame() {
-	frames.push_back(TKeyframe());
-	ResetFrame2(&frames.back());
+	frames.emplace_back();
 }
 
 size_t CKeyframe::DeleteFrame(size_t idx) {
 	if (frames.size() < 2) return idx;
-	size_t lastframe = frames.size()-1;
-	if (idx > lastframe) return 0;
+	if (idx > frames.size() - 1) return 0;
 
-	if (idx == lastframe) {
-		frames.pop_back();
-		return frames.size()-1;
-
-	} else {
-		for (size_t i=idx; i<lastframe-1; i++) CopyFrame(i+1, i);
-		frames.pop_back();
-		return idx;
-	}
+	std::vector<TKeyframe>::iterator i = frames.begin();
+	std::advance(i, idx);
+	frames.erase(i);
+	return max(idx, frames.size() - 2);
 }
 
 void CKeyframe::InsertFrame(size_t idx) {
-	size_t lastframe = frames.size()-1;
-	if (idx > lastframe) return;
+	if (idx > frames.size() - 1) return;
 
-	frames.push_back(TKeyframe());
-
-	for (size_t i=frames.size()-1; i>idx; i--) CopyFrame(i-1, i);
-	ResetFrame2(&frames[idx]);
+	std::vector<TKeyframe>::iterator i = frames.begin();
+	std::advance(i, idx);
+	frames.emplace(i);
 }
 
 void CKeyframe::CopyToClipboard(size_t idx) {

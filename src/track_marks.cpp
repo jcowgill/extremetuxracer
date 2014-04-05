@@ -249,7 +249,7 @@ void add_track_mark(const CControl *ctrl, int *id) {
 	}
 
 	if (track_marks.quads.size() < MAX_TRACK_MARKS)
-		track_marks.quads.push_back(track_quad_t());
+		track_marks.quads.emplace_back();
 	list<track_quad_t>::iterator qprev = track_marks.current_mark;
 	if (track_marks.current_mark == track_marks.quads.end())
 		track_marks.current_mark = track_marks.quads.begin();
@@ -291,7 +291,7 @@ void add_track_mark(const CControl *ctrl, int *id) {
 			q->t4 = TVector2d(1.0, q->t2.y + tex_end);
 		}
 	}
-	q->alpha = min(static_cast<uint8_t>((2*comp_depth-dist_from_surface)/(4*comp_depth)*255), 255);
+	q->alpha = min(static_cast<int>((2*comp_depth-dist_from_surface)/(4*comp_depth)*255), 255);
 	continuing_track = true;
 }
 

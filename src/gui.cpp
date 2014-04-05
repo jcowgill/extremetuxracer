@@ -211,9 +211,7 @@ void TTextField::Draw() const {
 
 void TTextField::TextEnter(char key) {
 	if (key != '\b') {
-		string text_ = text.toAnsiString();
-		text_.insert(cursorPos, 1, key);
-		text = text_;
+		text.insert(cursorPos, key);
 		SetCursorPos(cursorPos+1);
 	}
 }
@@ -223,7 +221,7 @@ void TTextField::SetCursorPos(size_t new_pos) {
 
 	int x = mouseRect.left + 20 - 2;
 	if (cursorPos != 0) {
-		string temp = text.toAnsiString().substr(0, cursorPos);
+		string temp = text.substring(0, cursorPos);
 		x += FT.GetTextWidth(temp);
 	}
 

@@ -51,7 +51,8 @@ void CCredits::LoadCreditList() {
 	}
 
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
-		TCredits credit;
+		CreditList.emplace_back();
+		TCredits& credit = CreditList.back();
 		credit.text = SPStrN(*line, "text");
 
 		double offset = SPFloatN(*line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
@@ -60,7 +61,6 @@ void CCredits::LoadCreditList() {
 
 		credit.col = SPIntN(*line, "col", 0);
 		credit.size = SPFloatN(*line, "size", 1.0);
-		CreditList.push_back(credit);
 	}
 }
 
