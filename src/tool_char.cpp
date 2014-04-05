@@ -120,7 +120,7 @@ void SetRotation(double x, double y, double z) {
 	zrotation = z;
 }
 
-void CharKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CharKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 	must_render = true;
 
 	if (ToolsFinalStage()) {

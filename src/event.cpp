@@ -64,7 +64,7 @@ void StartRace() {
 	State::manager.RequestEnterState(Loading);
 }
 
-void CEvent::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CEvent::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Return:
@@ -78,7 +78,7 @@ void CEvent::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int 
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:
-			KeyGUI(key, 0, release);
+			KeyGUI(key, release);
 	}
 }
 

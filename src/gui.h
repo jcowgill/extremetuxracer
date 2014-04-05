@@ -57,7 +57,7 @@ public:
 	virtual void Draw() const = 0;
 	virtual bool Click(int x, int y);
 	virtual void TextEnter(char text) {}
-	virtual void Key(sf::Keyboard::Key key, unsigned int mod, bool released) {}
+	virtual void Key(sf::Keyboard::Key key, bool released) {}
 	virtual void MouseMove(int x, int y);
 	virtual void Focussed() {}
 	virtual void Activated() {}
@@ -114,7 +114,7 @@ public:
 	TTextField(int x, int y, int width, int height, const sf::String& text_);
 	void Draw() const;
 	void TextEnter(char text);
-	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, bool released);
 	void UpdateCursor(float timestep);
 	const sf::String& Text() const { return text; }
 };
@@ -132,7 +132,7 @@ public:
 	void SetChecked(bool c) { checked = c; }
 	void Focussed();
 	bool Click(int x, int y);
-	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, bool released);
 };
 TCheckbox* AddCheckbox(int x, int y, int width, const sf::String& tag);
 
@@ -147,7 +147,7 @@ public:
 	void SetValue(int _value);
 	void Draw() const;
 	bool Click(int x, int y);
-	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, bool released);
 };
 TIconButton* AddIconButton(int x, int y, const sf::Texture& texture, double size, int maximum, int value);
 
@@ -177,7 +177,7 @@ public:
 	void SetMaximum(int max_);
 	void Draw() const;
 	bool Click(int x, int y);
-	void Key(sf::Keyboard::Key key, unsigned int mod, bool released);
+	void Key(sf::Keyboard::Key key, bool released);
 	void MouseMove(int x, int y);
 };
 TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distance = 2);
@@ -187,7 +187,7 @@ TUpDown* AddUpDown(int x, int y, int minimum, int maximum, int value, int distan
 void DrawGUI();
 TWidget* ClickGUI(int x, int y);
 TWidget* MouseMoveGUI(int x, int y);
-TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released);
+TWidget* KeyGUI(sf::Keyboard::Key key, bool released);
 TWidget* TextEnterGUI(char text);
 void SetFocus(TWidget* widget);
 void IncreaseFocus();

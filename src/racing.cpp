@@ -66,7 +66,7 @@ static bool trees = true;
 static int newsound = -1;
 static int lastsound = -1;
 
-void CRacing::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CRacing::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	switch (key) {
 		// steering flipflops
 		case sf::Keyboard::Up:

@@ -69,10 +69,9 @@ void CGameTypeSelect::Mouse(int button, int state, int x, int y) {
 	}
 }
 
-void CGameTypeSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CGameTypeSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 
-	KeyGUI(key, 0, release);
 	switch (key) {
 		case sf::Keyboard::U:
 			param.ui_snow = !param.ui_snow;
@@ -87,7 +86,7 @@ void CGameTypeSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, in
 			Music.FreeMusics();
 			break;
 		default:
-			KeyGUI(key, 0, release);
+			KeyGUI(key, release);
 			break;
 	}
 }

@@ -48,8 +48,8 @@ void QuitRegistration() {
 	State::manager.RequestEnterState(GameTypeSelect);
 }
 
-void CRegist::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
-	TWidget* focussed = KeyGUI(key, 0, release);
+void CRegist::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
+	TWidget* focussed = KeyGUI(key, release);
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:

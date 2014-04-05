@@ -93,7 +93,7 @@ void CCredits::DrawCreditsText(float time_step) {
 	if (offs < TOP_Y) y_offset = 0;
 }
 
-void CCredits::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CCredits::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::M:

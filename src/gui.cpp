@@ -230,7 +230,7 @@ void TTextField::SetCursorPos(size_t new_pos) {
 	cursorShape.setPosition(x, mouseRect.top + 9);
 }
 
-void TTextField::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
+void TTextField::Key(sf::Keyboard::Key key, bool released) {
 	switch (key) {
 		case sf::Keyboard::Delete:
 			if (cursorPos < text.getSize()) text.erase(cursorPos, 1);
@@ -306,7 +306,7 @@ bool TCheckbox::Click(int x, int y) {
 	return false;
 }
 
-void TCheckbox::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
+void TCheckbox::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
 	if (key == sf::Keyboard::Space || key == sf::Keyboard::Return) {
@@ -374,7 +374,7 @@ bool TIconButton::Click(int x, int y) {
 	return false;
 }
 
-void TIconButton::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
+void TIconButton::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
 	if (key == sf::Keyboard::Down || key == sf::Keyboard::Left) { // Arrow down/left
@@ -464,7 +464,7 @@ bool TUpDown::Click(int x, int y) {
 	return false;
 }
 
-void TUpDown::Key(sf::Keyboard::Key key, unsigned int mod, bool released) {
+void TUpDown::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
 	if (key == sf::Keyboard::Up) { // Arrow up
@@ -652,7 +652,7 @@ TWidget* MouseMoveGUI(int x, int y) {
 	return Widgets[focussed];
 }
 
-TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released) {
+TWidget* KeyGUI(sf::Keyboard::Key key, bool released) {
 	if (!released) {
 		switch (key) {
 			case sf::Keyboard::Tab:
@@ -683,7 +683,7 @@ TWidget* KeyGUI(sf::Keyboard::Key key, unsigned int mod, bool released) {
 	}
 	if (focussed == -1)
 		return 0;
-	Widgets[focussed]->Key(key, mod, released);
+	Widgets[focussed]->Key(key, released);
 	return Widgets[focussed];
 }
 

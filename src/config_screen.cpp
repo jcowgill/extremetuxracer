@@ -93,7 +93,7 @@ void SetConfig() {
 	State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 
-void CGameConfig::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CGameConfig::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 
 	switch (key) {
@@ -110,7 +110,7 @@ void CGameConfig::Keyb(sf::Keyboard::Key key, bool special, bool release, int x,
 				SetConfig();
 			break;
 		default:
-			KeyGUI(key, 0, release);
+			KeyGUI(key, release);
 			break;
 	}
 }

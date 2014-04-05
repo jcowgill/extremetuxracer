@@ -239,16 +239,16 @@ void CTools::Enter() {
 	Winsys.KeyRepeat(true);
 }
 
-void CTools::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CTools::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	switch (tool_mode) {
 		case 0:
-			CharKeys(key, special, release, x, y);
+			CharKeys(key, release, x, y);
 			break;
 		case 1:
-			SingleFrameKeys(key, special, release, x, y);
+			SingleFrameKeys(key, release, x, y);
 			break;
 		case 2:
-			SequenceKeys(key, special, release, x, y);
+			SequenceKeys(key, release, x, y);
 			break;
 	}
 }

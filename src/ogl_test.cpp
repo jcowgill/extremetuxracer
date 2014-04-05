@@ -43,7 +43,7 @@ void SetTestLight() {
 }
 
 
-void COglTest::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void COglTest::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:

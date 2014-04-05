@@ -173,8 +173,8 @@ static TWidget* textbutton;
 static TFramedText* courseName;
 static TLabel* headline;
 
-void CScore::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
-	KeyGUI(key, 0, release);
+void CScore::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
+	KeyGUI(key, release);
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:

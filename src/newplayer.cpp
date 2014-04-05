@@ -45,10 +45,10 @@ void QuitAndAddPlayer() {
 	State::manager.RequestEnterState(Regist);
 }
 
-void CNewPlayer::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CNewPlayer::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 
-	KeyGUI(key, 0, release);
+	KeyGUI(key, release);
 	switch (key) {
 		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState(Regist);

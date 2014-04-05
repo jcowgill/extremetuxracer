@@ -49,7 +49,7 @@ void EnterEvent() {
 	State::manager.RequestEnterState(Event);
 }
 
-void CEventSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CEventSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Escape:
@@ -66,7 +66,7 @@ void CEventSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:
-			KeyGUI(key, 0, release);
+			KeyGUI(key, release);
 	}
 }
 

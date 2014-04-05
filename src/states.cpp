@@ -61,12 +61,12 @@ void State::Manager::PollEvent() {
 			switch (event.type) {
 				case sf::Event::KeyPressed:
 					key = event.key.code;
-					current->Keyb(key, key >= 256, false, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
+					current->Keyb(key, false, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
 					break;
 
 				case sf::Event::KeyReleased:
 					key = event.key.code;
-					current->Keyb(key, key >= 256, true, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
+					current->Keyb(key, true, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
 					break;
 
 				case sf::Event::TextEntered:

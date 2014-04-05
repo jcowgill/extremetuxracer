@@ -24,7 +24,7 @@ GNU General Public License for more details.
 class CHelp : public State {
 	void Enter();
 	void Loop(float time_step);
-	void Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y);
+	void Keyb(sf::Keyboard::Key key, bool release, int x, int y);
 	void Mouse(int button, int state, int x, int y);
 	void Motion(int x, int y);
 public:

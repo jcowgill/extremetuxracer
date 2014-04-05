@@ -103,9 +103,9 @@ void CRaceSelect::Mouse(int button, int state, int x, int y) {
 	}
 }
 
-void CRaceSelect::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CRaceSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
-	KeyGUI(key, 0, release);
+	KeyGUI(key, release);
 	switch (key) {
 		case sf::Keyboard::Escape:
 			State::manager.RequestEnterState(GameTypeSelect);

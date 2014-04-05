@@ -35,7 +35,7 @@ TLabel* headline;
 TLabel* texts[TEXT_LINES];
 TLabel* footnote;
 
-void CHelp::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CHelp::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	State::manager.RequestEnterState(*State::manager.PreviousState());
 }
 

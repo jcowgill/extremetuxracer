@@ -53,7 +53,7 @@ void QuitGameOver() {
 	}
 }
 
-void CGameOver::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CGameOver::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	if (key == 13 || key == sf::Keyboard::Escape) QuitGameOver();
 }

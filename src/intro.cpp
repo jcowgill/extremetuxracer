@@ -129,7 +129,7 @@ void CIntro::Loop(float time_step) {
 }
 // -----------------------------------------------------------------------
 
-void CIntro::Keyb(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void CIntro::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release)
 		return;
 

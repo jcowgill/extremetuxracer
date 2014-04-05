@@ -49,7 +49,7 @@ void InitFrameTools() {
 	last_joint = TestFrame.GetNumJoints() -1;
 }
 
-void SingleFrameKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void SingleFrameKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 //PrintInt (key);
 	must_render = true;
 	int keyfact;
@@ -286,7 +286,7 @@ void RenderSingleFrame(float timestep) {
 //				frame sequence
 // --------------------------------------------------------------------
 
-void SequenceKeys(sf::Keyboard::Key key, bool special, bool release, int x, int y) {
+void SequenceKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
 		case sf::Keyboard::Return:
