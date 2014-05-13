@@ -18,9 +18,10 @@ GNU General Public License for more details.
 #include <etr_config.h>
 #endif
 
+#include <SFML/Audio.hpp>
+
 #include "audio.h"
 #include "spx.h"
-#include <SFML/Audio.hpp>
 
 // the global instances of the 2 audio classes
 CSound Sound;
