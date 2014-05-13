@@ -11,7 +11,6 @@ etr_SOURCES =		\
 	event.cpp	\
 	event_select.cpp \
 	font.cpp	\
-	ft_font.cpp	\
 	game_config.cpp	\
 	game_ctrl.cpp	\
 	game_over.cpp	\
