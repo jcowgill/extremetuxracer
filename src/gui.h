@@ -102,7 +102,8 @@ TTextButton* AddTextButton(const sf::String& text, int x, int y, float ftsize);
 TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize);
 
 class TTextField : public TWidget {
-	sf::String text;
+	sf::Text text;
+	sf::RectangleShape frame;
 	sf::RectangleShape cursorShape;
 	size_t cursorPos;
 	size_t maxLng;
@@ -115,8 +116,9 @@ public:
 	void Draw() const;
 	void TextEnter(char text);
 	void Key(sf::Keyboard::Key key, bool released);
+	void Focussed();
 	void UpdateCursor(float timestep);
-	const sf::String& Text() const { return text; }
+	const sf::String& Text() const { return text.getString(); }
 };
 TTextField* AddTextField(const sf::String& text, int x, int y, int width, int height);
 
@@ -137,8 +139,9 @@ public:
 TCheckbox* AddCheckbox(int x, int y, int width, const sf::String& tag);
 
 class TIconButton : public TWidget {
-	double size;
 	sf::Sprite sprite;
+	sf::RectangleShape frame;
+	double size;
 	int maximum;
 	int value;
 public:
@@ -146,6 +149,7 @@ public:
 	int GetValue() const { return value; }
 	void SetValue(int _value);
 	void Draw() const;
+	void Focussed();
 	bool Click(int x, int y);
 	void Key(sf::Keyboard::Key key, bool released);
 };

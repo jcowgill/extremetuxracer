@@ -188,30 +188,33 @@ TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize
 
 TTextField::TTextField(int x, int y, int width, int height, const sf::String& text_)
 	: TWidget(x, y, width, height)
-	, text(text_)
+	, text(text_, FT.getCurrentFont(), FT.AutoSizeN(5))
+	, frame(sf::Vector2f(width-6.f, height-6.f))
 	, cursorShape(sf::Vector2f(2, 26 * Winsys.scale))
 	, maxLng(32)
 	, time(0.0)
 	, cursor(false) {
+	text.setPosition(mouseRect.left + 20, mouseRect.top);
 	cursorShape.setFillColor(colYellow);
+	frame.setPosition(x + 3.f, y + 3.f);
+	frame.setOutlineThickness(3);
+	frame.setFillColor(colMBackgr);
+	frame.setOutlineColor(colWhite);
 	SetCursorPos(0);
 }
 
 void TTextField::Draw() const {
-	const sf::Color& col = focus ? colDYell : colWhite;
-	FT.SetColor(col);
-	DrawFrameX(mouseRect.left, mouseRect.top, mouseRect.width, mouseRect.height, 3, colMBackgr, col, 1.0);
-	FT.AutoSizeN(5);
-	FT.DrawString(mouseRect.left+20, mouseRect.top, text);
-
-	if (cursor && focus) {
+	Winsys.draw(frame);
+	Winsys.draw(text);
+	if (cursor && focus)
 		Winsys.draw(cursorShape);
-	}
 }
 
 void TTextField::TextEnter(char key) {
 	if (key != '\b') {
-		text.insert(cursorPos, key);
+		sf::String string = text.getString();
+		string.insert(cursorPos, key);
+		text.setString(string);
 		SetCursorPos(cursorPos+1);
 	}
 }
@@ -221,27 +224,41 @@ void TTextField::SetCursorPos(size_t new_pos) {
 
 	int x = mouseRect.left + 20 - 2;
 	if (cursorPos != 0) {
-                // substring() is very new addition to SFML2 string class, so
-                // for compatibility with older version we use std::string to do it.
-		string temp1 = text;
-                string temp = temp1.substr(0, cursorPos);
-
-		x += FT.GetTextWidth(temp);
+		// substring() is very new addition to SFML2 string class, so
+		// for compatibility with older version we use std::string to do it.
+		string temp = text.getString();
+		FT.AutoSizeN(5);
+		x += FT.GetTextWidth(temp.substr(0, cursorPos));
 	}
 
 	cursorShape.setPosition(x, mouseRect.top + 9);
 }
 
+void TTextField::Focussed() {
+	if (focus) {
+		text.setColor(colDYell);
+		frame.setOutlineColor(colDYell);
+	} else {
+		text.setColor(colWhite);
+		frame.setOutlineColor(colWhite);
+	}
+}
+
+static void eraseFromText(sf::Text& text, size_t pos) {
+	sf::String str = text.getString();
+	str.erase(pos, 1);
+	text.setString(str);
+}
 void TTextField::Key(sf::Keyboard::Key key, bool released) {
 	switch (key) {
 		case sf::Keyboard::Delete:
-			if (cursorPos < text.getSize()) text.erase(cursorPos, 1);
+			if (cursorPos < text.getString().getSize()) eraseFromText(text, cursorPos);
 			break;
 		case sf::Keyboard::BackSpace:
-			if (cursorPos > 0) { text.erase(cursorPos - 1, 1); SetCursorPos(cursorPos - 1); }
+			if (cursorPos > 0) { eraseFromText(text, cursorPos-1); SetCursorPos(cursorPos - 1); }
 			break;
 		case sf::Keyboard::Right:
-			if (cursorPos < text.getSize()) SetCursorPos(cursorPos + 1);
+			if (cursorPos < text.getString().getSize()) SetCursorPos(cursorPos + 1);
 			break;
 		case sf::Keyboard::Left:
 			if (cursorPos > 0) SetCursorPos(cursorPos - 1);
@@ -250,7 +267,7 @@ void TTextField::Key(sf::Keyboard::Key key, bool released) {
 			SetCursorPos(0);
 			break;
 		case sf::Keyboard::End:
-			SetCursorPos(text.getSize());
+			SetCursorPos(text.getString().getSize());
 			break;
 	}
 }
@@ -286,7 +303,7 @@ void TCheckbox::SetPosition(int x, int y) {
 	checkmark.setPosition(x, y);
 }
 
-void TCheckbox::Focussed()  {
+void TCheckbox::Focussed() {
 	if (focus)
 		text.setColor(colDYell);
 	else
@@ -322,12 +339,16 @@ TCheckbox* AddCheckbox(int x, int y, int width, const sf::String& tag) {
 
 TIconButton::TIconButton(int x, int y, const sf::Texture& texture, double size_, int max_, int value_)
 	: TWidget(x, y, 32, 32)
-	, size(size_)
 	, sprite(texture)
+	, frame(sf::Vector2f(size_, size_))
+	, size(size_)
 	, maximum(max_)
 	, value(value_) {
 	sprite.setScale(size / (texture.getSize().x / 2.0), size / (texture.getSize().y / 2.0));
 	sprite.setPosition(x, y);
+	frame.setPosition(x, y);
+	frame.setOutlineColor(colWhite);
+	frame.setOutlineThickness(3.f);
 	SetValue(value_);
 }
 
@@ -356,16 +377,15 @@ void TIconButton::SetValue(int _value) {
 }
 
 void TIconButton::Draw() const {
-	sf::Color framecol = colWhite;
-	if (focus) framecol = colDYell;
-
-	int line = 3;
-	int framesize = size + 2 * line;
-
-	DrawFrameX(position.x-line, position.y-line,
-	           framesize, framesize, line, colBlack, framecol, 1.0);
-
+	Winsys.draw(frame);
 	Winsys.draw(sprite);
+}
+
+void TIconButton::Focussed() {
+	if (focus)
+		frame.setOutlineColor(colDYell);
+	else
+		frame.setOutlineColor(colWhite);
 }
 
 bool TIconButton::Click(int x, int y) {
@@ -700,11 +720,11 @@ void SetFocus(TWidget* widget) {
 	if (!widget)
 		focussed = -1;
 	else
-		for (int i = 0; i < (int) Widgets.size(); i++) {
+		for (size_t i = 0; i < Widgets.size(); i++) {
 			if (Widgets[i] == widget) {
 				Widgets[i]->focus = true;
 				Widgets[i]->Focussed();
-				focussed = i;
+				focussed = (int)i;
 				break;
 			} else if (Widgets[i]->focus) {
 				Widgets[i]->focus = false;
@@ -780,9 +800,7 @@ void ResetGUI() {
 // ------------------ new ---------------------------------------------
 
 int AutoYPosN(double percent) {
-	double hh = (double)Winsys.resolution.height;
-	double po = hh * percent / 100;
-	return (int)(po);
+	return Winsys.resolution.height * percent / 100.0;
 }
 
 TArea AutoAreaN(double top_perc, double bott_perc, int w) {

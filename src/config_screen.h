@@ -26,7 +26,6 @@ class CGameConfig : public State {
 	void Keyb(sf::Keyboard::Key key, bool release, int x, int y);
 	void Mouse(int button, int state, int x, int y);
 	void Motion(int x, int y);
-	void Exit();
 public:
 };
 

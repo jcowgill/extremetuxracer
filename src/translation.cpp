@@ -132,6 +132,8 @@ void CTranslation::SetDefaultTranslations() {
 	texts[88] = "Average speed";
 	texts[89] = "Position";
 	texts[90] = "in highscore list";
+
+	texts[91] = "Author";
 }
 
 const sf::String& CTranslation::Text(size_t idx) const {

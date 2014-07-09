@@ -215,7 +215,6 @@ static int dd1, dd2, dd3, dd4;
 
 void CScore::Enter() {
 	Winsys.ShowCursor(!param.ice_cursor);
-	Winsys.KeyRepeat(true);
 	Music.Play(param.menu_music, true);
 
 	int framewidth = 550 * Winsys.scale;

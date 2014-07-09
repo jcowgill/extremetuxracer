@@ -30,7 +30,7 @@ struct TSound;
 
 class CSound {
 private:
-	vector<TSound> sounds;
+	vector<TSound*> sounds;
 	map<string, size_t> SoundIndex;
 public:
 	~CSound();

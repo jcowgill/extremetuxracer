@@ -235,8 +235,6 @@ void CTools::Enter() {
 
 	InitCharTools();
 	InitFrameTools();
-
-	Winsys.KeyRepeat(true);
 }
 
 void CTools::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {

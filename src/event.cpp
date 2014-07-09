@@ -193,9 +193,6 @@ void CEvent::Loop(float timestep) {
 	}
 	DrawGUIBackground(Winsys.scale);
 
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, colBlack, 0.2);
-
 	if (ready == 0) {			// cup not finished
 		DrawBonusExt(bonustop, (int)ecup->races.size(), curr_bonus);
 

@@ -54,10 +54,10 @@ CSound::~CSound() {
 }
 
 bool CSound::LoadChunk(const std::string& name, const std::string& filename) {
-	sounds.emplace_back(param.sound_volume);
-	if (!sounds.back().data.loadFromFile(filename)) // Try loading sound buffer
+	sounds.emplace_back(new TSound(param.sound_volume));
+	if (!sounds.back()->data.loadFromFile(filename)) // Try loading sound buffer
 		return false;
-	sounds.back().player.setBuffer(sounds.back().data);
+	sounds.back()->player.setBuffer(sounds.back()->data);
 	SoundIndex[name] = sounds.size()-1;
 	return true;
 }
@@ -77,6 +77,8 @@ void CSound::LoadSoundList() {
 
 void CSound::FreeSounds() {
 	HaltAll();
+	for (size_t i = 0; i < sounds.size(); i++)
+		delete sounds[i];
 	sounds.clear();
 	SoundIndex.clear();
 }
@@ -93,7 +95,7 @@ void CSound::SetVolume(size_t soundid, int volume) {
 	if (soundid >= sounds.size()) return;
 
 	volume = clamp(0, volume, MIX_MAX_VOLUME);
-	sounds[soundid].setVolume(volume);
+	sounds[soundid]->setVolume(volume);
 }
 
 void CSound::SetVolume(const string& name, int volume) {
@@ -105,7 +107,7 @@ void CSound::SetVolume(const string& name, int volume) {
 void CSound::Play(size_t soundid, bool loop) {
 	if (soundid >= sounds.size()) return;
 
-	sounds[soundid].Play(loop);
+	sounds[soundid]->Play(loop);
 }
 
 void CSound::Play(const string& name, bool loop) {
@@ -116,8 +118,8 @@ void CSound::Play(size_t soundid, bool loop, int volume) {
 	if (soundid >= sounds.size()) return;
 
 	volume = clamp(0, volume, MIX_MAX_VOLUME);
-	sounds[soundid].setVolume(volume);
-	sounds[soundid].Play(loop);
+	sounds[soundid]->setVolume(volume);
+	sounds[soundid]->Play(loop);
 }
 
 void CSound::Play(const string& name, bool loop, int volume) {
@@ -128,8 +130,8 @@ void CSound::Halt(size_t soundid) {
 	if (soundid >= sounds.size()) return;
 
 	// loop_count must be -1 (endless loop) for halt
-	if (sounds[soundid].player.getLoop())
-		sounds[soundid].player.stop();
+	if (sounds[soundid]->player.getLoop())
+		sounds[soundid]->player.stop();
 }
 
 void CSound::Halt(const string& name) {
@@ -138,7 +140,7 @@ void CSound::Halt(const string& name) {
 
 void CSound::HaltAll() {
 	for (size_t i = 0; i < sounds.size(); i++) {
-		sounds[i].player.stop();
+		sounds[i]->player.stop();
 	}
 }
 

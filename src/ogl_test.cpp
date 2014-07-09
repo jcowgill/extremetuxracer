@@ -52,10 +52,6 @@ void COglTest::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	}
 }
 
-void COglTest::Enter() {
-	Winsys.KeyRepeat(true);
-}
-
 void COglTest::Loop(float timestep) {
 	// ------------- 3d scenery ---------------------------------------
 	ScopedRenderMode rm(TUX);

@@ -86,7 +86,6 @@ void CNewPlayer::Motion(int x, int y) {
 static int prevleft, prevtop, prevwidth;
 
 void CNewPlayer::Enter() {
-	Winsys.KeyRepeat(true);
 	Winsys.ShowCursor(!param.ice_cursor);
 	Music.Play(param.menu_music, true);
 
@@ -122,9 +121,6 @@ void CNewPlayer::Loop(float timestep) {
 	}
 
 	textfield->UpdateCursor(timestep);
-
-//	DrawFrameX (area.left, area.top, area.right-area.left, area.bottom - area.top,
-//			0, colMBackgr, col, 0.2);
 
 	DrawGUIBackground(Winsys.scale);
 

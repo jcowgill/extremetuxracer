@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "states.h"
 
 class COglTest : public State {
-	void Enter();
 	void Loop(float time_step);
 	void Keyb(sf::Keyboard::Key key, bool release, int x, int y);
 public:

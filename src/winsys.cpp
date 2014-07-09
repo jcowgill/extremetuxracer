@@ -117,8 +117,6 @@ void CWinsys::SetupVideoMode(int width, int height) {
 
 void CWinsys::Init() {
 	SetupVideoMode(GetResolution(param.res_type));
-
-	KeyRepeat(false);
 }
 
 void CWinsys::KeyRepeat(bool repeat) {
