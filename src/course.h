@@ -115,10 +115,24 @@ struct TCourse {
 	double finish_brake;
 };
 
+class CCourseList {
+	std::vector<TCourse> courses;
+	map<string, size_t>  index;
+public:
+	string name;
+
+	bool Load(const std::string& dir);
+	void Free();
+	TCourse& operator[](size_t idx) { return courses[idx]; }
+	const TCourse& operator[](size_t idx) const { return courses[idx]; }
+	TCourse& operator[](string name) { return courses[index.at(name)]; }
+	const TCourse& operator[](string name) const { return courses[index.at(name)]; }
+	size_t size() const { return courses.size(); }
+};
+
 class CCourse {
 private:
 	const TCourse* curr_course;
-	map<string, size_t> CourseIndex;
 	map<string, size_t> ObjectIndex;
 	string		CourseDir;
 
@@ -143,7 +157,8 @@ public:
 	CCourse();
 	~CCourse();
 
-	vector<TCourse>		CourseList;
+	map<string, CCourseList> CourseLists;
+	CCourseList*             currentCourseList;
 	vector<TTerrType>	TerrList;
 	vector<TObjectType>	ObjTypes;
 	vector<TCollidable>	CollArr;
@@ -156,10 +171,9 @@ public:
 	GLubyte		*vnc_array;
 
 	void ResetCourse();
-	TCourse* GetCourse(const string& dir);
+	TCourse* GetCourse(const string& group, const string& dir);
 	size_t GetCourseIdx(const TCourse* course) const;
 	bool LoadCourseList();
-	void FreeCourseList();
 	bool LoadCourse(TCourse* course);
 	bool LoadTerrainTypes();
 	bool LoadObjectTypes();

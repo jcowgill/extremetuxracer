@@ -69,7 +69,7 @@ void SetRaceConditions() {
 	g_game.snow_id = snow->GetValue();
 	g_game.wind_id = wind->GetValue();
 
-	g_game.course = &Course.CourseList[course->GetValue()];
+	g_game.course = &(*Course.currentCourseList)[course->GetValue()];
 	g_game.theme_id = CourseList[course->GetValue()].music_theme;
 	g_game.game_type = PRACTICING;
 	State::manager.RequestEnterState(Loading);
@@ -143,7 +143,7 @@ void CRaceSelect::Enter() {
 	Winsys.ShowCursor(!param.ice_cursor);
 	Music.Play(param.menu_music, true);
 
-	CourseList = &Course.CourseList[0];
+	CourseList = &(*Course.currentCourseList)[0];
 
 	framewidth = 550 * Winsys.scale;
 	frameheight = 50 * Winsys.scale;
@@ -163,7 +163,7 @@ void CRaceSelect::Enter() {
 
 	ResetGUI();
 
-	course = AddUpDown(area.left + framewidth + 8, frametop, 0, (int)Course.CourseList.size() - 1, g_game.course?(int)Course.GetCourseIdx(g_game.course):0);
+	course = AddUpDown(area.left + framewidth + 8, frametop, 0, (int) Course.currentCourseList->size() - 1, g_game.course ? (int) Course.GetCourseIdx(g_game.course) : 0);
 
 	light = AddIconButton(iconleft, icontop, Tex.GetSFTexture(LIGHT_BUTT), iconsize, 3, (int)g_game.light_id);
 	snow = AddIconButton(iconleft + iconspace, icontop, Tex.GetSFTexture(SNOW_BUTT), iconsize, 3, g_game.snow_id);

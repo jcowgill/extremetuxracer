@@ -96,7 +96,8 @@ bool CScore::SaveHighScore() const {
 			if (num > 0) {
 				for (int sc=0; sc<num; sc++) {
 					const TScore& score = lst->scores[sc];
-					string line = "*[course] " + Course.CourseList[li].dir;
+					string line = "*[group] " + Course.currentCourseList->name; // TODO: Save Highscore of all groups
+					line += " [course] " + (*Course.currentCourseList)[li].dir;
 					line += " [plyr] " + score.player;
 					line += " [pts] " + Int_StrN(score.points);
 					line += " [herr] " + Int_StrN(score.herrings);
@@ -116,7 +117,7 @@ bool CScore::SaveHighScore() const {
 bool CScore::LoadHighScore() {
 	CSPList list(520);
 
-	Scorelist.resize(Course.CourseList.size());
+	Scorelist.resize(Course.currentCourseList->size());
 
 	if (!list.Load(param.config_dir, "highscore")) {
 		Message("could not load highscore list");
@@ -124,8 +125,9 @@ bool CScore::LoadHighScore() {
 	}
 
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+		string group = SPStrN(*line, "group", "default");
 		string course = SPStrN(*line, "course", "unknown");
-		TCourse* cidx = Course.GetCourse(course);
+		TCourse* cidx = Course.GetCourse(group, course);
 
 		TScore score;
 		score.player = SPStrN(*line, "plyr", "unknown");
@@ -167,7 +169,7 @@ int CScore::CalcRaceResult() {
 //				score screen
 // --------------------------------------------------------------------
 
-static TCourse *CourseList;
+static CCourseList *CourseList;
 static TUpDown* course;
 static TWidget* textbutton;
 static TFramedText* courseName;
@@ -229,10 +231,10 @@ void CScore::Enter() {
 	dd3 = 250 * Winsys.scale;
 	dd4 = 375 * Winsys.scale;
 
-	CourseList = &Course.CourseList[0];
+	CourseList = Course.currentCourseList;
 
 	ResetGUI();
-	course = AddUpDown(area.right + 8, frametop, 0, (int)Course.CourseList.size()-1, 0);
+	course = AddUpDown(area.right + 8, frametop, 0, (int)Course.currentCourseList->size()-1, 0);
 	int siz = FT.AutoSizeN(5);
 	textbutton = AddTextButton(Trans.Text(64), CENTER, AutoYPosN(80), siz);
 
@@ -258,7 +260,7 @@ void CScore::Loop(float timestep) {
 	DrawGUIBackground(Winsys.scale);
 
 	courseName->Focussed(course->focussed());
-	courseName->SetString(CourseList[course->GetValue()].name);
+	courseName->SetString((*CourseList)[course->GetValue()].name);
 
 	const TScoreList *list = Score.GetScorelist(course->GetValue());
 

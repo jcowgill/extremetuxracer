@@ -45,7 +45,7 @@ bool CEvents::LoadEventList() {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
 		int type = SPIntN(*line, "struct", -1);
 		if (type == 0) {
-			RaceList.emplace_back(Course.GetCourse(SPStrN(*line, "course")),
+			RaceList.emplace_back(Course.GetCourse(SPStrN(*line, "group"), SPStrN(*line, "course")),
 			                      Env.GetLightIdx(SPStrN(*line, "light")),
 			                      SPIntN(*line, "snow", 0),
 			                      SPIntN(*line, "wind", 0),

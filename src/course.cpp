@@ -45,10 +45,12 @@ CCourse::CCourse() {
 	mirrored = false;
 
 	curr_course = NULL;
+	currentCourseList = nullptr;
 }
 
 CCourse::~CCourse() {
-	FreeCourseList();
+	for (std::map<std::string, CCourseList>::iterator i = CourseLists.begin(); i != CourseLists.end(); ++i)
+		i->second.Free();
 	ResetCourse();
 }
 
@@ -74,13 +76,13 @@ const TPolyhedron& CCourse::GetPoly(size_t type) const {
 	return PolyArr[ObjTypes[type].poly];
 }
 
-TCourse* CCourse::GetCourse(const string& dir) {
-	return &CourseList[CourseIndex.at(dir)];
+TCourse* CCourse::GetCourse(const string& group, const string& dir) {
+	return &CourseLists[group][dir];
 }
 
 size_t CCourse::GetCourseIdx(const TCourse* course) const {
-	size_t idx = (course - &CourseList[0]);
-	if (idx >= CourseList.size())
+	size_t idx = (course - &(*currentCourseList)[0]);
+	if (idx >= currentCourseList->size())
 		return -1;
 	return idx;
 }
@@ -646,42 +648,41 @@ bool CCourse::LoadTerrainMap() {
 }
 
 // --------------------------------------------------------------------
-//					LoadCourseList
+//					CCourseList
 // --------------------------------------------------------------------
 
-bool CCourse::LoadCourseList() {
+bool CCourseList::Load(const std::string& dir) {
 	CSPList list(128);
 
-	if (!list.Load(param.common_course_dir, "courses.lst")) {
+	if (!list.Load(dir, "courses.lst")) {
 		Message("could not load courses.lst");
 		return false;
 	}
 
 	CSPList paramlist(48);
 
-	CourseList.resize(list.size());
+	courses.resize(list.size());
 	size_t i = 0;
 	for (CSPList::const_iterator line1 = list.cbegin(); line1 != list.cend(); ++line1, i++) {
-		CourseList[i].name = SPStrN(*line1, "name", "noname");
-		CourseList[i].dir = SPStrN(*line1, "dir", "nodir");
+		courses[i].name = SPStrN(*line1, "name", "noname");
+		courses[i].dir = SPStrN(*line1, "dir", "nodir");
 
 		string desc = SPStrN(*line1, "desc");
 		FT.AutoSizeN(2);
 		vector<string> desclist = FT.MakeLineList(desc.c_str(), 335 * Winsys.scale - 16.0);
 		size_t cnt = min<size_t>(desclist.size(), MAX_DESCRIPTION_LINES);
-		CourseList[i].num_lines = cnt;
-		for (size_t ll=0; ll<cnt; ll++) {
-			CourseList[i].desc[ll] = desclist[ll];
+		courses[i].num_lines = cnt;
+		for (size_t ll = 0; ll<cnt; ll++) {
+			courses[i].desc[ll] = desclist[ll];
 		}
 
-		string coursepath = param.common_course_dir + SEP + CourseList[i].dir;
+		string coursepath = dir + SEP + courses[i].dir;
 		if (DirExists(coursepath.c_str())) {
 			// preview
 			string previewfile = coursepath + SEP "preview.png";
-			CourseList[i].preview = new TTexture();
-			if (!CourseList[i].preview->Load(previewfile, false)) {
+			courses[i].preview = new TTexture();
+			if (!courses[i].preview->Load(previewfile, false)) {
 				Message("couldn't load previewfile");
-//				texid = Tex.TexID (NO_PREVIEW);
 			}
 
 			// params
@@ -691,31 +692,48 @@ bool CCourse::LoadCourseList() {
 			}
 
 			const string& line2 = paramlist.front();
-			CourseList[i].author = SPStrN(line2, "author", "unknown");
-			CourseList[i].size.x = SPFloatN(line2, "width", 100);
-			CourseList[i].size.y = SPFloatN(line2, "length", 1000);
-			CourseList[i].play_size.x = SPFloatN(line2, "play_width", 90);
-			CourseList[i].play_size.y = SPFloatN(line2, "play_length", 900);
-			CourseList[i].angle = SPFloatN(line2, "angle", 10);
-			CourseList[i].scale = SPFloatN(line2, "scale", 10);
-			CourseList[i].start.x = SPFloatN(line2, "startx", 50);
-			CourseList[i].start.y = SPFloatN(line2, "starty", 5);
-			CourseList[i].env = Env.GetEnvIdx(SPStrN(line2, "env", "etr"));
-			CourseList[i].music_theme = Music.GetThemeIdx(SPStrN(line2, "theme", "normal"));
-			CourseList[i].use_keyframe = SPBoolN(line2, "use_keyframe", false);
-			CourseList[i].finish_brake = SPFloatN(line2, "finish_brake", 20);
+			courses[i].author = SPStrN(line2, "author", "unknown");
+			courses[i].size.x = SPFloatN(line2, "width", 100);
+			courses[i].size.y = SPFloatN(line2, "length", 1000);
+			courses[i].play_size.x = SPFloatN(line2, "play_width", 90);
+			courses[i].play_size.y = SPFloatN(line2, "play_length", 900);
+			courses[i].angle = SPFloatN(line2, "angle", 10);
+			courses[i].scale = SPFloatN(line2, "scale", 10);
+			courses[i].start.x = SPFloatN(line2, "startx", 50);
+			courses[i].start.y = SPFloatN(line2, "starty", 5);
+			courses[i].env = Env.GetEnvIdx(SPStrN(line2, "env", "etr"));
+			courses[i].music_theme = Music.GetThemeIdx(SPStrN(line2, "theme", "normal"));
+			courses[i].use_keyframe = SPBoolN(line2, "use_keyframe", false);
+			courses[i].finish_brake = SPFloatN(line2, "finish_brake", 20);
 			paramlist.clear();	// the list is used several times
 		}
 	}
-	list.MakeIndex(CourseIndex, "dir");
+	list.MakeIndex(index, "dir");
 	return true;
 }
 
-void CCourse::FreeCourseList() {
-	for (size_t i=0; i<CourseList.size(); i++) {
-		delete CourseList[i].preview;
+void CCourseList::Free() {
+	for (size_t i = 0; i < courses.size(); i++) {
+		delete courses[i].preview;
 	}
-	CourseList.clear();
+	courses.clear();
+}
+
+bool CCourse::LoadCourseList() {
+	CSPList list(128);
+
+	if (!list.Load(param.common_course_dir, "groups.lst")) {
+		Message("could not load groups.lst");
+		return false;
+	}
+
+	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+		std::string dir = SPStrN(*line, "dir", "nodir");
+		CourseLists[dir].Load(MakePathStr(param.common_course_dir, dir));
+		CourseLists[dir].name = dir;
+	}
+	currentCourseList = &CourseLists["default"];
+	return true;
 }
 
 //  ===================================================================
@@ -739,7 +757,7 @@ bool CCourse::LoadCourse(TCourse* course) {
 	if (course != curr_course || g_game.force_treemap) {
 		ResetCourse();
 		curr_course = course;
-		CourseDir = param.common_course_dir + SEP + curr_course->dir;
+		CourseDir = param.common_course_dir + SEP + currentCourseList->name + SEP + curr_course->dir;
 
 		start_pt.x = course->start.x;
 		start_pt.y = -course->start.y;
