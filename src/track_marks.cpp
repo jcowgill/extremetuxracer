@@ -103,6 +103,7 @@ void DrawTrackmarks() {
 	TTexture* textures[NUM_TRACK_TYPES];
 
 	sf::Color track_colour = colWhite;
+	set_material(track_colour, colBlack, 1.0);
 	ScopedRenderMode rm(TRACK_MARKS);
 
 	textures[TRACK_HEAD] = Tex.GetTexture(trackid1);
@@ -112,8 +113,10 @@ void DrawTrackmarks() {
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
 	for (list<track_quad_t>::const_iterator q = track_marks.quads.begin(); q != track_marks.quads.end(); ++q) {
-		track_colour.a = q->alpha;
-		set_material(track_colour, colBlack, 1.0);
+		if (q->alpha != track_colour.a) {
+			track_colour.a = q->alpha;
+			set_material_diffuse(track_colour);
+		}
 		textures[q->track_type]->Bind();
 
 		if ((q->track_type == TRACK_HEAD) || (q->track_type == TRACK_TAIL)) {
@@ -159,8 +162,10 @@ void DrawTrackmarks() {
 			++qnext;
 			while (qnext != track_marks.quads.end() && qnext->track_type != TRACK_TAIL) {
 				q = qnext;
-				track_colour.a = q->alpha;
-				set_material(track_colour, colBlack, 1.0);
+				if (q->alpha != track_colour.a) {
+					track_colour.a = q->alpha;
+					set_material_diffuse(track_colour);
+				}
 
 				glNormal3(q->n4);
 				glTexCoord2(q->t4);

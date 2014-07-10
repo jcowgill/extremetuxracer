@@ -39,10 +39,10 @@ private:
 	bool sfmlRenders;
 	TScreenRes resolutions[NUM_RESOLUTIONS];
 	TScreenRes auto_resolution;
-	double CalcScreenScale() const;
+	float CalcScreenScale() const;
 public:
 	TScreenRes resolution;
-	double scale;			// scale factor for screen, see 'use_quad_scale'
+	float scale;			// scale factor for screen, see 'use_quad_scale'
 
 	CWinsys();
 

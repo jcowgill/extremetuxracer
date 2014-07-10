@@ -31,12 +31,12 @@ GNU General Public License for more details.
 #define TOP_Y 165
 #define BOTT_Y 64
 #define FADE 50
-#define OFFS_SCALE_FACTOR 1.2
+#define OFFS_SCALE_FACTOR 1.2f
 
 CCredits Credits;
 
 
-static double y_offset = 0;
+static float y_offset = 0;
 static bool moving = true;
 sf::RenderTexture* RT = 0;
 sf::VertexArray arr(sf::Quads, 12);
@@ -55,18 +55,18 @@ void CCredits::LoadCreditList() {
 		TCredits& credit = CreditList.back();
 		credit.text = SPStrN(*line, "text");
 
-		double offset = SPFloatN(*line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
+		float offset = SPFloatN(*line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
 		if (line != list.cbegin()) credit.offs = CreditList.back().offs + (int)offset;
 		else credit.offs = offset;
 
 		credit.col = SPIntN(*line, "col", 0);
-		credit.size = SPFloatN(*line, "size", 1.0);
+		credit.size = SPFloatN(*line, "size", 1.f);
 	}
 }
 
 void CCredits::DrawCreditsText(float time_step) {
 	int h = Winsys.resolution.height;
-	double offs = 0.0;
+	float offs = 0.f;
 	if (moving) y_offset += time_step * 30;
 
 	sf::Text text;
@@ -74,7 +74,7 @@ void CCredits::DrawCreditsText(float time_step) {
 	RT->clear(colTBackr);
 	for (list<TCredits>::const_iterator i = CreditList.begin(); i != CreditList.end(); ++i) {
 		offs = h - TOP_Y - y_offset + i->offs;
-		if (offs > h || offs < -100.0) // Draw only visible lines
+		if (offs > h || offs < -100.f) // Draw only visible lines
 			continue;
 
 		if (i->col == 0)

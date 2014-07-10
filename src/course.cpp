@@ -40,7 +40,7 @@ GNU General Public License for more details.
 
 void TCourse::SetDescription(const std::string& description) {
 	FT.AutoSizeN(2);
-	vector<string> desclist = FT.MakeLineList(description.c_str(), 335 * Winsys.scale - 16.0);
+	vector<string> desclist = FT.MakeLineList(description.c_str(), 335.f * Winsys.scale - 16.f);
 	size_t cnt = min<size_t>(desclist.size(), MAX_DESCRIPTION_LINES);
 	num_lines = cnt;
 	for (size_t ll = 0; ll < cnt; ll++) {
@@ -619,8 +619,8 @@ bool CCourse::LoadTerrainTypes() {
 		TerrList[i].tracktex = SPIntN(*line, "tracktex", -1);
 		TerrList[i].stoptex = SPIntN(*line, "stoptex", -1);
 		TerrList[i].col = SPColor3N(*line, "col", TColor3(255, 255, 255));
-		TerrList[i].friction = SPFloatN(*line, "friction", 0.5);
-		TerrList[i].depth = SPFloatN(*line, "depth", 0.01);
+		TerrList[i].friction = SPFloatN(*line, "friction", 0.5f);
+		TerrList[i].depth = SPFloatN(*line, "depth", 0.01f);
 		TerrList[i].particles = SPBoolN(*line, "part", false);
 		TerrList[i].trackmarks = SPBoolN(*line, "trackmarks", false);
 		TerrList[i].texture = NULL;

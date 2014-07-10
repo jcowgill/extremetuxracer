@@ -161,7 +161,7 @@ void CGameConfig::Enter() {
 	detail_level = AddUpDown(rightpos, area.top+dd*5, 1, 4, param.perf_level);
 
 	textbuttons[0] = AddTextButton(Trans.Text(28), area.left+50, AutoYPosN(80), siz);
-	double len = FT.GetTextWidth(Trans.Text(8));
+	float len = FT.GetTextWidth(Trans.Text(8));
 	textbuttons[1] = AddTextButton(Trans.Text(15), area.right-len-50, AutoYPosN(80), siz);
 
 	for (int i = 0; i < 5; i++)

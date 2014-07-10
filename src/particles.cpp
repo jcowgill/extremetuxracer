@@ -154,7 +154,7 @@ void update_ui_snow(float time_step) {
 		p->Update(time_step, push_timestep, push_vector);
 	}
 
-	if (FRandom() < time_step*20.0*(MAX_num_snowparticles - particles_2d.size()) / 1000.0) {
+	if (FRandom() < time_step*20.f*(MAX_num_snowparticles - particles_2d.size()) / 1000.f) {
 		particles_2d.emplace_back(FRandom(), -0.05);
 	}
 
@@ -165,7 +165,7 @@ void update_ui_snow(float time_step) {
 			} else {
 				p->sprite.setPosition(static_cast<float>(Winsys.resolution.width)*FRandom(), static_cast<float>(Winsys.resolution.height) * (-FRandom()*BASE_VELOCITY));
 				double p_dist = FRandom();
-				p->size = PARTICLE_MIN_SIZE + (1.0 - p_dist) * PARTICLE_SIZE_RANGE;
+				p->size = PARTICLE_MIN_SIZE + (1.f - p_dist) * PARTICLE_SIZE_RANGE;
 				p->sprite.setScale(p->size / (p->sprite.getTexture()->getSize().x / 2), p->size / (p->sprite.getTexture()->getSize().x / 2));
 				p->vel.x = 0;
 				p->vel.y = BASE_VELOCITY + p_dist*VELOCITY_RANGE;
@@ -470,7 +470,7 @@ void TFlake::Draw(const TPlane& lp, const TPlane& rp, bool rotate_flake, float d
 
 
 TFlakeArea::TFlakeArea(
-    int   num_flakes,
+    size_t num_flakes,
     float _xrange,
     float _ytop,
     float _yrange,
@@ -498,7 +498,7 @@ void TFlakeArea::Draw(const CControl *ctrl) const {
 
 	const TPlane& lp = get_left_clip_plane();
 	const TPlane& rp = get_right_clip_plane();
-	float dir_angle(atan(ctrl->viewdir.x / ctrl->viewdir.z) * 180 / 3.14159);
+	float dir_angle(atan(ctrl->viewdir.x / ctrl->viewdir.z) * 180 / M_PI);
 
 	ScopedRenderMode rm(PARTICLES);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
@@ -599,8 +599,8 @@ void CFlakes::UpdateAreas(const CControl *ctrl) {
 	}
 }
 
-#define YDRIFT 0.8
-#define ZDRIFT 0.6
+#define YDRIFT 0.8f
+#define ZDRIFT 0.6f
 
 void CFlakes::Init(int grade, const CControl *ctrl) {
 	Reset();
@@ -680,8 +680,8 @@ void CFlakes::Draw(const CControl *ctrl) const {
 
 #define NUM_CHANGES 6
 #define CHANGE_DRIFT 15
-#define CHANGE_SPEED 0.05
-#define CURTAIN_WINDDRIFT 0.35
+#define CHANGE_SPEED 0.05f
+#define CURTAIN_WINDDRIFT 0.35f
 
 struct TChange {
 	float min;
@@ -736,7 +736,7 @@ TCurtain::TCurtain(int num_rows, float z_dist, float tex_size,
 			break;
 	}
 
-	angledist = atan(size / 2 / zdist) * 360 / 3.14159;
+	angledist = atan(size / 2 / zdist) * 360 / M_PI;
 	numCols = (unsigned int)(-2 * startangle / angledist) + 1;
 	if (numCols > MAX_CURTAIN_COLS) numCols = MAX_CURTAIN_COLS;
 	lastangle = startangle + (numCols-1) * angledist;
@@ -818,7 +818,7 @@ void TCurtain::Update(float timestep, const TVector3d& drift, const CControl* ct
 
 static CCurtain Curtain;
 void TCurtain::CurtainVec(float angle, float zdist, float &x, float &z) {
-	x = zdist  * sin(angle * 3.14159 / 180);
+	x = zdist  * sin(angle * M_PI / 180);
 	if (angle > 90 || angle < -90) z = sqrt(zdist * zdist - x * x);
 	else z = -sqrt(zdist * zdist - x * x);
 }
@@ -905,7 +905,7 @@ void CCurtain::Init(const CControl *ctrl) {
 //					wind
 // --------------------------------------------------------------------
 
-#define UPDATE_TIME 0.04
+#define UPDATE_TIME 0.04f
 
 CWind Wind;
 
@@ -1041,7 +1041,7 @@ void CWind::Update(float timestep) {
 	// the wind needn't be updated in each frame
 	CurrTime = CurrTime + timestep;
 	if (CurrTime > UPDATE_TIME) {
-		CurrTime = 0.0;
+		CurrTime = 0.f;
 
 		if (SpeedMode == 1) { // current speed lesser than destination speed
 			if (WSpeed < DestSpeed) {
@@ -1068,7 +1068,7 @@ void CWind::Update(float timestep) {
 		if (WAngle > params.maxAngle) WAngle = params.maxAngle;
 		if (WAngle < params.minAngle) WAngle = params.minAngle;
 
-		float xx = sin(WAngle * 3.14159 / 180);
+		float xx = sin(WAngle * M_PI / 180.f);
 		float zz = sqrt(1 - xx * xx);
 		if ((WAngle > 90 && WAngle < 270) || (WAngle > 450 && WAngle < 630)) {
 			zz = -zz;

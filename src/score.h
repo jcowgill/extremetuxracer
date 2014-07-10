@@ -27,7 +27,7 @@ struct TScore {
 	string player;
 	int points;
 	int herrings;
-	double time;
+	float time;
 };
 
 struct TScoreList {

@@ -190,13 +190,13 @@ TTextField::TTextField(int x, int y, int width, int height, const sf::String& te
 	: TWidget(x, y, width, height)
 	, text(text_, FT.getCurrentFont(), FT.AutoSizeN(5))
 	, frame(sf::Vector2f(width-6.f, height-6.f))
-	, cursorShape(sf::Vector2f(2, 26 * Winsys.scale))
+	, cursorShape(sf::Vector2f(2.f, 26.f * Winsys.scale))
 	, maxLng(32)
 	, time(0.0)
 	, cursor(false) {
 	text.setPosition(mouseRect.left + 20, mouseRect.top);
 	cursorShape.setFillColor(colYellow);
-	frame.setPosition(x + 3.f, y + 3.f);
+	frame.setPosition(x + 3, y + 3);
 	frame.setOutlineThickness(3);
 	frame.setFillColor(colMBackgr);
 	frame.setOutlineColor(colWhite);

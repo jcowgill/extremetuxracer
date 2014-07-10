@@ -130,27 +130,32 @@ void PrintGLInfo() {
 	}
 }
 
-void set_material(const sf::Color& diffuse_colour, const sf::Color& specular_colour, float specular_exp) {
-	GLfloat mat_amb_diff[4] = {
-		static_cast<GLfloat>(diffuse_colour.r) / 255.f,
-		static_cast<GLfloat>(diffuse_colour.g) / 255.f,
-		static_cast<GLfloat>(diffuse_colour.b) / 255.f,
-		static_cast<GLfloat>(diffuse_colour.a) / 255.f
+void set_material_diffuse(const sf::Color& diffuse_colour) {
+	GLint mat_amb_diff[4] = {
+		static_cast<GLint>(diffuse_colour.r) * (INT_MAX / 255),
+		static_cast<GLint>(diffuse_colour.g) * (INT_MAX / 255),
+		static_cast<GLint>(diffuse_colour.b) * (INT_MAX / 255),
+		static_cast<GLint>(diffuse_colour.a) * (INT_MAX / 255)
 	};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
-
-	GLfloat mat_specular[4] = {
-		static_cast<GLfloat>(specular_colour.r) / 255.f,
-		static_cast<GLfloat>(specular_colour.g) / 255.f,
-		static_cast<GLfloat>(specular_colour.b) / 255.f,
-		static_cast<GLfloat>(specular_colour.a) / 255.f
-	};
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
-
-	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, specular_exp);
+	glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
 
 	glColor(diffuse_colour);
 }
+
+void set_material(const sf::Color& diffuse_colour, const sf::Color& specular_colour, float specular_exp) {
+	set_material_diffuse(diffuse_colour);
+
+	GLint mat_specular[4] = {
+		static_cast<GLint>(specular_colour.r) * (INT_MAX / 255),
+		static_cast<GLint>(specular_colour.g) * (INT_MAX / 255),
+		static_cast<GLint>(specular_colour.b) * (INT_MAX / 255),
+		static_cast<GLint>(specular_colour.a) * (INT_MAX / 255)
+	};
+	glMaterialiv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+
+	glMateriali(GL_FRONT_AND_BACK, GL_SHININESS, specular_exp);
+}
+
 void ClearRenderContext() {
 	glDepthMask(GL_TRUE);
 	glClearColor(colBackgr.r / 255.f, colBackgr.g / 255.f, colBackgr.b / 255.f, colBackgr.a / 255.f);
