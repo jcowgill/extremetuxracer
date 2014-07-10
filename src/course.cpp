@@ -32,10 +32,33 @@ GNU General Public License for more details.
 #include "font.h"
 #include "physics.h"
 #include "winsys.h"
+#include "translation.h"
 #include <cmath>
 #include <algorithm>
+#include <iterator>
+
+
+void TCourse::SetDescription(const std::string& description) {
+	FT.AutoSizeN(2);
+	vector<string> desclist = FT.MakeLineList(description.c_str(), 335 * Winsys.scale - 16.0);
+	size_t cnt = min<size_t>(desclist.size(), MAX_DESCRIPTION_LINES);
+	num_lines = cnt;
+	for (size_t ll = 0; ll < cnt; ll++) {
+		desc[ll] = desclist[ll];
+	}
+}
+void TCourse::SetTranslatedData(const std::string& line2) {
+	std::string trans_description = SPStrN(line2, "desc-" + Trans.languages[param.language].lang);
+	std::string trans_name = SPStrN(line2, "name-" + Trans.languages[param.language].lang);
+	if (!trans_description.empty())
+		SetDescription(trans_description);
+	if (!trans_name.empty())
+		name = trans_name;
+}
+
 
 CCourse Course;
+
 
 CCourse::CCourse() {
 	terrain = NULL;
@@ -664,17 +687,9 @@ bool CCourseList::Load(const std::string& dir) {
 	courses.resize(list.size());
 	size_t i = 0;
 	for (CSPList::const_iterator line1 = list.cbegin(); line1 != list.cend(); ++line1, i++) {
-		courses[i].name = SPStrN(*line1, "name", "noname");
+		courses[i].name = SPStrN(*line1, "name");
 		courses[i].dir = SPStrN(*line1, "dir", "nodir");
-
-		string desc = SPStrN(*line1, "desc");
-		FT.AutoSizeN(2);
-		vector<string> desclist = FT.MakeLineList(desc.c_str(), 335 * Winsys.scale - 16.0);
-		size_t cnt = min<size_t>(desclist.size(), MAX_DESCRIPTION_LINES);
-		courses[i].num_lines = cnt;
-		for (size_t ll = 0; ll<cnt; ll++) {
-			courses[i].desc[ll] = desclist[ll];
-		}
+		courses[i].SetDescription(SPStrN(*line1, "desc"));
 
 		string coursepath = dir + SEP + courses[i].dir;
 		if (DirExists(coursepath.c_str())) {
@@ -705,6 +720,8 @@ bool CCourseList::Load(const std::string& dir) {
 			courses[i].music_theme = Music.GetThemeIdx(SPStrN(line2, "theme", "normal"));
 			courses[i].use_keyframe = SPBoolN(line2, "use_keyframe", false);
 			courses[i].finish_brake = SPFloatN(line2, "finish_brake", 20);
+			if (paramlist.size() >= 2)
+				courses[i].SetTranslatedData(paramlist.back());
 			paramlist.clear();	// the list is used several times
 		}
 	}
@@ -717,6 +734,11 @@ void CCourseList::Free() {
 		delete courses[i].preview;
 	}
 	courses.clear();
+}
+
+void CCourse::FreeCourseList() {
+	for (std::map<std::string, CCourseList>::iterator i = CourseLists.begin(); i != CourseLists.end(); ++i)
+		i->second.Free();
 }
 
 bool CCourse::LoadCourseList() {
@@ -734,6 +756,12 @@ bool CCourse::LoadCourseList() {
 	}
 	currentCourseList = &CourseLists["default"];
 	return true;
+}
+
+CCourseList* CCourse::getGroup(size_t index) {
+	std::map<std::string, CCourseList>::iterator i = CourseLists.begin();
+	std::advance(i, index);
+	return &i->second;
 }
 
 //  ===================================================================

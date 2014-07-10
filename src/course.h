@@ -113,6 +113,9 @@ struct TCourse {
 	size_t music_theme;
 	bool use_keyframe;
 	double finish_brake;
+
+	void SetDescription(const std::string& description);
+	void SetTranslatedData(const std::string& line2);
 };
 
 class CCourseList {
@@ -170,9 +173,12 @@ public:
 	TVector3d	*nmls;
 	GLubyte		*vnc_array;
 
+	CCourseList* getGroup(size_t index);
+
 	void ResetCourse();
 	TCourse* GetCourse(const string& group, const string& dir);
 	size_t GetCourseIdx(const TCourse* course) const;
+	void FreeCourseList();
 	bool LoadCourseList();
 	bool LoadCourse(TCourse* course);
 	bool LoadTerrainTypes();

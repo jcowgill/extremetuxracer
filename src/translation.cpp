@@ -21,6 +21,7 @@ GNU General Public License for more details.
 
 #include "translation.h"
 #include "spx.h"
+#include "course.h"
 
 CTranslation Trans;
 
@@ -211,6 +212,14 @@ void CTranslation::LoadTranslations(size_t langidx) {
 			texts[idx] = UnicodeStr(SPStrN(*line, "trans", texts[idx]));
 		}
 	}
+}
+
+void CTranslation::ChangeLanguage(size_t langidx) {
+	LoadTranslations(langidx);
+
+	// The course description and name translations are stored in the course files.
+	Course.FreeCourseList();
+	Course.LoadCourseList();
 }
 
 string CTranslation::GetSystemDefaultLang() {

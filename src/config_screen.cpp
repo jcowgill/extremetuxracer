@@ -86,7 +86,7 @@ void SetConfig() {
 		FT.SetFontFromSettings();
 		if (param.language != language->GetValue()) {
 			param.language = language->GetValue();
-			Trans.LoadTranslations(param.language);
+			Trans.ChangeLanguage(param.language);
 		}
 		SaveConfigFile();
 	}
