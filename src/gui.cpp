@@ -98,6 +98,11 @@ void TLabel::Draw() const {
 	Winsys.draw(text);
 }
 
+sf::Vector2f TLabel::GetSize() const {
+	return sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height);
+
+}
+
 TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color) {
 	return static_cast<TLabel*>(AddWidget(new TLabel(string, x, y, color)));
 }
@@ -286,7 +291,7 @@ TTextField* AddTextField(const sf::String& text, int x, int y, int width, int he
 }
 
 TCheckbox::TCheckbox(int x, int y, int width, const sf::String& tag_)
-	: TWidget(x, y, 32, 32)
+	: TWidget(x, y, 32 * Winsys.scale / 0.8f, 32 * Winsys.scale / 0.8f)
 	, text(tag_, FT.getCurrentFont(), FT.GetSize())
 	, back(Tex.GetSFTexture(CHECKBOX))
 	, checkmark(Tex.GetSFTexture(CHECKMARK_SMALL))
@@ -295,6 +300,8 @@ TCheckbox::TCheckbox(int x, int y, int width, const sf::String& tag_)
 	back.setPosition(x + width - 32, y);
 	checkmark.setPosition(x + width - 32, y);
 	mouseRect.left = x + width - 32;
+	back.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
+	checkmark.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
 }
 
 void TCheckbox::SetPosition(int x, int y) {
@@ -411,10 +418,11 @@ TIconButton* AddIconButton(int x, int y, const sf::Texture& texture, double size
 }
 
 TArrow::TArrow(int x, int y, bool down_)
-	: TWidget(x, y, 32, 16)
+	: TWidget(x, y, 32 * Winsys.scale / 0.8f, 16 * Winsys.scale / 0.8f)
 	, sprite(Tex.GetSFTexture(LB_ARROWS))
 	, down(down_) {
 	sprite.setPosition(x, y);
+	sprite.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
 
 	SetTexture();
 }
@@ -453,8 +461,8 @@ TArrow* AddArrow(int x, int y, bool down) {
 
 
 TUpDown::TUpDown(int x, int y, int min_, int max_, int value_, int distance)
-	: TWidget(x, y, 32, 32+distance)
-	, up(x, y+16+distance, true)
+	: TWidget(x, y, 32 * Winsys.scale / 0.8f, (32 + distance)*Winsys.scale / 0.8f)
+	, up(x, y + (16 + distance)*Winsys.scale / 0.8f, true)
 	, down(x, y, false)
 	, value(value_)
 	, minimum(min_)

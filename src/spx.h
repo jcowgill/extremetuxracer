@@ -57,6 +57,7 @@ void     Str_ArrN(const string &s, float *arr, size_t count, float def);
 size_t   SPPosN(const string &s, const string &tag);
 
 string   SPStrN(const string &s, const string &tag, const string& def = emptyString);
+string   SPStrN(const string &s, const char* tag, const char* def);
 int      SPIntN(const string &s, const string &tag, const int def);
 bool     SPBoolN(const string &s, const string &tag, const bool def);
 float    SPFloatN(const string &s, const string &tag, const float def);
@@ -72,9 +73,9 @@ template<typename T>
 TVector4<T> SPVector4(const string &s, const string &tag, const TVector4<T>& def);
 static inline TVector4d SPVector4d(const string &s, const string &tag) { return SPVector4(s, tag, NullVec4); }
 static inline TVector4i SPVector4i(const string &s, const string &tag) { return SPVector4(s, tag, NullVec4i); }
-sf::Color   SPColorN(const string &s, const string &tag, const sf::Color& def);
-TColor3  SPColor3N(const string &s, const string &tag, const TColor3& def);
-void     SPArrN(const string &s, const string &tag, float *arr, size_t count, float def);
+sf::Color SPColorN(const string &s, const string &tag, const sf::Color& def);
+TColor3   SPColor3N(const string &s, const string &tag, const TColor3& def);
+void      SPArrN(const string &s, const string &tag, float *arr, size_t count, float def);
 
 // ----- making SP strings --------------------------------------------
 void     SPAddIntN(string &s, const string &tag, const int val);

@@ -42,7 +42,8 @@ CWinsys::CWinsys()
 	}
 	joystick_active = false;
 
-	resolutions[0] = TScreenRes(0, 0);
+	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
+	resolutions[0] = TScreenRes(desktopMode.width, desktopMode.height);
 	resolutions[1] = TScreenRes(800, 600);
 	resolutions[2] = TScreenRes(1024, 768);
 	resolutions[3] = TScreenRes(1152, 864);
@@ -69,7 +70,6 @@ string CWinsys::GetResName(size_t idx) const {
 
 float CWinsys::CalcScreenScale() const {
 	if (resolution.height < 768) return 0.78f;
-	else if (resolution.height == 768) return 1.0f;
 	else return (resolution.height / 768.f);
 }
 

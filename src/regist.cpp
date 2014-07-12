@@ -96,7 +96,7 @@ void CRegist::Enter() {
 
 	framewidth = (int)(Winsys.scale * 280);
 	frameheight = (int)(Winsys.scale * 50);
-	arrowwidth = 50;
+	arrowwidth = 70*Winsys.scale;
 	int sumwidth = framewidth * 2 + arrowwidth * 2;
 	area = AutoAreaN(30, 80, sumwidth);
 	texsize = 128 * Winsys.scale;
@@ -116,9 +116,6 @@ void CRegist::Enter() {
 	FT.AutoSizeN(4);
 	sPlayerFrame = AddFramedText(area.left, area.top, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize());
 	sCharFrame = AddFramedText(area.left + framewidth + arrowwidth, area.top, framewidth, frameheight, 3, colMBackgr, "", FT.GetSize());
-
-	if (Char.CharList.empty())
-		Winsys.Terminate(); // Characters are necessary - ETR is unusable otherwise
 }
 
 void CRegist::Loop(float timestep) {

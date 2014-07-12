@@ -131,7 +131,7 @@ void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d&
 void init_ui_snow() {
 	particles_2d.clear();
 	for (int i = 0; i < BASE_snowparticles * Winsys.resolution.width; i++)
-		particles_2d.emplace_back(FRandom(), FRandom());
+		particles_2d.emplace_back(static_cast<float>(FRandom()), static_cast<float>(FRandom()));
 	push_position = TVector2d(0.0, 0.0);
 }
 
@@ -155,7 +155,7 @@ void update_ui_snow(float time_step) {
 	}
 
 	if (FRandom() < time_step*20.f*(MAX_num_snowparticles - particles_2d.size()) / 1000.f) {
-		particles_2d.emplace_back(FRandom(), -0.05);
+		particles_2d.emplace_back(static_cast<float>(FRandom()), -0.05f);
 	}
 
 	for (list<TGuiParticle>::iterator p = particles_2d.begin(); p != particles_2d.end();) {
@@ -382,12 +382,10 @@ double adjust_particle_count(double particles) {
 }
 
 void generate_particles(const CControl *ctrl, double dtime, const TVector3d& pos, double speed) {
-	TTerrType *TerrList = &Course.TerrList[0];
-
 	double surf_y = Course.FindYCoord(pos.x, pos.z);
 
 	int id = Course.GetTerrainIdx(pos.x, pos.z, 0.5);
-	if (id >= 0 && TerrList[id].particles && pos.y < surf_y) {
+	if (id >= 0 && Course.TerrList[id].particles && pos.y < surf_y) {
 		TVector3d xvec = CrossProduct(ctrl->cdirection, ctrl->plane_nml);
 
 		TVector3d right_part_pt = pos + TUX_WIDTH/2.0 * xvec;
@@ -609,9 +607,9 @@ void CFlakes::Init(int grade, const CControl *ctrl) {
 //			areas.emplace_back(400, 5, 4, 4,     -2, 4, 0.01, 0.02,    5, true);
 //			areas.emplace_back(400, 12, 5, 8,      2, 8, 0.03, 0.045,    5, false);
 //			areas.emplace_back(400, 30, 6, 15,      10, 15, 0.06, 0.12,    5, false);
-			areas.emplace_back(400, 5, 4, 4,     -2, 4, 0.015, 0.03,    5, true);
-			areas.emplace_back(400, 12, 5, 8,      2, 8, 0.045, 0.07,    5, false);
-			areas.emplace_back(400, 30, 6, 15,      10, 15, 0.09, 0.18,    5, false);
+			areas.emplace_back(400, 5.f, 4.f, 4.f, -2.f, 4.f, 0.015f, 0.03f, 5.f, true);
+			areas.emplace_back(400, 12.f, 5.f, 8.f, 2.f, 8.f, 0.045f, 0.07f, 5.f, false);
+			areas.emplace_back(400, 30.f, 6.f, 15.f, 10.f, 15.f, 0.09f, 0.18f, 5.f, false);
 //			areas.emplace_back(400, 5, 4, 4,     -2, 4, 0.02, 0.04,    5, true);
 //			areas.emplace_back(400, 12, 5, 8,      2, 8, 0.06, 0.09,    5, false);
 //			areas.emplace_back(400, 30, 6, 15,      10, 15, 0.15, 0.25,    5, false);
@@ -620,9 +618,9 @@ void CFlakes::Init(int grade, const CControl *ctrl) {
 //			areas.emplace_back(500, 5, 4, 4,     -2, 4, 0.02, 0.03,    5, true);
 //			areas.emplace_back(500, 12, 5, 8,      2, 8, 0.045, 0.07,    5, false);
 //			areas.emplace_back(500, 30, 6, 15,      10, 15, 0.1, 0.15,    5, false);
-			areas.emplace_back(500, 5, 4, 4,     -2, 4, 0.03, 0.045,    5, true);
-			areas.emplace_back(500, 12, 5, 8,      2, 8, 0.07, 0.1,    5, false);
-			areas.emplace_back(500, 30, 6, 15,      10, 15, 0.15, 0.22,    5, false);
+			areas.emplace_back(500, 5.f, 4.f, 4.f, -2.f, 4.f, 0.03f, 0.045f, 5.f, true);
+			areas.emplace_back(500, 12.f, 5.f, 8.f, 2.f, 8.f, 0.07f, 0.1f, 5.f, false);
+			areas.emplace_back(500, 30.f, 6.f, 15.f, 10.f, 15.f, 0.15f, 0.22f, 5.f, false);
 //			areas.emplace_back(500, 5, 4, 4,     -2, 4, 0.04, 0.06,    5, true);
 //			areas.emplace_back(500, 12, 5, 8,      2, 8, 0.09, 0.15,    5, false);
 //			areas.emplace_back(500, 30, 6, 15,      10, 15, 0.2, 0.32,    5, false);
@@ -631,9 +629,9 @@ void CFlakes::Init(int grade, const CControl *ctrl) {
 //			areas.emplace_back(1000, 5, 4, 4,     -2, 4, 0.025, 0.04,    5, true);
 //			areas.emplace_back(1000, 12, 5, 9,      2, 8, 0.06, 0.10,    5, false);
 //			areas.emplace_back(1000, 30, 6, 15,      10, 15, 0.12, 0.2,    5, false);
-			areas.emplace_back(1000, 5, 4, 4,     -2, 4, 0.037, 0.05,    5, true);
-			areas.emplace_back(1000, 12, 5, 9,      2, 8, 0.09, 0.15,    5, false);
-			areas.emplace_back(1000, 30, 6, 15,      10, 15, 0.18, 0.35,    5, false);
+			areas.emplace_back(1000, 5.f, 4.f, 4.f, -2.f, 4.f, 0.037f, 0.05f, 5.f, true);
+			areas.emplace_back(1000, 12.f, 5.f, 9.f, 2.f, 8.f, 0.09f, 0.15f, 5.f, false);
+			areas.emplace_back(1000, 30.f, 6.f, 15.f, 10.f, 15.f, 0.18f, 0.35f, 5.f, false);
 //			areas.emplace_back(800, 5, 4, 4,     -2, 4, 0.05, 0.08,    5, true);
 //			areas.emplace_back(800, 12, 5, 9,      2, 8, 0.12, 0.20,    5, false);
 //			areas.emplace_back(800, 30, 6, 15,      10, 15, 0.25, 0.5,    5, false);
@@ -866,9 +864,9 @@ void CCurtain::Init(const CControl *ctrl) {
 //			curtains.emplace_back(3, 60, 10,       3, -100, -10, 1);
 //			curtains.emplace_back(3, 50, 13,       3, -100, -10, 1);
 //			curtains.emplace_back(3, 40, 16,       3, -100, -10, 1);
-			curtains.emplace_back(3, 60, 15,       3, -100, -10, 1);
-			curtains.emplace_back(3, 50, 19,       3, -100, -10, 1);
-			curtains.emplace_back(3, 40, 23,       3, -100, -10, 1);
+			curtains.emplace_back(3, 60.f, 15.f, 3.f, -100.f, -10.f, 1);
+			curtains.emplace_back(3, 50.f, 19.f, 3.f, -100.f, -10.f, 1);
+			curtains.emplace_back(3, 40.f, 23.f, 3.f, -100.f, -10.f, 1);
 //			curtains.emplace_back(3, 60, 20,       3, -100, -10, 1);
 //			curtains.emplace_back(3, 50, 25,       3, -100, -10, 1);
 //			curtains.emplace_back(3, 40, 30,       3, -100, -10, 1);
@@ -877,9 +875,9 @@ void CCurtain::Init(const CControl *ctrl) {
 //			curtains.emplace_back(3, 60, 15,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 50, 17,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 40, 20,       3, -100, -10, 2);
-			curtains.emplace_back(3, 60, 22,       3, -100, -10, 2);
-			curtains.emplace_back(3, 50, 25,       3, -100, -10, 2);
-			curtains.emplace_back(3, 40, 30,       3, -100, -10, 2);
+			curtains.emplace_back(3, 60.f, 22.f, 3.f, -100.f, -10.f, 2);
+			curtains.emplace_back(3, 50.f, 25.f, 3.f, -100.f, -10.f, 2);
+			curtains.emplace_back(3, 40.f, 30.f, 3.f, -100.f, -10.f, 2);
 //			curtains.emplace_back(3, 60, 30,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 50, 35,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 40, 40,       3, -100, -10, 2);
@@ -888,9 +886,9 @@ void CCurtain::Init(const CControl *ctrl) {
 //			curtains.emplace_back(3, 60, 20,       3, -100, -10, 3);
 //			curtains.emplace_back(3, 50, 25,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 40, 30,       3, -100, -10, 2);
-			curtains.emplace_back(3, 60, 22,       3, -100, -10, 3);
-			curtains.emplace_back(3, 50, 27,       3, -100, -10, 2);
-			curtains.emplace_back(3, 40, 32,       3, -100, -10, 2);
+			curtains.emplace_back(3, 60.f, 22.f, 3.f, -100.f, -10.f, 3);
+			curtains.emplace_back(3, 50.f, 27.f, 3.f, -100.f, -10.f, 2);
+			curtains.emplace_back(3, 40.f, 32.f, 3.f, -100.f, -10.f, 2);
 //			curtains.emplace_back(3, 60, 25,       3, -100, -10, 3);
 //			curtains.emplace_back(3, 50, 30,       3, -100, -10, 2);
 //			curtains.emplace_back(3, 40, 35,       3, -100, -10, 2);

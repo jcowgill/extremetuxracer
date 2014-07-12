@@ -160,7 +160,7 @@ void CRaceSelect::Enter() {
 	int iconsumwidth = iconspace * 4 + iconsize;
 	int iconleft = (Winsys.resolution.width - iconsumwidth) / 2;
 	infotop = icontop + iconsize + 6;
-	prevtop = infotop + 35;
+	prevtop = infotop + 35*Winsys.scale;
 	ResetGUI();
 
 	light = AddIconButton(iconleft, icontop, Tex.GetSFTexture(LIGHT_BUTT), iconsize, 3, (int)g_game.light_id);
@@ -189,7 +189,7 @@ void CRaceSelect::Loop(float timestep) {
 		draw_ui_snow();
 	}
 
-	DrawGUIBackground(1.0);
+	DrawGUIBackground(Winsys.scale);
 
 	if (courseGroup->GetValue() != prevGroup) {
 		prevGroup = courseGroup->GetValue();

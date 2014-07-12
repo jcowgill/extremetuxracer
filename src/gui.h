@@ -75,6 +75,7 @@ public:
 	TLabel(const sf::String& string, int x, int y, const sf::Color& color);
 	void Focussed(bool masterFocus);
 	void Draw() const;
+	sf::Vector2f GetSize() const;
 };
 TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color);
 

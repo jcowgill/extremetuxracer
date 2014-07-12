@@ -135,6 +135,12 @@ void CTranslation::SetDefaultTranslations() {
 	texts[90] = "in highscore list";
 
 	texts[91] = "Author";
+
+	texts[92] = "Loading courses failed.";
+	texts[93] = "Loading characters failed.";
+	texts[94] = "Loading environments failed.";
+	texts[95] = "Loading terrains failed.";
+	texts[96] = "Loading avatars failed.";
 }
 
 const sf::String& CTranslation::Text(size_t idx) const {

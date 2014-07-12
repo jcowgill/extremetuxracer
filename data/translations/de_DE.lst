@@ -111,3 +111,9 @@
 *[idx] 90 [engl] in highscore list [trans] in der Punkteliste.
 
 *[idx] 91 [engl] Author [trans] Autor
+
+*[idx] 92 [engl] Loading courses failed. [trans] Abfahrten konnten nicht geladen werden.
+*[idx] 93 [engl] Loading characters failed. [trans] Charaktere konnten nicht geladen werden.
+*[idx] 94 [engl] Loading environments failed. [trans] Umgebungsdaten konnten nicht geladen werden.
+*[idx] 95 [engl] Loading terrains failed. [trans] Terrain konnten nicht geladen werden.
+*[idx] 96 [engl] Loading avatars failed. [trans] Avatare konnten nicht geladen werden.

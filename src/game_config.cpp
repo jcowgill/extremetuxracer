@@ -319,12 +319,11 @@ void InitConfig() {
 	param.display_fps = false;
 	param.show_hud = true;
 
-	Trans.LoadLanguages();
-
 	if (FileExists(param.configfile)) {
+		Trans.LoadLanguages();
 		LoadConfigFile();
 	} else {
 		SetConfigDefaults();
-		SaveConfigFile();
+		Trans.LoadLanguages();
 	}
 }

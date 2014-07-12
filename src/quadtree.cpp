@@ -150,7 +150,7 @@ float quadsquare::GetHeight(const quadcornerdata &cd, float x, float z) {
 	if (lx < 0) lz = 0;
 	if (lz > 1) lz = 1;
 
-	float	s00, s01, s10, s11;
+	float s00, s01, s10, s11;
 	switch (index) {
 		default:
 		case 0:
@@ -745,16 +745,12 @@ void quadsquare::InitArrayCounters() {
 
 void quadsquare::Render(const quadcornerdata& cd, GLubyte *vnc_array) {
 	VNCArray = vnc_array;
-	bool fog_on;
-	int nx, ny;
-	Course.GetDivisions(&nx, &ny);
-	const TTerrType *TerrList = &Course.TerrList[0];
 
 	size_t numTerrains = Course.TerrList.size();
 	//	fog_on = is_fog_on ();
-	fog_on = true;
+	bool fog_on = true;
 	for (size_t j=0; j<numTerrains; j++) {
-		if (TerrList[j].texture != NULL) {
+		if (Course.TerrList[j].texture != NULL) {
 			InitArrayCounters();
 			RenderAux(cd, SomeClip, (int)j);
 			if (VertexArrayCounter == 0) continue;
@@ -787,7 +783,7 @@ void quadsquare::Render(const quadcornerdata& cd, GLubyte *vnc_array) {
 			}
 
 			for (size_t j=0; j<numTerrains; j++) {
-				if (TerrList[j].texture > 0) {
+				if (Course.TerrList[j].texture > 0) {
 					Course.TerrList[j].texture->Bind();
 
 					for (GLuint i=0; i<VertexArrayCounter; i++) {
@@ -1105,7 +1101,7 @@ void InitQuadtree(double *elevation, int nx, int nz,
 	hm.RowWidth = hm.XSize;
 	hm.Scale = 0;
 
-	root_corner_data.Square = (quadsquare*)NULL;
+	root_corner_data.Square = nullptr;
 	root_corner_data.ChildIndex = 0;
 	root_corner_data.Level = get_root_level(nx, nz);
 	root_corner_data.xorg = 0;

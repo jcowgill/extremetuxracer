@@ -136,6 +136,7 @@ void CGameConfig::Motion(int x, int y) {
 
 static TArea area;
 static int dd;
+static int columnAnchor;
 
 void CGameConfig::Enter() {
 	Winsys.ShowCursor(!param.ice_cursor);
@@ -164,8 +165,12 @@ void CGameConfig::Enter() {
 	float len = FT.GetTextWidth(Trans.Text(8));
 	textbuttons[1] = AddTextButton(Trans.Text(15), area.right-len-50, AutoYPosN(80), siz);
 
-	for (int i = 0; i < 5; i++)
+	columnAnchor = 0;
+	for (int i = 0; i < 5; i++) {
 		descriptions[i] = AddLabel(Trans.Text(32 + i), area.left, area.top + dd*(i + 1), colWhite);
+		columnAnchor = max(columnAnchor, (int)descriptions[i]->GetSize().x);
+	}
+	columnAnchor += area.left + 20*Winsys.scale;
 
 	Music.Play(param.config_music, true);
 }
@@ -179,7 +184,7 @@ void CGameConfig::Loop(float time_step) {
 		draw_ui_snow();
 	}
 
-	DrawGUIBackground(1.0);
+	DrawGUIBackground(Winsys.scale);
 
 	FT.AutoSizeN(4);
 
@@ -190,11 +195,11 @@ void CGameConfig::Loop(float time_step) {
 	descriptions[4]->Focussed(detail_level->focussed());
 
 	FT.SetColor(colWhite);
-	FT.DrawString(area.left+240, area.top + dd + 3, res_names[resolution->GetValue()]);
-	FT.DrawString(area.left+240, area.top + dd*2 + 3, Int_StrN(mus_vol->GetValue()));
-	FT.DrawString(area.left+240, area.top + dd*3 + 3, Int_StrN(sound_vol->GetValue()));
-	FT.DrawString(area.left+240, area.top + dd*4 + 3, Trans.languages[language->GetValue()].language);
-	FT.DrawString(area.left+240, area.top + dd*5 + 3, Int_StrN(detail_level->GetValue()));
+	FT.DrawString(columnAnchor, area.top + dd + 3, res_names[resolution->GetValue()]);
+	FT.DrawString(columnAnchor, area.top + dd * 2 + 3, Int_StrN(mus_vol->GetValue()));
+	FT.DrawString(columnAnchor, area.top + dd * 3 + 3, Int_StrN(sound_vol->GetValue()));
+	FT.DrawString(columnAnchor, area.top + dd * 4 + 3, Trans.languages[language->GetValue()].language);
+	FT.DrawString(columnAnchor, area.top + dd * 5 + 3, Int_StrN(detail_level->GetValue()));
 
 	FT.SetColor(colLGrey);
 	FT.AutoSizeN(3);

@@ -79,20 +79,13 @@ CCourse::~CCourse() {
 
 double CCourse::GetBaseHeight(double distance) const {
 	double slope = tan(ANGLES_TO_RADIANS(curr_course->angle));
-	double base_height;
 
-	base_height = -slope * distance -
-	              base_height_value / 255.0 * curr_course->scale;
-	return base_height;
+	return -slope * distance -
+	       base_height_value / 255.0 * curr_course->scale;
 }
 
 double CCourse::GetMaxHeight(double distance) const {
 	return GetBaseHeight(distance) + curr_course->scale;
-}
-
-void CCourse::GetDivisions(int *x, int *y) const {
-	*x = nx;
-	*y = ny;
 }
 
 const TPolyhedron& CCourse::GetPoly(size_t type) const {
@@ -100,7 +93,7 @@ const TPolyhedron& CCourse::GetPoly(size_t type) const {
 }
 
 TCourse* CCourse::GetCourse(const string& group, const string& dir) {
-	return &CourseLists[group][dir];
+	return &CourseLists.at(group)[dir];
 }
 
 size_t CCourse::GetCourseIdx(const TCourse* course) const {
@@ -364,6 +357,7 @@ bool CCourse::LoadElevMap() {
 	}
 	img.flipVertically();
 
+	// Get size of course from elevation map
 	nx = img.getSize().x;
 	ny = img.getSize().y;
 	try {
@@ -394,6 +388,11 @@ bool CCourse::LoadElevMap() {
 // ====================================================================
 
 void CCourse::LoadItemList() {
+	if (ObjTypes.empty()) {
+		Message("No object types loaded.");
+		return;
+	}
+
 	CSPList list(16000);
 
 	if (!list.Load(CourseDir, "items.lst")) {
@@ -968,8 +967,6 @@ void CCourse::FindBarycentricCoords(double x, double z, TVector2i *idx0,
                        ELEV((_x),(_y)), -(double)(_y)/(ny-1.)*curr_course->size.y )
 
 TVector3d CCourse::FindCourseNormal(double x, double z) const {
-
-	double *elevation = Course.elevation;
 	int x0, x1, y0, y1;
 	GetIndicesForPoint(x, z, &x0, &y0, &x1, &y1);
 
@@ -1006,7 +1003,6 @@ double CCourse::FindYCoord(double x, double z) const {
 	static bool cache_full = false;
 
 	if (cache_full && last_x == x && last_z == z) return last_y;
-	double *elevation = Course.elevation;
 
 	TVector2i idx0, idx1, idx2;
 	double u, v;

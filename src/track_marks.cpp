@@ -206,15 +206,13 @@ void add_track_mark(const CControl *ctrl, int *id) {
 	if (param.perf_level < 3)
 		return;
 
-	TTerrType *TerrList = &Course.TerrList[0];
-
 	*id = Course.GetTerrainIdx(ctrl->cpos.x, ctrl->cpos.z, 0.5);
 	if (*id < 1) {
 		break_track_marks();
 		return;
 	}
 
-	if (!TerrList[*id].trackmarks) {
+	if (!Course.TerrList[*id].trackmarks) {
 		break_track_marks();
 		return;
 	}

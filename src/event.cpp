@@ -138,14 +138,13 @@ void CEvent::Enter() {
 	if (State::manager.PreviousState() == &GameOver) UpdateCupRacing();
 	else InitCupRacing();
 
-	framewidth = 500;
+	framewidth = 500*Winsys.scale;
 	frametop = AutoYPosN(45);
 	area = AutoAreaN(30, 80, framewidth);
 	messtop = AutoYPosN(50);
 	messtop2 = AutoYPosN(60);
 	bonustop = AutoYPosN(35);
-	texsize = 32 * Winsys.scale;
-	if (texsize < 32) texsize = 32;
+	texsize = 32 * Winsys.scale / 0.8f;
 	dist = texsize + 2 * 4;
 	int framebottom = frametop + (int) ecup->races.size() * dist + 10;
 
@@ -201,7 +200,7 @@ void CEvent::Loop(float timestep) {
 
 		TCheckbox checkbox(area.right - 50, frametop, texsize, "");
 		for (size_t i=0; i<ecup->races.size(); i++) {
-			FT.AutoSizeN(3);
+			FT.AutoSizeN(4);
 
 			int y = frametop + 10 + (int)i * dist;
 			if (i == curr_race)
@@ -209,7 +208,7 @@ void CEvent::Loop(float timestep) {
 			else
 				FT.SetColor(colWhite);
 			FT.DrawString(area.left + 29, y, ecup->races[i]->course->name);
-			checkbox.SetPosition(area.right - 50, y + 4);
+			checkbox.SetPosition(area.right - 50*Winsys.scale/0.8f, y + 4);
 			checkbox.SetChecked(curr_race > i);
 			checkbox.Draw();
 		}

@@ -51,12 +51,13 @@ void CCredits::LoadCreditList() {
 	}
 
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line) {
+		int old_offs = CreditList.back().offs;
 		CreditList.emplace_back();
 		TCredits& credit = CreditList.back();
 		credit.text = SPStrN(*line, "text");
 
 		float offset = SPFloatN(*line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
-		if (line != list.cbegin()) credit.offs = CreditList.back().offs + (int)offset;
+		if (line != list.cbegin()) credit.offs = old_offs + (int)offset;
 		else credit.offs = offset;
 
 		credit.col = SPIntN(*line, "col", 0);
