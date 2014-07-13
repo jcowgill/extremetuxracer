@@ -218,7 +218,7 @@ void CTexture::FreeTextureList() {
 }
 
 TTexture* CTexture::GetTexture(size_t idx) const {
-	if (idx >= CommonTex.size()) return NULL;
+	if (idx >= CommonTex.size()) return nullptr;
 	return CommonTex[idx];
 }
 

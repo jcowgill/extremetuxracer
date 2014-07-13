@@ -55,7 +55,7 @@ CEnvironment::CEnvironment() {
 	lightcond[3] = "night";
 	for (size_t i = 0; i < 4; i++)
 		LightIndex[lightcond[i]] = i;
-	Skybox = NULL;
+	Skybox = nullptr;
 
 	default_light.is_on = true;
 	for (int i=0; i<4; i++) {
@@ -77,7 +77,7 @@ CEnvironment::CEnvironment() {
 
 void CEnvironment::ResetSkybox() {
 	delete[] Skybox;
-	Skybox = NULL;
+	Skybox = nullptr;
 }
 
 void CEnvironment::SetupLight() {

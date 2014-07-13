@@ -651,7 +651,7 @@ void DrawGUI() {
 }
 
 TWidget* ClickGUI(int x, int y) {
-	TWidget* clicked = NULL;
+	TWidget* clicked = nullptr;
 	for (size_t i = 0; i < Widgets.size(); i++) {
 		if (Widgets[i]->Click(x, y)) {
 			clicked = Widgets[i];
@@ -811,7 +811,7 @@ int AutoYPosN(double percent) {
 	return Winsys.resolution.height * percent / 100.0;
 }
 
-TArea AutoAreaN(double top_perc, double bott_perc, int w) {
+TArea AutoAreaN(double top_perc, double bott_perc, unsigned int w) {
 	TArea res;
 	res.top = AutoYPosN(top_perc);
 	res.bottom = AutoYPosN(bott_perc);

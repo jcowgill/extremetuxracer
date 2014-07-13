@@ -233,7 +233,7 @@ string CTranslation::GetSystemDefaultLang() {
 	wchar_t buf[10] = {0};
 	GetUserDefaultLocaleName(buf, 10);
 	char buf2[10] = {0};
-	WideCharToMultiByte(CP_ACP, 0, buf, -1, buf2, 10, NULL, NULL);
+	WideCharToMultiByte(CP_ACP, 0, buf, -1, buf2, 10, nullptr, nullptr);
 	string ret = buf2;
 	while (ret.find('-') != string::npos)
 		ret[ret.find('-')] = '_';

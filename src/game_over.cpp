@@ -162,7 +162,7 @@ void CGameOver::Enter() {
 
 
 	if (g_game.raceaborted || !g_game.use_keyframe) {
-		final_frame = NULL;
+		final_frame = nullptr;
 	} else {
 		if (g_game.game_type == CUPRACING) {
 			if (g_game.race_result < 0)
@@ -189,7 +189,7 @@ void CGameOver::Loop(float time_step) {
 
 	update_view(ctrl, 0);
 
-	if (final_frame != NULL) final_frame->Update(time_step);
+	if (final_frame != nullptr) final_frame->Update(time_step);
 
 	SetupViewFrustum(ctrl);
 	Env.DrawSkybox(ctrl->viewpos);
@@ -208,7 +208,7 @@ void CGameOver::Loop(float time_step) {
 
 	{
 		ScopedRenderMode rm(GUI);
-		if (final_frame != NULL) {
+		if (final_frame != nullptr) {
 			if (!final_frame->active) GameOverMessage(ctrl);
 		} else GameOverMessage(ctrl);
 	}

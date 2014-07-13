@@ -61,13 +61,10 @@ CCourse Course;
 
 
 CCourse::CCourse() {
-	terrain = NULL;
-	elevation = NULL;
-	nmls = NULL;
-	vnc_array = NULL;
+	vnc_array = nullptr;
 	mirrored = false;
 
-	curr_course = NULL;
+	curr_course = nullptr;
 	currentCourseList = nullptr;
 }
 
@@ -104,8 +101,8 @@ size_t CCourse::GetCourseIdx(const TCourse* course) const {
 }
 
 void CCourse::CalcNormals() {
-	for (int y=0; y<ny; y++) {
-		for (int x=0; x<nx; x++) {
+	for (unsigned int y = 0; y < ny; y++) {
+		for (unsigned int x = 0; x < nx; x++) {
 			TVector3d nml(0.0, 0.0, 0.0);
 			TVector3d p0(XCD(x), ELEV(x,y), ZCD(y));
 
@@ -229,7 +226,7 @@ void CCourse::CalcNormals() {
 				}
 			}
 			nml.Norm();
-			nmls [x + nx * y] = nml;
+			Fields[x + nx * y].nml = nml;
 			continue;
 
 		}
@@ -237,13 +234,6 @@ void CCourse::CalcNormals() {
 }
 
 void CCourse::MakeCourseNormals() {
-	if (nmls != NULL) delete[] nmls;
-	try {
-		nmls = new TVector3d[nx * ny];
-	} catch (...) {
-		nmls = NULL;
-		Message("Allocation failed in MakeCourseNormals");
-	}
 	CalcNormals();
 }
 
@@ -252,20 +242,18 @@ void CCourse::MakeCourseNormals() {
 // --------------------------------------------------------------------
 
 void CCourse::FillGlArrays() {
-	TVector3d *normals = nmls;
-
-	if (vnc_array == NULL)
+	if (vnc_array == nullptr)
 		vnc_array = new GLubyte[STRIDE_GL_ARRAY * nx * ny];
 
-	for (int x=0; x<nx; x++) {
-		for (int y=0; y<ny; y++) {
+	for (unsigned int x = 0; x < nx; x++) {
+		for (unsigned int y = 0; y < ny; y++) {
 			int idx = STRIDE_GL_ARRAY * (y * nx + x);
 
 			FLOATVAL(0) = (GLfloat)x / (nx-1.0) * curr_course->size.x;
-			FLOATVAL(1) = elevation[(x) + nx*(y)];
+			FLOATVAL(1) = Fields[x + nx*y].elevation;
 			FLOATVAL(2) = -(GLfloat)y / (ny-1.0) * curr_course->size.y;
 
-			const TVector3d& nml = normals[ x + y * nx ];
+			const TVector3d& nml = Fields[ x + y * nx ].nml;
 			FLOATVAL(4) = nml.x;
 			FLOATVAL(5) = nml.y;
 			FLOATVAL(6) = nml.z;
@@ -333,14 +321,14 @@ void CCourse::MakeStandardPolyhedrons() {
 void CCourse::FreeTerrainTextures() {
 	for (size_t i=0; i<TerrList.size(); i++) {
 		delete TerrList[i].texture;
-		TerrList[i].texture = NULL;
+		TerrList[i].texture = nullptr;
 	}
 }
 
 void CCourse::FreeObjectTextures() {
 	for (size_t i=0; i<ObjTypes.size(); i++) {
 		delete ObjTypes[i].texture;
-		ObjTypes[i].texture = NULL;
+		ObjTypes[i].texture = nullptr;
 	}
 }
 
@@ -360,20 +348,15 @@ bool CCourse::LoadElevMap() {
 	// Get size of course from elevation map
 	nx = img.getSize().x;
 	ny = img.getSize().y;
-	try {
-		elevation = new double[nx * ny];
-	} catch (...) {
-		Message("Allocation failed in LoadElevMap");
-		return false;
-	}
+	Fields.resize(nx*ny);
 
 	double slope = tan(ANGLES_TO_RADIANS(curr_course->angle));
 	int pad = 0;
 	int depth = 4;
 	const uint8_t* data = img.getPixelsPtr();
-	for (int y=0; y<ny; y++) {
-		for (int x=0; x<nx; x++) {
-			elevation [(nx-1-x) + nx * (ny-1-y)] =
+	for (unsigned int y = 0; y < ny; y++) {
+		for (unsigned int x = 0; x < nx; x++) {
+			Fields[(nx - 1 - x) + nx * (ny - 1 - y)].elevation =
 			    ((data[(x + nx*y) * depth + pad]
 			      - base_height_value) / 255.0) * curr_course->scale
 			    - (double)(ny-1-y) / ny * curr_course->size.y * slope;
@@ -407,12 +390,12 @@ void CCourse::LoadItemList() {
 		int z = SPIntN(*line, "z", 0);
 		double height = SPFloatN(*line, "height", 1);
 		double diam = SPFloatN(*line, "diam", 1);
-		double xx = (nx - x) / (double)(nx - 1.0) * curr_course->size.x;
-		double zz = -(ny - z) / (double)(ny - 1.0) * curr_course->size.y;
+		double xx = (nx - x) / (double)((double)nx - 1.0) * curr_course->size.x;
+		double zz = -(int)(ny - z) / (double)((double)ny - 1.0) * curr_course->size.y;
 
 		string name = SPStrN(*line, "name");
 		size_t type = ObjectIndex[name];
-		if (ObjTypes[type].texture == NULL && ObjTypes[type].drawable) {
+		if (ObjTypes[type].texture == nullptr && ObjTypes[type].drawable) {
 			string terrpath = param.obj_dir + SEP + ObjTypes[type].textureFile;
 			ObjTypes[type].texture = new TTexture();
 			ObjTypes[type].texture->Load(terrpath, false);
@@ -481,15 +464,15 @@ bool CCourse::LoadAndConvertObjectMap() {
 
 	CollArr.clear();
 	NocollArr.clear();
-	for (int y=0; y<ny; y++) {
-		for (int x=0; x<nx; x++) {
+	for (unsigned int y = 0; y < ny; y++) {
+		for (unsigned int x = 0; x < nx; x++) {
 			int imgidx = (x + nx * y) * depth + pad;
 			int type = GetObject(&data[imgidx]);
 			if (type >= 0) {
 				cnt++;
-				double xx = (nx - x) / (double)(nx - 1.0) * curr_course->size.x;
-				double zz = -(ny - y) / (double)(ny - 1.0) * curr_course->size.y;
-				if (ObjTypes[type].texture == NULL && ObjTypes[type].drawable) {
+				double xx = (nx - x) / (double)((double)nx - 1.0) * curr_course->size.x;
+				double zz = -(int)(ny - y) / (double)((double)ny - 1.0) * curr_course->size.y;
+				if (ObjTypes[type].texture == nullptr && ObjTypes[type].drawable) {
 					string terrpath = param.obj_dir + SEP + ObjTypes[type].textureFile;
 					ObjTypes[type].texture = new TTexture();
 					ObjTypes[type].texture->Load(terrpath, false);
@@ -557,7 +540,7 @@ bool CCourse::LoadObjectTypes() {
 	for (CSPList::const_iterator line = list.cbegin(); line != list.cend(); ++line, i++) {
 		ObjTypes[i].name = SPStrN(*line, "name");
 		ObjTypes[i].textureFile = ObjTypes[i].name;
-		ObjTypes[i].texture = NULL;
+		ObjTypes[i].texture = nullptr;
 
 		ObjTypes[i].drawable = SPBoolN(*line, "draw", true);
 		if (ObjTypes[i].drawable) {
@@ -622,7 +605,7 @@ bool CCourse::LoadTerrainTypes() {
 		TerrList[i].depth = SPFloatN(*line, "depth", 0.01f);
 		TerrList[i].particles = SPBoolN(*line, "part", false);
 		TerrList[i].trackmarks = SPBoolN(*line, "trackmarks", false);
-		TerrList[i].texture = NULL;
+		TerrList[i].texture = nullptr;
 		TerrList[i].shiny = SPBoolN(*line, "shiny", false);
 		TerrList[i].vol_type = SPIntN(*line, "vol_type", 1);
 	}
@@ -645,21 +628,16 @@ bool CCourse::LoadTerrainMap() {
 		Message("wrong terrain size");
 	}
 
-	try {
-		terrain = new char[nx * ny];
-	} catch (...) {
-		Message("Allocation failed in LoadTerrainMap");
-	}
 	int depth = 4;
 	const unsigned char* data = (const unsigned char*) terrImage.getPixelsPtr();
 	int pad = 0;
-	for (int y=0; y<ny; y++) {
-		for (int x=0; x<nx; x++) {
+	for (unsigned int y = 0; y < ny; y++) {
+		for (unsigned int x = 0; x < nx; x++) {
 			int imgidx = (x+nx*y) * depth + pad;
 			int arridx = (nx-1-x) + nx * (ny-1-y);
 			int terr = GetTerrain(&data[imgidx]);
-			terrain[arridx] = terr;
-			if (TerrList[terr].texture == NULL) {
+			Fields[arridx].terrain = terr;
+			if (TerrList[terr].texture == nullptr) {
 				TerrList[terr].texture = new TTexture();
 				TerrList[terr].texture->Load(param.terr_dir, TerrList[terr].textureFile, true);
 			}
@@ -768,15 +746,14 @@ CCourseList* CCourse::getGroup(size_t index) {
 //  ===================================================================
 
 void CCourse::ResetCourse() {
-	if (nmls != NULL) {delete[] nmls; nmls = NULL;}
-	if (vnc_array != NULL) {delete[] vnc_array; vnc_array = NULL;}
-	if (elevation != NULL) {delete[] elevation; elevation = NULL;}
-	if (terrain != NULL) {delete[] terrain; terrain = NULL;}
+	Fields.clear();
+	delete[] vnc_array;
+	vnc_array = nullptr;
 
 	FreeTerrainTextures();
 	FreeObjectTextures();
 	ResetQuadtree();
-	curr_course = NULL;
+	curr_course = nullptr;
 	mirrored = false;
 }
 
@@ -820,7 +797,7 @@ bool CCourse::LoadCourse(TCourse* course) {
 
 		init_track_marks();
 		InitQuadtree(
-		    elevation, nx, ny,
+		    &Fields[0], nx, ny,
 		    curr_course->size.x / (nx - 1.0),
 		    -curr_course->size.y / (ny - 1.0),
 		    ctrl->viewpos,
@@ -843,21 +820,21 @@ size_t CCourse::GetEnv() const {
 // --------------------------------------------------------------------
 
 void CCourse::MirrorCourseData() {
-	for (int y=0; y<ny; y++) {
-		for (int x=0; x<nx/2; x++) {
+	for (unsigned int y = 0; y < ny; y++) {
+		for (unsigned int x = 0; x < nx / 2; x++) {
 			double tmp = ELEV(x,y);
 			ELEV(x,y) = ELEV(nx-1-x, y);
 			ELEV(nx-1-x,y) = tmp;
 
 			int idx1 = (x+1) + nx*(y);
 			int idx2 = (nx-1-x) + nx*(y);
-			swap(terrain[idx1], terrain[idx2]);
+			swap(Fields[idx1].terrain, Fields[idx2].terrain);
 
 			idx1 = (x) + nx*(y);
 			idx2 = (nx-1-x) + nx*(y);
-			swap(nmls[idx1], nmls[idx2]);
-			nmls[idx1].x *= -1;
-			nmls[idx2].x *= -1;
+			swap(Fields[idx1].nml, Fields[idx2].nml);
+			Fields[idx1].nml.x *= -1;
+			Fields[idx2].nml.x *= -1;
 		}
 	}
 
@@ -876,7 +853,7 @@ void CCourse::MirrorCourseData() {
 	ResetQuadtree();
 	if (nx > 0 && ny > 0) {
 		const CControl *ctrl = g_game.player->ctrl;
-		InitQuadtree(elevation, nx, ny, curr_course->size.x/(nx-1),
+		InitQuadtree(&Fields[0], nx, ny, curr_course->size.x/(nx-1),
 		             - curr_course->size.y/(ny-1), ctrl->viewpos, param.course_detail_level);
 	}
 
@@ -892,7 +869,7 @@ void CCourse::MirrorCourse() {
 //				from phys_sim:
 // ********************************************************************
 
-void CCourse::GetIndicesForPoint(double x, double z, int *x0, int *y0, int *x1, int *y1) const {
+void CCourse::GetIndicesForPoint(double x, double z, unsigned int* x0, unsigned int* y0, unsigned int* x1, unsigned int* y1)  const {
 
 	double xidx = x / curr_course->size.x * ((double) nx - 1.);
 	double yidx = -z / curr_course->size.y * ((double) ny - 1.);
@@ -903,10 +880,10 @@ void CCourse::GetIndicesForPoint(double x, double z, int *x0, int *y0, int *x1, 
 	if (yidx < 0) yidx = 0;
 	else if (yidx > ny-1) yidx = ny-1;
 
-	*x0 = (int)(xidx);              // floor(xidx)
-	*x1 = (int)(xidx + 0.9999);     // ceil(xidx)
-	*y0 = (int)(yidx);              // floor(yidx)
-	*y1 = (int)(yidx + 0.9999);     // ceil(yidx)
+	*x0 = (unsigned int)(xidx);              // floor(xidx)
+	*x1 = (unsigned int)(xidx + 0.9999);     // ceil(xidx)
+	*y0 = (unsigned int)(yidx);              // floor(yidx)
+	*y1 = (unsigned int)(yidx + 0.9999);     // ceil(yidx)
 
 	if (*x0 == *x1) {
 		if (*x1 < nx - 1)(*x1)++;
@@ -922,12 +899,12 @@ void CCourse::GetIndicesForPoint(double x, double z, int *x0, int *y0, int *x1, 
 void CCourse::FindBarycentricCoords(double x, double z, TVector2i *idx0,
                                     TVector2i *idx1, TVector2i *idx2, double *u, double *v) const {
 	double xidx, yidx;
-	int x0, x1, y0, y1;
+	unsigned int x0, x1, y0, y1;
 	double dx, ex, dz, ez, qx, qz, invdet;
 
 	GetIndicesForPoint(x, z, &x0, &y0, &x1, &y1);
-	xidx = x / curr_course->size.x * ((double) nx - 1.);
-	yidx = -z / curr_course->size.y * ((double) ny - 1.);
+	xidx = x / curr_course->size.x * ((double) nx - 1.0);
+	yidx = -z / curr_course->size.y * ((double) ny - 1.0);
 
 	if ((x0 + y0) % 2 == 0) {
 		if (yidx - y0 < xidx - x0) {
@@ -967,16 +944,13 @@ void CCourse::FindBarycentricCoords(double x, double z, TVector2i *idx0,
                        ELEV((_x),(_y)), -(double)(_y)/(ny-1.)*curr_course->size.y )
 
 TVector3d CCourse::FindCourseNormal(double x, double z) const {
-	int x0, x1, y0, y1;
-	GetIndicesForPoint(x, z, &x0, &y0, &x1, &y1);
-
 	TVector2i idx0, idx1, idx2;
 	double u, v;
 	FindBarycentricCoords(x, z, &idx0, &idx1, &idx2, &u, &v);
 
-	const TVector3d& n0 = Course.nmls[ idx0.x + nx * idx0.y ];
-	const TVector3d& n1 = Course.nmls[ idx1.x + nx * idx1.y ];
-	const TVector3d& n2 = Course.nmls[ idx2.x + nx * idx2.y ];
+	const TVector3d& n0 = Course.Fields[idx0.x + nx * idx0.y].nml;
+	const TVector3d& n1 = Course.Fields[idx1.x + nx * idx1.y].nml;
+	const TVector3d& n2 = Course.Fields[idx2.x + nx * idx2.y].nml;
 
 	TVector3d p0 = COURSE_VERTX(idx0.x, idx0.y);
 	TVector3d p1 = COURSE_VERTX(idx1.x, idx1.y);
@@ -1027,12 +1001,11 @@ void CCourse::GetSurfaceType(double x, double z, double weights[]) const {
 	double u, v;
 	FindBarycentricCoords(x, z, &idx0, &idx1, &idx2, &u, &v);
 
-	char *terrain = Course.terrain;
 	for (size_t i=0; i<Course.TerrList.size(); i++) {
 		weights[i] = 0;
-		if (terrain [idx0.x + nx*idx0.y ] == i) weights[i] += u;
-		if (terrain [idx1.x + nx*idx1.y ] == i) weights[i] += v;
-		if (terrain [idx2.x + nx*idx2.y ] == i) weights[i] += 1.0 - u - v;
+		if (Course.Fields[idx0.x + nx*idx0.y].terrain == i) weights[i] += u;
+		if (Course.Fields[idx1.x + nx*idx1.y].terrain == i) weights[i] += v;
+		if (Course.Fields[idx2.x + nx*idx2.y].terrain == i) weights[i] += 1.0 - u - v;
 	}
 }
 
@@ -1040,13 +1013,12 @@ int CCourse::GetTerrainIdx(double x, double z, double level) const {
 	TVector2i idx0, idx1, idx2;
 	double u, v;
 	FindBarycentricCoords(x, z, &idx0, &idx1, &idx2, &u, &v);
-	char *terrain = Course.terrain;
 
 	for (size_t i=0; i<Course.TerrList.size(); i++) {
 		double wheight = 0.0;
-		if (terrain [idx0.x + nx*idx0.y] == i) wheight += u;
-		if (terrain [idx1.x + nx*idx1.y] == i) wheight += v;
-		if (terrain [idx2.x + nx*idx2.y] == i) wheight += 1.0 - u - v;
+		if (Course.Fields[idx0.x + nx*idx0.y].terrain == i) wheight += u;
+		if (Course.Fields[idx1.x + nx*idx1.y].terrain == i) wheight += v;
+		if (Course.Fields[idx2.x + nx*idx2.y].terrain == i) wheight += 1.0 - u - v;
 		if (wheight > level) return (int)i;
 	}
 	return -1;

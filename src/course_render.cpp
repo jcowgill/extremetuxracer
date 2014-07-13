@@ -123,7 +123,7 @@ void DrawTrees() {
 	}
 
 //  items -----------------------------
-	const TObjectType* item_type = NULL;
+	const TObjectType* item_type = nullptr;
 
 	for (size_t i = 0; i< Course.NocollArr.size(); i++) {
 		if (Course.NocollArr[i].collectable == 0 || Course.NocollArr[i].type.drawable == false) continue;

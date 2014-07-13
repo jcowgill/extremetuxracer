@@ -136,7 +136,7 @@ void CRegist::Loop(float timestep) {
 
 	sCharFrame->SetString(Char.CharList[character->GetValue()].name);
 	sCharFrame->Focussed(character->focussed());
-	if (Char.CharList[character->GetValue()].preview != NULL)
+	if (Char.CharList[character->GetValue()].preview != nullptr)
 		Char.CharList[character->GetValue()].preview->DrawFrame(
 		    area.right - texsize - 60 - arrowwidth,
 		    AutoYPosN(40), texsize, texsize, 3, colWhite);

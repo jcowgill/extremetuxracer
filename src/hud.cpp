@@ -131,9 +131,9 @@ void draw_gauge(double speed, double energy) {
 
 	ScopedRenderMode rm(GAUGE_BARS);
 
-	if (Tex.GetTexture(GAUGE_ENERGY) == NULL) return;
-	if (Tex.GetTexture(GAUGE_SPEED) == NULL) return;
-	if (Tex.GetTexture(GAUGE_OUTLINE) == NULL) return;
+	if (Tex.GetTexture(GAUGE_ENERGY) == nullptr) return;
+	if (Tex.GetTexture(GAUGE_SPEED) == nullptr) return;
+	if (Tex.GetTexture(GAUGE_OUTLINE) == nullptr) return;
 
 	Tex.BindTex(GAUGE_ENERGY);
 	glTexGenfv(GL_S, GL_OBJECT_PLANE, xplane);

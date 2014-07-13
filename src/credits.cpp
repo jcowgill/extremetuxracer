@@ -147,7 +147,7 @@ void CCredits::Enter() {
 
 void CCredits::Exit() {
 	delete RT;
-	RT = NULL;
+	RT = nullptr;
 	CreditList.clear();
 }
 

@@ -296,7 +296,8 @@ int Gauss(double *matrix, int n, double *soln) {
 	bool error = false;
 
 	while ((pivot<(n-1)) && (!error)) {
-		if (!(error = order(matrix,n,pivot))) {
+		error = order(matrix, n, pivot);
+		if (!error) {
 			elim(matrix,n,pivot);
 			pivot++;
 		}

@@ -330,7 +330,7 @@ void CKeyframe::ResetFrame2(TKeyframe *frame) {
 }
 
 TKeyframe *CKeyframe::GetFrame(size_t idx) {
-	if (idx >= frames.size()) return NULL;
+	if (idx >= frames.size()) return nullptr;
 	return &frames[idx];
 }
 

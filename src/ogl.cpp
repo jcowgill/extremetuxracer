@@ -51,8 +51,8 @@ void check_gl_error() {
 	}
 }
 
-PFNGLLOCKARRAYSEXTPROC glLockArraysEXT_p = NULL;
-PFNGLUNLOCKARRAYSEXTPROC glUnlockArraysEXT_p = NULL;
+PFNGLLOCKARRAYSEXTPROC glLockArraysEXT_p = nullptr;
+PFNGLUNLOCKARRAYSEXTPROC glUnlockArraysEXT_p = nullptr;
 
 
 typedef void (*(*get_gl_proc_fptr_t)(const GLubyte *))();
@@ -69,12 +69,12 @@ void InitOpenglExtensions() {
 		glUnlockArraysEXT_p = (PFNGLUNLOCKARRAYSEXTPROC)
 		                      (*get_gl_proc)((GLubyte*) "glUnlockArraysEXT");
 
-		if (glLockArraysEXT_p != NULL && glUnlockArraysEXT_p != NULL) {
+		if (glLockArraysEXT_p != nullptr && glUnlockArraysEXT_p != nullptr) {
 
 		} else {
 			Message("GL_EXT_compiled_vertex_array extension NOT supported");
-			glLockArraysEXT_p = NULL;
-			glUnlockArraysEXT_p = NULL;
+			glLockArraysEXT_p = nullptr;
+			glUnlockArraysEXT_p = nullptr;
 		}
 	} else {
 		Message("No function available for obtaining GL proc addresses");
@@ -374,7 +374,7 @@ void set_gl_options(TRenderMode mode) {
 			glEnable(GL_STENCIL_TEST);
 			glDepthMask(GL_FALSE);
 
-			glStencilFunc(GL_EQUAL, 0, ~0);
+			glStencilFunc(GL_EQUAL, 0, ~0U);
 			glStencilOp(GL_KEEP, GL_KEEP, GL_INCR);
 #else
 			glEnable(GL_CULL_FACE);

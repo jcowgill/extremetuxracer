@@ -183,7 +183,7 @@ bool CPlayers::LoadPlayers() {
 		plyr[i].name = SPStrN(*line, "name", "unknown");
 		plyr[i].funlocked = SPStrN(*line, "unlocked");
 		plyr[i].avatar = FindAvatar(SPStrN(*line, "avatar"));
-		plyr[i].ctrl = NULL;
+		plyr[i].ctrl = nullptr;
 		int active = SPIntN(*line, "active", 0);
 		if (active > 0) g_game.start_player = plyr.size()-1;
 	}
@@ -225,14 +225,14 @@ void CPlayers::AddPassedCup(const string& cup) {
 void CPlayers::ResetControls() {
 	for (size_t i=0; i<plyr.size(); i++) {
 		delete plyr[i].ctrl;
-		plyr[i].ctrl = NULL;
+		plyr[i].ctrl = nullptr;
 	}
 }
 
 // called in module regist.cpp:
 void CPlayers::AllocControl(size_t player) {
 	if (player >= plyr.size()) return;
-	if (plyr[player].ctrl != NULL) return;
+	if (plyr[player].ctrl != nullptr) return;
 	plyr[player].ctrl = new CControl;
 }
 
@@ -272,7 +272,7 @@ const string& CPlayers::GetDirectAvatarName(size_t avatar) const {
 // ********************************************************************
 
 CKeyframe* TCharacter::GetKeyframe(TFrameType type) {
-	if (type < 0 || type >= NUM_FRAME_TYPES) return NULL;
+	if (type < 0 || type >= NUM_FRAME_TYPES) return nullptr;
 	return &frames[type];
 }
 
@@ -318,7 +318,7 @@ bool CCharacter::LoadCharacterList() {
 			ch->shape = new CCharShape;
 			if (ch->shape->Load(charpath, "shape.lst", false) == false) {
 				delete ch->shape;
-				ch->shape = NULL;
+				ch->shape = nullptr;
 				Message("could not load character shape");
 			}
 

@@ -27,7 +27,7 @@ GNU General Public License for more details.
 #define BYTEVAL(i) (*(GLubyte*)(vnc_array+idx+8*sizeof(GLfloat) +\
     i*sizeof(GLubyte)))
 #define STRIDE_GL_ARRAY (8 * sizeof(GLfloat) + 4 * sizeof(GLubyte))
-#define ELEV(x,y) (elevation[(x) + nx*(y)] )
+#define ELEV(x,y) (Fields[(x) + nx*(y)].elevation)
 #define NORM_INTERPOL 0.05
 #define XCD(_x) ((double)(_x) / (nx-1.0) * curr_course->size.x)
 #define ZCD(_y) (-(double)(_y) / (ny-1.0) * curr_course->size.y)
@@ -118,6 +118,12 @@ struct TCourse {
 	void SetTranslatedData(const std::string& line2);
 };
 
+struct CourseFields {
+	TVector3d nml;
+	double elevation;
+	uint8_t terrain;
+};
+
 class CCourseList {
 	std::vector<TCourse> courses;
 	map<string, size_t>  index;
@@ -139,8 +145,8 @@ private:
 	map<string, size_t> ObjectIndex;
 	string		CourseDir;
 
-	int			nx;
-	int			ny;
+	unsigned int nx;
+	unsigned int ny;
 	TVector2d	start_pt;
 	int			base_height_value;
 	bool		mirrored;
@@ -168,9 +174,7 @@ public:
 	vector<TItem>		NocollArr;
 	vector<TPolyhedron>	PolyArr;
 
-	char		*terrain;
-	double		*elevation;
-	TVector3d	*nmls;
+	vector<CourseFields> Fields;
 	GLubyte		*vnc_array;
 
 	CCourseList* getGroup(size_t index);
@@ -197,7 +201,7 @@ public:
 	const TPolyhedron& GetPoly(size_t type) const;
 	void MirrorCourse();
 
-	void GetIndicesForPoint(double x, double z, int *x0, int *y0, int *x1, int *y1) const;
+	void GetIndicesForPoint(double x, double z, unsigned int* x0, unsigned int* y0, unsigned int* x1, unsigned int* y1) const;
 	void FindBarycentricCoords(double x, double z,
 	                           TVector2i *idx0, TVector2i *idx1, TVector2i *idx2, double *u, double *v) const;
 	TVector3d FindCourseNormal(double x, double z) const;

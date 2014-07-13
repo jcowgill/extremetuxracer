@@ -168,7 +168,7 @@ void CharKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 			Tools.Enter();
 			break;
 		case sf::Keyboard::U:
-			if (action != NULL) {
+			if (action != nullptr) {
 				RecallAction(action);
 				TestChar.RefreshNode(curr_node);
 			}

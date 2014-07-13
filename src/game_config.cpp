@@ -276,7 +276,7 @@ void InitConfig() {
 
 	if (strcmp(arg0, "./etr") == 0) {		// start from work directory
 		char *s = getcwd(buff, 256);
-		if (s==NULL) {};
+		if (s==nullptr) {};
 	} else {								// start with full path
 		strcpy(buff, arg0);
 		if (strlen(buff) > 5) {

@@ -25,8 +25,8 @@ GNU General Public License for more details.
 extern TVector2i cursor_pos;
 
 struct TScreenRes {
-	int width, height;
-	TScreenRes(int w = 0, int h = 0) : width(w), height(h) {}
+	unsigned int width, height;
+	TScreenRes(unsigned int w = 0, unsigned int h = 0) : width(w), height(h) {}
 };
 
 class CWinsys {

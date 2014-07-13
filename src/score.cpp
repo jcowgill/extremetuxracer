@@ -82,7 +82,7 @@ void CScore::PrintScorelist(size_t list_idx) const {
 }
 
 const TScoreList *CScore::GetScorelist(size_t list_idx) const {
-	if (list_idx >= Scorelist.size()) return NULL;
+	if (list_idx >= Scorelist.size()) return nullptr;
 	return &Scorelist[list_idx];
 }
 
@@ -91,7 +91,7 @@ bool CScore::SaveHighScore() const {
 
 	for (size_t li=0; li<Scorelist.size(); li++) {
 		const TScoreList* lst = &Scorelist[li];
-		if (lst != NULL) {
+		if (lst != nullptr) {
 			int num = lst->numScores;
 			if (num > 0) {
 				for (int sc=0; sc<num; sc++) {
@@ -258,7 +258,7 @@ void CScore::Loop(float timestep) {
 	const TScoreList *list = Score.GetScorelist(course->GetValue());
 
 	FT.SetColor(colWhite);
-	if (list != NULL) {
+	if (list != nullptr) {
 		FT.AutoSizeN(3);
 		if (list->numScores < 1) {
 			FT.DrawString(CENTER, area.top + 140, Trans.Text(63));

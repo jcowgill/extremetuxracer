@@ -41,14 +41,14 @@ void State::Manager::Run(State& entranceState) {
 	}
 	current->Exit();
 	previous = current;
-	current = NULL;
+	current = nullptr;
 }
 
 void State::Manager::EnterNextState() {
 	current->Exit();
 	previous = current;
 	current = next;
-	next = NULL;
+	next = nullptr;
 	current->Enter();
 }
 

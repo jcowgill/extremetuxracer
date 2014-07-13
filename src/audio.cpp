@@ -211,7 +211,7 @@ void CMusic::FreeMusics() {
 	themes.clear();
 	ThemesIndex.clear();
 
-	curr_music = NULL;
+	curr_music = nullptr;
 }
 
 size_t CMusic::GetMusicIdx(const string& name) const {
@@ -283,6 +283,6 @@ bool CMusic::PlayTheme(size_t theme, ESituation situation) {
 void CMusic::Halt() {
 	if (curr_music) {
 		curr_music->stop();
-		curr_music = NULL;
+		curr_music = nullptr;
 	}
 }
