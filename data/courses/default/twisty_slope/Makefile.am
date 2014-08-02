@@ -1,5 +1,5 @@
 
-pkgdatadir = $(datadir)/$(PACKAGE)/courses/twisty_slope
+pkgdatadir = $(datadir)/$(PACKAGE)/courses/default/twisty_slope
 
 pkgdata_DATA = \
 	course.dim	\

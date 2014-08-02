@@ -1,5 +1,5 @@
 
-pkgdatadir = $(datadir)/$(PACKAGE)/courses/wild_mountains
+pkgdatadir = $(datadir)/$(PACKAGE)/courses/default/wild_mountains
 
 pkgdata_DATA = \
 	course.dim	\

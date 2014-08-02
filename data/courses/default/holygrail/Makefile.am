@@ -1,5 +1,5 @@
 
-pkgdatadir = $(datadir)/$(PACKAGE)/courses/holygrail
+pkgdatadir = $(datadir)/$(PACKAGE)/courses/default/holygrail
 
 pkgdata_DATA = \
 	course.dim	\

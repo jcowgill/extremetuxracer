@@ -1,5 +1,5 @@
 
-pkgdatadir = $(datadir)/$(PACKAGE)/courses/hippo_run
+pkgdatadir = $(datadir)/$(PACKAGE)/courses/default/hippo_run
 
 pkgdata_DATA = \
 	course.dim	\
