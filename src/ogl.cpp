@@ -19,6 +19,8 @@ GNU General Public License for more details.
 #include <etr_config.h>
 #endif
 
+#include <climits> // INT_MAX
+
 #include "ogl.h"
 #include "spx.h"
 #include "winsys.h"
