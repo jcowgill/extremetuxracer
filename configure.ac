@@ -42,23 +42,26 @@ esac
 AC_FUNC_MALLOC
 AC_CHECK_FUNCS([floor getcwd memmove memset mkdir pow sqrt strchr strdup])
 
-AM_PATH_SDL([1.0.0])
-CFLAGS="$CFLAGS $SDL_CFLAGS"
-LIBS="$LIBS $SDL_LIBS"
-
-PKG_CHECK_MODULES([SDLIMAGE], [SDL_image],
+PKG_CHECK_MODULES([SFML_AUDIO], [sfml-audio],
 [
-  CFLAGS="${CFLAGS} $SDLIMAGE_CFLAGS"
-  LIBS="${LIBS} $SDLIMAGE_LIBS"
+  CFLAGS="${CFLAGS} $SFML_AUDIO_CFLAGS"
+  LIBS="${LIBS} $SFML_AUDIO_LIBS"
 ],
-[AC_MSG_ERROR([SDL_image not found])])
+[AC_MSG_ERROR([sfml-audio not found])])
 
-PKG_CHECK_MODULES([SDLMIXER], [SDL_mixer],
+PKG_CHECK_MODULES([SFML_WINDOW], [sfml-window],
 [
-  CFLAGS="${CFLAGS} $SDLMIXER_CFLAGS"
-  LIBS="${LIBS} $SDLMIXER_LIBS"
+  CFLAGS="${CFLAGS} $SFML_WINDOW_CFLAGS"
+  LIBS="${LIBS} $SFML_WINDOW_LIBS"
 ],
-[AC_MSG_ERROR([SDL_mixer not found])])
+[AC_MSG_ERROR([sfml-window not found])])
+
+PKG_CHECK_MODULES([SFML_GRAPHICS], [sfml-graphics],
+[
+  CFLAGS="${CFLAGS} $SFML_GRAPHICS_CFLAGS"
+  LIBS="${LIBS} $SFML_GRAPHICS_LIBS"
+],
+[AC_MSG_ERROR([sfml-graphics not found])])
 
 AC_CHECK_LIB([GL], [glBegin], [],
 [AC_MSG_ERROR([libGL not found])])
