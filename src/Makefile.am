@@ -63,7 +63,6 @@ noinst_HEADERS =	\
 	event.h		\
 	event_select.h	\
 	font.h		\
-	ft_font.h	\
 	game_config.h	\
 	game_ctrl.h	\
 	game_over.h	\
