@@ -510,7 +510,7 @@ void CCharShape::AdjustOrientation(CControl *ctrl, double dtime,
 		new_z.Norm();
 		new_z = AdjustRollvector(ctrl, ctrl->cvel, new_z);
 	} else {
-		new_z = -1.0 * surf_nml;
+		new_z = -surf_nml;
 		new_z = AdjustRollvector(ctrl, ctrl->cvel, new_z);
 		new_y = ProjectToPlane(surf_nml, ctrl->cvel);
 		new_y.Norm();

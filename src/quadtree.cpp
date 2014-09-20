@@ -567,7 +567,7 @@ static float DetailThreshold = 100;
 
 
 bool quadsquare::VertexTest(int x, float y, int z, float error,
-                            const float Viewer[3], int level, vertex_loc_t vertex_loc) {
+                            const float Viewer[3], int level, vertex_loc_t vertex_loc) const {
 	float	dx = fabs(x - Viewer[0]) * fabs(ScaleX);
 	float	dy = fabs(y - Viewer[1]);
 	float	dz = fabs(z - Viewer[2]) * fabs(ScaleZ);
@@ -747,8 +747,6 @@ void quadsquare::Render(const quadcornerdata& cd, GLubyte *vnc_array) {
 	VNCArray = vnc_array;
 
 	size_t numTerrains = Course.TerrList.size();
-	//	fog_on = is_fog_on ();
-	bool fog_on = true;
 	for (size_t j=0; j<numTerrains; j++) {
 		if (Course.TerrList[j].texture != nullptr) {
 			InitArrayCounters();
@@ -774,7 +772,8 @@ void quadsquare::Render(const quadcornerdata& cd, GLubyte *vnc_array) {
 			}
 			Course.TerrList[0].texture->Bind();
 			DrawTris();
-			if (fog_on) glEnable(GL_FOG);
+			//if (fog_on)
+			glEnable(GL_FOG);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 			for (GLuint i=0; i<VertexArrayCounter; i++) {
 				colorval(VertexArrayIndices[i], 0) = 255;

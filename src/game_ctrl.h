@@ -124,7 +124,7 @@ private:
 	void SetDefaultPlayers();
 	vector<TAvatar> avatars;
 
-	const TAvatar* FindAvatar(const string& name);
+	const TAvatar* FindAvatar(const string& name) const;
 public:
 	~CPlayers();
 

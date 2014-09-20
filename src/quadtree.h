@@ -122,9 +122,9 @@ private:
 	void	SetStatic(const quadcornerdata &cd);
 	void	InitVert(int i, int x, int z);
 	bool	VertexTest(int x, float y, int z, float error, const float Viewer[3],
-	                   int level, vertex_loc_t vertex_loc);
-	bool	BoxTest(int x, int z, float size, float miny, float maxy,
-	                float error, const float Viewer[3]);
+	                   int level, vertex_loc_t vertex_loc) const;
+	static bool BoxTest(int x, int z, float size, float miny, float maxy,
+	                    float error, const float Viewer[3]);
 };
 
 // --------------------------------------------------------------------

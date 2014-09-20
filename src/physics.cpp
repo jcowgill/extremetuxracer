@@ -268,7 +268,7 @@ const double airlog[]  = {-1, 0, 1, 2, 3, 4, 5, 6};
 const double airdrag[] = {2.25, 1.35, 0.6, 0, -0.35, -0.45, -0.33, -0.9};
 
 TVector3d CControl::CalcAirForce() {
-	TVector3d windvec = -1.0 * ff.vel;
+	TVector3d windvec = -ff.vel;
 	if (g_game.wind_id > 0)
 		windvec += WIND_FACTOR * Wind.WindDrift();
 
@@ -368,9 +368,9 @@ TVector3d CControl::CalcPaddleForce(double speed) {
 			paddleforce.z = -TUX_MASS * EARTH_GRAV / 4.0;
 			paddleforce = RotateVector(corientation, paddleforce);
 		} else {
-			double factor = -1 * min(MAX_PADD_FORCE, MAX_PADD_FORCE
-			                         * (MAX_PADDLING_SPEED - speed) / MAX_PADDLING_SPEED
-			                         * min(1.0, ff.frict_coeff / IDEAL_PADD_FRIC));
+			double factor = -min(MAX_PADD_FORCE, MAX_PADD_FORCE
+			                     * (MAX_PADDLING_SPEED - speed) / MAX_PADDLING_SPEED
+			                     * min(1.0, ff.frict_coeff / IDEAL_PADD_FRIC));
 			paddleforce = factor * ff.frictdir;
 		}
 	} else return paddleforce;

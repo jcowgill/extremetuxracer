@@ -158,13 +158,11 @@ TQuaternion MultiplyQuaternions(const TQuaternion& q, const TQuaternion& r) {
 }
 
 TQuaternion ConjugateQuaternion(const TQuaternion& q) {
-	TQuaternion res(
-	    -1 * q.x,
-	    -1 * q.y,
-	    -1 * q.z,
-	    q.w);
-
-	return res;
+	return TQuaternion(
+	           -q.x,
+	           -q.y,
+	           -q.z,
+	           q.w);
 }
 
 TMatrix<4, 4> MakeMatrixFromQuaternion(const TQuaternion& q) {
@@ -249,7 +247,7 @@ TQuaternion MakeRotationQuaternion(const TVector3d& s, const TVector3d& t) {
 }
 
 TQuaternion InterpolateQuaternions(const TQuaternion& q, TQuaternion r, double t) {
-	double cosphi = q.x * r.x + q.y * r.y + q.z * r.z + q.w * r.w;
+	double cosphi = DotProduct(q, r);
 
 	if (cosphi < 0.0) {
 		cosphi = -cosphi;
@@ -280,7 +278,7 @@ TVector3d RotateVector(const TQuaternion& q, const TVector3d& v) {
 
 	TQuaternion res_q = MultiplyQuaternions(q, MultiplyQuaternions(p, qs));
 
-	return res_q;
+	return TVector3d(res_q.x, res_q.y, res_q.z);
 }
 
 // --------------------------------------------------------------------

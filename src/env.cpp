@@ -348,7 +348,7 @@ void CEnvironment::DrawFog() {
 	glEnable(GL_FOG);
 
 	// only the alpha channel is used
-	static const GLfloat bottom_dens[4]     = {0, 0, 0, 1.0};
+	static const GLfloat bottom_dens[4]     = { 0, 0, 0, 1.0 };
 	static const GLfloat top_dens[4]        = { 0, 0, 0, 0.9 };
 	static const GLfloat leftright_dens[4]  = { 0, 0, 0, 0.3 };
 	static const GLfloat top_bottom_dens[4] = { 0, 0, 0, 0.0 };

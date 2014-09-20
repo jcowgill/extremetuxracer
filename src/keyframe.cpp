@@ -348,11 +348,11 @@ int CKeyframe::GetNumJoints() {
 	return numJoints;
 }
 
-void CKeyframe::SaveTest(const string& dir, const string& filename) {
+void CKeyframe::SaveTest(const string& dir, const string& filename) const {
 	CSPList list(100);
 
 	for (size_t i=0; i<frames.size(); i++) {
-		TKeyframe* frame = &frames[i];
+		const TKeyframe* frame = &frames[i];
 		string line = "*[time] " + Float_StrN(frame->val[0], 1);
 		line += " [pos] " + Float_StrN(frame->val[1], 2);
 		line += " " + Float_StrN(frame->val[2], 2);

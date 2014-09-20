@@ -209,7 +209,7 @@ void CPlayers::SavePlayers() const {
 	list.Save(playerfile);
 }
 
-const TAvatar* CPlayers::FindAvatar(const string& name) {
+const TAvatar* CPlayers::FindAvatar(const string& name) const {
 	for (size_t i = 0; i < avatars.size(); i++)
 		if (avatars[i].filename == name)
 			return &avatars[i];
