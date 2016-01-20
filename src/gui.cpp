@@ -231,7 +231,7 @@ void TTextField::SetCursorPos(size_t new_pos) {
 	if (cursorPos != 0) {
 		// substring() is very new addition to SFML2 string class, so
 		// for compatibility with older version we use std::string to do it.
-		string temp = text.getString();
+                string temp = text.getString();
 		FT.AutoSizeN(5);
 		x += FT.GetTextWidth(temp.substr(0, cursorPos));
 	}

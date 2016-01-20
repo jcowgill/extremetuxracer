@@ -145,16 +145,16 @@ void draw_gauge(double speed, double energy) {
 	double y = ENERGY_GAUGE_BOTTOM + energy * ENERGY_GAUGE_HEIGHT;
 
 	const GLfloat vtx1 [] = {
-		0.0, y,
-		GAUGE_IMG_SIZE, y,
-		GAUGE_IMG_SIZE, GAUGE_IMG_SIZE,
-		0.0, GAUGE_IMG_SIZE
+          0.0, static_cast<GLfloat>(y),
+          GAUGE_IMG_SIZE, static_cast<GLfloat>(y),
+          GAUGE_IMG_SIZE, GAUGE_IMG_SIZE,
+          0.0, GAUGE_IMG_SIZE
 	};
 	const GLfloat vtx2 [] = {
 		0.0, 0.0,
 		GAUGE_IMG_SIZE, 0.0,
-		GAUGE_IMG_SIZE, y,
-		0.0, y
+		GAUGE_IMG_SIZE, static_cast<GLfloat>(y),
+		0.0, static_cast<GLfloat>(y)
 	};
 	glEnableClientState(GL_VERTEX_ARRAY);
 

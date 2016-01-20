@@ -154,10 +154,18 @@ void DrawTrees() {
 		};
 
 		const GLfloat vtx[] = {
-			-itemRadius*normal.z, 0.0,        itemRadius*normal.x,
-			itemRadius*normal.z, 0.0,        -itemRadius*normal.x,
-			itemRadius*normal.z,  itemHeight, -itemRadius*normal.x,
-			-itemRadius*normal.z, itemHeight, itemRadius*normal.x
+                  static_cast<GLfloat>(-itemRadius*normal.z),
+                  0.0,
+                  static_cast<GLfloat>(itemRadius*normal.x),
+                  static_cast<GLfloat>(itemRadius*normal.z),
+                  0.0,
+                  static_cast<GLfloat>(-itemRadius*normal.x),
+                  static_cast<GLfloat>(itemRadius*normal.z),
+                  static_cast<GLfloat>(itemHeight),
+                  static_cast<GLfloat>(-itemRadius*normal.x),
+                  static_cast<GLfloat>(-itemRadius*normal.z),
+                  static_cast<GLfloat>(itemHeight),
+                  static_cast<GLfloat>(itemRadius*normal.x)
 		};
 		glEnableClientState(GL_VERTEX_ARRAY);
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
