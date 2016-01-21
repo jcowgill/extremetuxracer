@@ -18,6 +18,6 @@
 # Go to source directory
 cd "$(dirname $0)"
 
-autoreconf -f -s -i -m
+autoreconf -f -s -i -m -I m4
 
 echo "configure script created, run it next."
