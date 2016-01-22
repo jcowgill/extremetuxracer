@@ -1,2 +1,2 @@
-#define ETR_VERSION_STRING "0.7 Beta 1"
-#define ETR_VERSION 0,6,99,2
+#define ETR_VERSION_STRING "0.7.0"
+#define ETR_VERSION 0,7,0,0
