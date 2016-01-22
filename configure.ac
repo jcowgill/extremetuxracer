@@ -4,6 +4,7 @@
 AC_PREREQ([2.61])
 AC_INIT([etr], [0.7-beta1], [https://sourceforge.net/projects/extremetuxracer])
 AC_CONFIG_SRCDIR([src/gui.cpp])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([etr_config.h])
 
 AM_INIT_AUTOMAKE([dist-xz dist-zip])
