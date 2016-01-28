@@ -247,7 +247,7 @@ void CTexture::DrawFrame(size_t idx, int x, int y, double w, double h, int frame
 
 void CTexture::DrawNumChr(char c, int x, int y, int w, int h) {
 	int idx;
-	if (isdigit(c)) {
+	if (std::isdigit((unsigned char)c)) {
 		char chrname[2] = {c, '\0'};
 		idx = atoi(chrname);
 	} else if (c == ':')
