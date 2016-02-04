@@ -21,9 +21,9 @@ GNU General Public License for more details.
 
 struct TParam {
 	// defined at runtime:
-	//	string	prog_dir;
 	string	config_dir;
 	string	data_dir;
+	string	save_dir;
 	string	common_course_dir;
 	string	obj_dir;
 	string	terr_dir;
