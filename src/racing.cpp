@@ -159,11 +159,20 @@ void CRacing::Jaxis(int axis, float value) {
 	}
 }
 
-void CRacing::Jbutt(int button, int state) {
-	if (button == 0) {
-		key_charging = state != 0;
-	} else if (button == 1) {
-//		key_charging = (bool) state;
+void CRacing::Jbutt(int button, bool pressed) {
+	switch (button) {
+		case 0:
+			key_paddling = pressed;
+			break;
+		case 1:
+			trick_modifier = pressed;
+			break;
+		case 2:
+			key_braking = pressed;
+			break;
+		case 3:
+			key_charging = pressed;
+			break;
 	}
 }
 
@@ -250,12 +259,18 @@ void CRacing::Enter() {
 static void PlayTerrainSound(CControl *ctrl, bool airborne) {
 	if (airborne == false) {
 		int terridx = Course.GetTerrainIdx(ctrl->cpos.x, ctrl->cpos.z, 0.5);
-		if (terridx >= 0) {
+		if (terridx >= 0)
 			newsound = (int)Course.TerrList[terridx].sound;
-		} else newsound = -1;
-	} else newsound = -1;
-	if ((newsound != lastsound) && (lastsound >= 0)) Sound.Halt(lastsound);
-	if (newsound >= 0) Sound.Play(newsound, -1);
+		else
+			newsound = -1;
+	} else {
+          newsound = -1;
+        }
+
+	if ((newsound != lastsound) && (lastsound >= 0))
+          Sound.Halt(lastsound);
+	if (newsound >= 0)
+          Sound.Play(newsound, -1);
 
 	lastsound = newsound;
 }
