@@ -6,7 +6,6 @@ pkgdata_DATA = \
 	std.ttf	\
 	stditalic.ttf	\
 	stdbold.ttf	\
-	outline.ttf	\
 	pc_20.ttf	\
 	pc_outline.ttf
 
