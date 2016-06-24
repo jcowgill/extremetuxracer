@@ -2,8 +2,16 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
+Version 0.7.2                                                 ??th of ???, 201?
+-------------------------------------------------------------------------------
+Bugfix release
+
+- Corrected dimensions of Wild West Chute Out track
+
+
 Version 0.7.2                                               14th of April, 2016
 -------------------------------------------------------------------------------
+Bugfix release
 
 - Fixed Joystick handling
 - Removed unused fonts
