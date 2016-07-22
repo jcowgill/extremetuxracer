@@ -7,6 +7,8 @@ Version 0.7.2                                                 ??th of ???, 201?
 Bugfix release
 
 - Corrected dimensions of Wild West Chute Out track
+- Renamed 'options' file as 'options.txt' on systems where the former name
+  was used
 - Configure check for SFML-System
 - Minor corrections to in-game texts
 
