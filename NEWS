@@ -2,6 +2,12 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
+Version 0.7.5                                                 ??th of ???, 2018
+-------------------------------------------------------------------------------
+Bugfix release
+- Fixed a crash when score is not good enough to enter high score list
+
+
 Version 0.7.4                                             27th of October, 2016
 -------------------------------------------------------------------------------
 Bugfix release
