@@ -5,7 +5,9 @@
 Version 0.7.5                                                 ??th of ???, 2018
 -------------------------------------------------------------------------------
 Bugfix release
+
 - Fixed a crash when score is not good enough to enter high score list
+- Extreme Tux Racer comes with AppStream metadata
 
 
 Version 0.7.4                                             27th of October, 2016
