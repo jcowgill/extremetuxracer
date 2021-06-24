@@ -2,7 +2,7 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
-Version 0.8.1                                                 ??th of ???, 202?
+Version 0.8.1                                                 25th of Jun, 2021
 -------------------------------------------------------------------------------
 - Autotools build now prefers linking against libOpenGL over libGL
 - New translations
