@@ -56,7 +56,7 @@
 *[idx] 46 [engl] H - hide/show hud display [trans] H – zobrazit/skrýt průhledový displej
 *[idx] 47 [engl] S - screenshot [trans] S – pořízení snímku obrazovky
 *[idx] 48 [engl] U - toggle ui snow [trans] U – vyp/zap sníh v uživatelském rozhraní
-*[idx] 49 [engl] P - set pause mode [trans] P – pauza 
+*[idx] 49 [engl] P - set pause mode [trans] P – pauza
 *[idx] 50 [engl] T - trick [trans] trik T – trik
 *[idx] 51 [engl] ESC - abort Race [trans] ESC – přerušit závod
 *[idx] 52 [engl] SPACE - jump [trans] Mezerník – skok

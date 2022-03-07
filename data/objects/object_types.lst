@@ -14,7 +14,7 @@
 * [name] finish [texture] finish.png [repeat] 0
 	 [coll] 0 [+y] 0 [snap] 0 [reset] 0 [draw] 1 [usenorm] 1 [norm] 0 0 1
 
-* [name] float [texture] 
+* [name] float [texture]
 	 [coll] 0 [+y] 0 [snap] 0 [reset] 1 [draw] 0 [usenorm] 0
 
 * [name] tree [texture] snowy_tree1.png [repeat] 0 [color]

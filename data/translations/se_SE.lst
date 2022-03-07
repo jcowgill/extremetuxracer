@@ -1,6 +1,6 @@
 # Please, don't change the idx
 
-*[idx] 0 [engl] Press any key to start [trans] Tryck på valfri knapp för att starta 
+*[idx] 0 [engl] Press any key to start [trans] Tryck på valfri knapp för att starta
 *[idx] 1 [engl] Enter an event [trans] Ange en tävling
 *[idx] 2 [engl] Practice [trans] Träning
 *[idx] 3 [engl] Configuration [trans] Konfiguration
@@ -77,7 +77,7 @@
 
 *[idx] 66 [engl] Enter a name for the new player and select an avatar: [trans] Ange ett namn för den nya spelaren och välj en avatar:
 
-*[idx] 67 [engl] Loading resources, [trans] Läser in resurser, 
+*[idx] 67 [engl] Loading resources, [trans] Läser in resurser,
 *[idx] 68 [engl] please wait ... [trans] vänligen vänta...
 
 *[idx] 69 [engl] Mirror track: Off [trans] Spegla spår: av
@@ -90,7 +90,7 @@
 
 *[idx] 75 [engl] Snow: No [trans] Snö: Nej
 *[idx] 76 [engl] Snow: A little [trans] Snö: Lite
-*[idx] 77 [engl] Snow: Some [trans] Snö: En hel del 
+*[idx] 77 [engl] Snow: Some [trans] Snö: En hel del
 *[idx] 78 [engl] Snow: A lot [trans] Snö: Mycket
 
 *[idx] 79 [engl] Wind: No [trans] Vind: Nej
