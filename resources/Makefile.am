@@ -1,7 +1,7 @@
 
 SUBDIRS = gui
 
-appdatafiledir = $(prefix)/share/appdata
+appdatafiledir = $(prefix)/share/metainfo
 desktopfiledir = $(prefix)/share/applications
 icondir = $(prefix)/share/pixmaps
 

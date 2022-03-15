@@ -2,6 +2,12 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
+Version 0.8.2                                                 ??th of ???, 202?
+-------------------------------------------------------------------------------
+- Appdata/Metainfo file is now installed to <prefix>/share/metainfo, like
+  current specification requires
+
+
 Version 0.8.1                                                 25th of Jun, 2021
 -------------------------------------------------------------------------------
 - Autotools build now prefers linking against libOpenGL over libGL
