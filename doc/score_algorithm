@@ -1,6 +1,6 @@
-You may want to know how the score points are calculated. Sometimes you have to decide between a shorter time or an additional herring. For this reason, I've tried to make the algorithm as transparent as possible. 
+You may want to know how the score points are calculated. Sometimes you have to decide between a shorter time or an additional herring. For this reason, I've tried to make the algorithm as transparent as possible.
 
-The basis rule is clear and easy: 
+The basis rule is clear and easy:
 
 1 herring - 10 points
 1 second gain of time - 10 points (with resolution 0.1 second - 1 point)

@@ -29,11 +29,11 @@ It's impossible to explain the complete structure, but you will become familiar 
 
 The character tool of ETR
 
-- First copy "tux.lst" to "test.lst". The latter will be automatically loaded when you start the tool with "./etr 2". On the right you see the figure, you can change the view by using the mouse. Click and drag for rotating (left button), moving (right button) or zooming (wheel). 
+- First copy "tux.lst" to "test.lst". The latter will be automatically loaded when you start the tool with "./etr 2". On the right you see the figure, you can change the view by using the mouse. Click and drag for rotating (left button), moving (right button) or zooming (wheel).
 
 - On the left there is a list of all nodes. You can select a node with the 4 cursor keys. Below this list you see a list of available transformations, dependent of the node. Select a transformation with PAGEUP or PAGEDOWN. And now you can change the adjustments. Type "1", "2" or "3" on the numeric keypad, together with SHIFT if you want the inverse impact. The results of these modifications can be seen immediately.
 
-- About the view: The figure is always drawn perspectively, never orthogonally. So don't wonder when the direction changes a bit in the case you move the figure. Also the figure is drawn with active lighting. So you can evaluate the effects of specular lights, for example. Sometimes it might be helpful to disable the material adjustments, therefore type "m". 
+- About the view: The figure is always drawn perspectively, never orthogonally. So don't wonder when the direction changes a bit in the case you move the figure. Also the figure is drawn with active lighting. So you can evaluate the effects of specular lights, for example. Sometimes it might be helpful to disable the material adjustments, therefore type "m".
 
 - There's not a real undo option, that would be too much effort. But you can undo the changes of the current node by typing "u". After selecting another node, the undo will work no longer.
 
