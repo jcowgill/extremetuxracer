@@ -13,6 +13,7 @@ Version 0.8.2                                                 ??th of ???, 202?
 -------------------------------------------------------------------------------
 - Appdata/Metainfo file is now installed to <prefix>/share/metainfo, like
   current specification requires
+- Fixed Windows build when UNICODE not defined
 
 
 Version 0.8.1                                                 25th of Jun, 2021
