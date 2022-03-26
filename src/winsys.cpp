@@ -106,7 +106,11 @@ void CWinsys::SetupVideoMode(const TScreenRes& res) {
 	if (param.framerate)
 		window.setFramerateLimit(param.framerate);
 #ifdef _WIN32
+#ifdef UNICODE
 	HICON icon = LoadIcon(GetModuleHandle(NULL), (LPCWSTR)IDI_APPLICATION);
+#else
+	HICON icon = LoadIcon(GetModuleHandle(NULL), (LPCSTR)IDI_APPLICATION);
+#endif
 	SendMessageW(window.getSystemHandle(), WM_SETICON, ICON_BIG, (LPARAM)icon);
 	SendMessageW(window.getSystemHandle(), WM_SETICON, ICON_SMALL, (LPARAM)icon);
 #endif
