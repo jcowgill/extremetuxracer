@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <etr_config.h>
 #endif
 
+#include "course.h"
 #include "event_select.h"
 #include "gui.h"
 #include "font.h"
@@ -95,6 +96,14 @@ void CEventSelect::Enter() {
 	TArea area = AutoAreaN(30, 80, framewidth);
 	int frametop1 = AutoYPosN(35);
 	int frametop2 = AutoYPosN(50);
+
+        /* FIXME: We should support events that use course group other than "default",
+         *        or what ever is set when we enter the event, but currently we won't.
+         *        Instead there's currently an assumption that the group is preset
+         *        correctly, so we set it here before entering event. Without this
+         *        it would crash if group is earlier changed to some non-default one. */
+        Course.currentCourseList = &Course.CourseLists["default"];
+        g_game.course = nullptr;
 
 	ResetGUI();
 	event = AddUpDown(area.right+8, frametop1, 0, (int)Events.EventList.size() - 1, 0);
