@@ -1,18 +1,18 @@
 # Please, don't change the idx
 
 *[idx] 0 [engl] Press any key to start [trans] Tryck på valfri knapp för att starta
-*[idx] 1 [engl] Enter an event [trans] Ange en tävling
+*[idx] 1 [engl] Enter an event [trans] Välj en tävling
 *[idx] 2 [engl] Practice [trans] Träning
 *[idx] 3 [engl] Configuration [trans] Konfiguration
-*[idx] 4 [engl] Credits [trans] Erkännande
+*[idx] 4 [engl] Credits [trans] Tack till
 *[idx] 5 [engl] Quit [trans] Avsluta
 *[idx] 6 [engl] Select an event [trans] Välj en tävling
 *[idx] 7 [engl] Select a cup [trans] Välj ett mästerskap
 *[idx] 8 [engl] Back [trans] Tillbaka
 *[idx] 9 [engl] Continue [trans] Fortsätt
-*[idx] 10 [engl] You cannot enter this cup yet [trans] Du kan inte ange det här mästerskapet ännu
+*[idx] 10 [engl] You cannot enter this cup yet [trans] Du kan inte välja det här mästerskapet ännu
 
-*[idx] 11 [engl] Herring: [trans] Sill:
+*[idx] 11 [engl] Herring: [trans] Sillar:
 *[idx] 12 [engl] Time: [trans] Tid:
 *[idx] 13 [engl] Race! [trans] Tävla!
 *[idx] 14 [engl] seconds [trans] sekunder
@@ -44,14 +44,14 @@
 *[idx] 37 [engl] Contributed by: [trans] Bidrog med:
 *[idx] 38 [engl] Event: [trans] Tävling:
 *[idx] 39 [engl] Cup: [trans] Mästerskap:
-*[idx] 40 [engl] Race Over [trans] Loppet över
+*[idx] 40 [engl] Race Over [trans] Loppet är över
 
 *[idx] 41 [engl] For more configuration options, please edit the [trans] För fler konfigurationsalternativ, redigera
-*[idx] 42 [engl] file 'options.txt' and read the documentation. [trans] filen 'options.txt' och läs dokumentationen
+*[idx] 42 [engl] file 'options.txt' and read the documentation. [trans] filen 'options.txt' och läs dokumentationen.
 *[idx] 43 [engl] Help [trans] Hjälp
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - ändra visningsläge
-*[idx] 45 [engl] F - hide/show fps display [trans] F - visa/dölj fps skärm
-*[idx] 46 [engl] H - hide/show hud display [trans] H - visa/dölj hud skärm
+*[idx] 45 [engl] F - hide/show fps display [trans] F - visa/dölj fps-skärm
+*[idx] 46 [engl] H - hide/show hud display [trans] H - visa/dölj hud-skärm
 *[idx] 47 [engl] S - screenshot [trans] S - skärmdump
 *[idx] 48 [engl] U - toggle ui snow [trans] U - växla snö för gränssnittet
 *[idx] 49 [engl] P - set pause mode [trans] P - pausläge
@@ -101,20 +101,20 @@
 *[idx] 83 [engl] Randomize settings [trans] Slumpmässiga inställningar
 
 *[idx] 84 [engl] Score [trans] Ställning
-*[idx] 85 [engl] Herring [trans] Sill
+*[idx] 85 [engl] Herring [trans] Sillar
 *[idx] 86 [engl] Time [trans] Tid
-*[idx] 87 [engl] Path length [trans] Längd av bana
+*[idx] 87 [engl] Path length [trans] Banlängd
 *[idx] 88 [engl] Average speed [trans] Medelhastighet
 *[idx] 89 [engl] Position [trans] Placering
 *[idx] 90 [engl] in highscore list [trans] i topplistan
 
 *[idx] 91 [engl] Author [trans] Utvecklare
 
-*[idx] 92 [engl] Loading courses failed. [trans] Inläsning av bana misslyckades.
-*[idx] 93 [engl] Loading characters failed. [trans] Inläsning av personlighet misslyckades.
-*[idx] 94 [engl] Loading environments failed. [trans] Inläsning av miljö misslyckades.
-*[idx] 95 [engl] Loading terrains failed. [trans] Inläsning av terräng misslyckades
-*[idx] 96 [engl] Loading avatars failed. [trans] Inläsning av avatar misslyckades.
+*[idx] 92 [engl] Loading courses failed. [trans] Inläsning av banor misslyckades.
+*[idx] 93 [engl] Loading characters failed. [trans] Inläsning av personligheter misslyckades.
+*[idx] 94 [engl] Loading environments failed. [trans] Inläsning av miljöer misslyckades.
+*[idx] 95 [engl] Loading terrains failed. [trans] Inläsning av terränger misslyckades
+*[idx] 96 [engl] Loading avatars failed. [trans] Inläsning av avatarer misslyckades.
 *[idx] 97 [engl] herrings [trans] sillar
 *[idx] 98 [engl] sec [trans] sek
 
