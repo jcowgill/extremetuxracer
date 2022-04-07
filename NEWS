@@ -11,6 +11,9 @@ version 0.9 features the following changes:
 
 Version 0.8.2                                                 ??th of ???, 202?
 -------------------------------------------------------------------------------
+- Fixed a crash when entering an event with the course group changed earlier.
+  Now the course group is always resetted to the default one before entering
+  an event.
 - Appdata/Metainfo file is now installed to <prefix>/share/metainfo, like
   current specification requires
 - Fixed Windows build when UNICODE not defined
