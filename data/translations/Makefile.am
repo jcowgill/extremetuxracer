@@ -8,6 +8,7 @@ pkgdata_DATA = \
 	fi_FI.lst	\
 	es_ES.lst	\
 	fr_FR.lst	\
+	it_IT.lst	\
 	pl_PL.lst	\
 	se_SE.lst	\
 	eo.lst		\
