@@ -16,6 +16,8 @@ Version 0.8.2                                                 ??th of ???, 202?
   an event.
 - Appdata/Metainfo file is now installed to <prefix>/share/metainfo, like
   current specification requires
+- Also the project license, not only license of the metadata, is defined
+  in the appdata file
 - Fixed Windows build when UNICODE not defined
 - etr.png icon regenerated from the etr.svg in 64x64 size for better quality
 - New translations
