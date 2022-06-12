@@ -479,7 +479,7 @@ void quadsquare::EnableEdgeVertex(int index, bool IncrementCount, const quadcorn
 	if (IncrementCount == true && (index == 0 || index == 3)) {
 		SubEnabledCount[index & 1]++;
 	}
-	quadsquare*	p = this;
+	quadsquare*	p;
 	const quadcornerdata* pcd = &cd;
 	for (;;) {
 		int	ci = pcd->ChildIndex;
