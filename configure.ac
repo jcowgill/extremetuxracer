@@ -5,6 +5,7 @@ AC_PREREQ([2.64])
 AC_INIT([Extreme Tux Racer], [0.8.99], [https://sourceforge.net/projects/extremetuxracer],
         [etr], [https://sourceforge.net/projects/extremetuxracer])
 AC_CONFIG_SRCDIR([src/gui.cpp])
+AC_CONFIG_AUX_DIR(bootstrap)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([etr_config.h])
 
