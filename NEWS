@@ -2,7 +2,7 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
-Version 0.8.2                                                 ??th of ???, 202?
+Version 0.8.2                                                 16th of Jun, 2022
 -------------------------------------------------------------------------------
 - Fixed a crash when entering an event with the course group changed earlier.
   Now the course group is always resetted to the default one before entering

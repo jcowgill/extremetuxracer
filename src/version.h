@@ -1,2 +1,2 @@
-#define ETR_VERSION_STRING "0.8.1"
-#define ETR_VERSION 0,8,1,0
+#define ETR_VERSION_STRING "0.8.2"
+#define ETR_VERSION 0,8,2,0
