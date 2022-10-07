@@ -1,15 +1,15 @@
 
 SUBDIRS = gui
 
-appdatafiledir = $(prefix)/share/metainfo
+metainfofiledir = $(prefix)/share/metainfo
 desktopfiledir = $(prefix)/share/applications
 icondir = $(prefix)/share/pixmaps
 
-appdatafile_DATA =	\
-	etr.appdata.xml
+metainfofile_DATA =	\
+	org.etr.metainfo.xml
 
 desktopfile_DATA =	\
-        etr.desktop
+        org.etr.desktop
 
 icon_DATA =		\
 	etr.png		\
@@ -19,7 +19,7 @@ EXTRA_DIST = 		\
 	banner.bmp	\
 	dialog.bmp	\
 	etracericon.ico	\
-	etr.appdata.xml	\
+	org.etr.metainfo.xml	\
 	etr.svg	        \
-	etr.desktop	\
+	org.etr.desktop	\
 	etr.png

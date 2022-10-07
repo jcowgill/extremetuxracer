@@ -9,6 +9,11 @@ Besides several small improvements and bugfixes, the new Extreme Tux Racer
 version 0.9 features the following changes:
 
 
+Version 0.8.3                                                 ??th of ???, 202?
+-------------------------------------------------------------------------------
+- Metainfo and desktop files have now reverse domain-name
+
+
 Version 0.8.2                                                 16th of Jun, 2022
 -------------------------------------------------------------------------------
 - Fixed a crash when entering an event with the course group changed earlier.
