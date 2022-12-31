@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<component>
-    <id type="desktop">org.etr.desktop</id>
+<component type="desktop-application">
+    <id>org.etr</id>
     <project_license>GPL-2.0-or-later</project_license>
     <metadata_license>CC0</metadata_license>
     <name>Extreme Tux Racer</name>
@@ -16,6 +16,7 @@
             time is up.
         </p>
     </description>
+    <launchable type="desktop-id">org.etr.desktop</launchable>
     <screenshots>
         <screenshot type="default" width="800" height="600">
             <image>https://a.fsdn.com/con/app/proj/extremetuxracer/screenshots/ETR4.png</image>
