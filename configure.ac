@@ -11,6 +11,8 @@ AC_CONFIG_HEADERS([etr_config.h])
 
 AM_INIT_AUTOMAKE([subdir-objects dist-xz dist-zip no-dist-gzip])
 
+AM_SILENT_RULES([yes])
+
 AC_CANONICAL_HOST
 
 # Checks for programs.
