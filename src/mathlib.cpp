@@ -61,7 +61,7 @@ TVector3d TransformPoint(const TMatrix<4, 4>& mat, const TVector3d& p) {
 bool IntersectPlanes(const TPlane& s1, const TPlane& s2, const TPlane& s3, TVector3d *p) {
 	double A[3][4];
 	double x[3];
-	double retval;
+	int retval;
 
 	A[0][0] =  s1.nml.x;
 	A[0][1] =  s1.nml.y;
