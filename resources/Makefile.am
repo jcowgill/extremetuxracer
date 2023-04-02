@@ -6,10 +6,10 @@ desktopfiledir = $(prefix)/share/applications
 icondir = $(prefix)/share/pixmaps
 
 metainfofile_DATA =	\
-	org.etr.metainfo.xml
+	net.sourceforge.extremetuxracer.metainfo.xml
 
 desktopfile_DATA =	\
-        org.etr.desktop
+        net.sourceforge.extremetuxracer.desktop
 
 icon_DATA =		\
 	etr.png		\
@@ -19,7 +19,7 @@ EXTRA_DIST = 		\
 	banner.bmp	\
 	dialog.bmp	\
 	etracericon.ico	\
-	org.etr.metainfo.xml	\
+	net.sourceforge.extremetuxracer.metainfo.xml	\
 	etr.svg	        \
-	org.etr.desktop	\
+	net.sourceforge.extremetuxracer.desktop	\
 	etr.png
