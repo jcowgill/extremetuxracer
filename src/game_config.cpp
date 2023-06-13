@@ -294,12 +294,31 @@ void InitConfig() {
 #endif /* 0 */
 
 	struct passwd *pwent = getpwuid(getuid());
+	std::string halfway_dir;
 
 	param.config_dir = pwent->pw_dir;
 	param.config_dir += SEP;
 	param.config_dir += ".etr";
+	if (!DirExists(param.config_dir.c_str())) {
+		const char *XDG_CONFIG_HOME = getenv("XDG_CONFIG_HOME");
+
+		if (XDG_CONFIG_HOME != NULL) {
+			param.config_dir = XDG_CONFIG_HOME;
+			halfway_dir = param.config_dir;
+		} else {
+			param.config_dir = pwent->pw_dir;
+			param.config_dir += SEP ".config";
+			halfway_dir = param.config_dir;
+		}
+		param.config_dir += SEP "etr";
+	}
 	// or: param.config_dir = param.prog_dir + SEP "config";
 	if (!DirExists(param.config_dir.c_str())) {
+		// TODO: Support generic multi-part path directory creation
+		if (!halfway_dir.empty()) {
+			mkdir(halfway_dir.c_str(), 0775);
+		}
+
 		mkdir(param.config_dir.c_str(), 0775);
 	}
 	param.data_dir = ETR_DATA_DIR;
