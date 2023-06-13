@@ -4,6 +4,7 @@
 
 Version 0.8.3                                                 ??th of ???, 202?
 -------------------------------------------------------------------------------
+- Respect XDG_CONFIG_HOME at systems other than Windows
 - Metainfo and desktop files have now reverse domain-name
 - Other metainfo format updates
 - Course files converted to UTF-8
