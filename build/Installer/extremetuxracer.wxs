@@ -29,17 +29,10 @@
           </Component>
           <Component Id='SFML' Guid='$(var.sfmlGUID)'>
             <File Id='openal32.dll' Name='openal32.dll' DiskId='1' Source='$(var.BinDir)\openal32.dll' />
-            <?if $(var.Platform) = x64 ?>
-              <File Id='sfml_system_2.dll' Name='sfml-system-64-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-system-64-2.dll' KeyPath='yes' />
-              <File Id='sfml_window_2.dll' Name='sfml-window-64-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-window-64-2.dll' />
-              <File Id='sfml_graphics_2.dll' Name='sfml-graphics-64-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-graphics-64-2.dll' />
-              <File Id='sfml_audio_2.dll' Name='sfml-audio-64-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-audio-64-2.dll' />
-            <?else?>
-              <File Id='sfml_system_2.dll' Name='sfml-system-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-system-2.dll' KeyPath='yes' />
-              <File Id='sfml_window_2.dll' Name='sfml-window-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-window-2.dll' />
-              <File Id='sfml_graphics_2.dll' Name='sfml-graphics-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-graphics-2.dll' />
-              <File Id='sfml_audio_2.dll' Name='sfml-audio-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-audio-2.dll' />
-            <?endif?>
+            <File Id='sfml_system_2.dll' Name='sfml-system-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-system-2.dll' KeyPath='yes' />
+            <File Id='sfml_window_2.dll' Name='sfml-window-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-window-2.dll' />
+            <File Id='sfml_graphics_2.dll' Name='sfml-graphics-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-graphics-2.dll' />
+            <File Id='sfml_audio_2.dll' Name='sfml-audio-2.dll' DiskId='1' Source='$(var.BinDir)\sfml-audio-2.dll' />
           </Component>
         </Directory>
         <Merge Id="CRT" Language="0" SourceFile="$(var.CrtMergeModule)" DiskId="1" />
