@@ -1,8 +1,8 @@
 Prerequisites:
 - Microsoft Visual Studio 2013 or later (Express/Community Edition is sufficient)
 - SFML (include and lib paths have to be set in Visual Studio)
-- gltext.h (can be downloaded here:
-            https://registry.khronos.org/OpenGL/api/GL/glext.h)
+- glext.h (can be downloaded here:
+           https://registry.khronos.org/OpenGL/api/GL/glext.h)
 
 To build the installer, you'll also need WiX.
 
