@@ -22,6 +22,7 @@
     <ProjectGuid>{CA668921-360A-47CE-937D-4B5307FE9FEE}</ProjectGuid>
     <RootNamespace>ExtremeTuxRacer</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <GenerateManifest>false</GenerateManifest>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
