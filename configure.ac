@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([Extreme Tux Racer], [0.8.2], [https://sourceforge.net/projects/extremetuxracer],
+AC_INIT([Extreme Tux Racer], [0.8.3], [https://sourceforge.net/projects/extremetuxracer],
         [etr], [https://sourceforge.net/projects/extremetuxracer])
 AC_CONFIG_SRCDIR([src/gui.cpp])
 AC_CONFIG_MACRO_DIR([m4])

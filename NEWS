@@ -2,7 +2,7 @@
                            NEWS for Extreme Tux Racer
 ===============================================================================
 
-Version 0.8.3                                                 ??th of ???, 202?
+Version 0.8.3                                                 19th of Jun, 2023
 -------------------------------------------------------------------------------
 - Windows build with Visual Studio (2022) fixed
 - Respect XDG_CONFIG_HOME at systems other than Windows
