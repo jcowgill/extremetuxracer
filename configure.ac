@@ -21,6 +21,10 @@ AC_PROG_CC
 
 AC_SYS_LARGEFILE
 
+dnl AC_SYS_YEAR2038() added in autoconf-2.73
+m4_ifdef([AC_SYS_YEAR2038],
+   [AC_SYS_YEAR2038])
+
 # Checks for libraries.
 
 # Checks for header files.
