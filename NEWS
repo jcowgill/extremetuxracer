@@ -5,6 +5,7 @@
 
 Version 0.8.4                                                 ??th of ???, 2024
 -------------------------------------------------------------------------------
+- Prevent configuration values from going below minimum by mouse clicks
 - New translations
   - Portuguese
 - Updated translations

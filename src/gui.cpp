@@ -524,7 +524,7 @@ bool TUpDown::Click(int x, int y) {
 		lower.SetActive(true);
 		value--;
 		if (value == minimum)
-			down.SetActive(false);
+			higher.SetActive(false);
 		return true;
 	}
 	return false;
