@@ -6,6 +6,7 @@
 Version 0.8.4                                                 ??th of ???, 2024
 -------------------------------------------------------------------------------
 - Prevent configuration values from going below minimum by mouse clicks
+- Fix drawing with some older Intel GPU drivers
 - New translations
   - Portuguese
 - Updated translations

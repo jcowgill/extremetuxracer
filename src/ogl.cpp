@@ -115,13 +115,16 @@ void PrintGLInfo() {
 }
 
 void set_material_diffuse(const sf::Color& diffuse_colour) {
-	GLint mat_amb_diff[4] = {
-		static_cast<GLint>(diffuse_colour.r) * (INT_MAX / 255),
-		static_cast<GLint>(diffuse_colour.g) * (INT_MAX / 255),
-		static_cast<GLint>(diffuse_colour.b) * (INT_MAX / 255),
-		static_cast<GLint>(diffuse_colour.a) * (INT_MAX / 255)
+	const float scale = 1.0 / 255.0;
+	GLfloat mat_amb_diff[4] = {
+		diffuse_colour.r * scale,
+		diffuse_colour.g * scale,
+		diffuse_colour.b * scale,
+		diffuse_colour.a * scale
 	};
-	glMaterialiv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
+	// We provide material parameters as floats instead of ints because some older
+	// Intel iGPU drivers do not render objects with int parameters properly.
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE, mat_amb_diff);
 
 	glColor(diffuse_colour);
 }
@@ -129,13 +132,16 @@ void set_material_diffuse(const sf::Color& diffuse_colour) {
 void set_material(const sf::Color& diffuse_colour, const sf::Color& specular_colour, float specular_exp) {
 	set_material_diffuse(diffuse_colour);
 
-	GLint mat_specular[4] = {
-		static_cast<GLint>(specular_colour.r) * (INT_MAX / 255),
-		static_cast<GLint>(specular_colour.g) * (INT_MAX / 255),
-		static_cast<GLint>(specular_colour.b) * (INT_MAX / 255),
-		static_cast<GLint>(specular_colour.a) * (INT_MAX / 255)
+	const float scale = 1.0 / 255.0;
+	GLfloat mat_specular[4] = {
+		specular_colour.r * scale,
+		specular_colour.g * scale,
+		specular_colour.b * scale,
+		specular_colour.a * scale
 	};
-	glMaterialiv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
+	// We provide material parameters as floats instead of ints because some older
+	// Intel iGPU drivers do not render objects with int parameters properly.
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_specular);
 
 	glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, specular_exp);
 }
