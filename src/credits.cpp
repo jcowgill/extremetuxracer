@@ -55,7 +55,8 @@ void CCredits::LoadCreditList() {
 		int old_offs = (last != CreditList.before_begin()) ? last->offs : 0;
 		last = CreditList.emplace_after(last);
 		TCredits& credit = *last;
-		credit.text = SPStrN(*line, "text");
+		std::string temp = SPStrN(*line, "text");
+		credit.text = sf::String::fromUtf8(temp.cbegin(), temp.cend());
 
 		int offset = SPFloatN(*line, "offs", 0) * OFFS_SCALE_FACTOR * Winsys.scale;
 		if (line != list.cbegin()) credit.offs = old_offs + offset;

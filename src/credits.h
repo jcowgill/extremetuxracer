@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <forward_list>
 
 struct TCredits {
-	std::string text;
+	sf::String text;
 	float size;
 	int offs;
 	int font;
