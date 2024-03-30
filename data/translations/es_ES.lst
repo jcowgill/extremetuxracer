@@ -76,3 +76,53 @@
 *[idx] 66 [engl] Enter a name for the new player and select an avatar: [trans] Introduce el nombre del nuevo jugador y elige una imagen para mostrar:
 *[idx] 67 [engl] Loading resources, [trans] Cargando recursos,
 *[idx] 68 [engl] please wait [trans] por favor, espera
+*[idx] 69 [engl] Mirror track: Off [trans] Circuito invertido: no
+*[idx] 70 [engl] Mirror track: On [trans] Circuito invertido: sí
+
+*[idx] 71 [engl] Light: Sunny [trans] Soleado
+*[idx] 72 [engl] Light: Cloudy [trans] Nublado
+*[idx] 73 [engl] Light: Evening [trans] Tarde
+*[idx] 74 [engl] Light: Night [trans] Noche
+
+*[idx] 75 [engl] Snow: No [trans] No
+*[idx] 76 [engl] Snow: A little [trans] Un poco
+*[idx] 77 [engl] Snow: Some [trans] basante
+*[idx] 78 [engl] Snow: A lot [trans] Mucha
+
+*[idx] 79 [engl] Wind: No [trans] No
+*[idx] 80 [engl] Wind: Breeze [trans] Brisa
+*[idx] 81 [engl] Wind: Strong [trans] Fuerte
+*[idx] 82 [engl] Wind: Blustery [trans] Borrasca
+
+*[idx] 83 [engl] Randomize settings [trans] Opciones aleatorias
+
+*[idx] 84 [engl] Score [trans] Puntos
+*[idx] 85 [engl] Herring [trans] Arenques
+*[idx] 86 [engl] Time [trans] Tiempo
+*[idx] 87 [engl] Path length [trans] Distancia recorrida
+*[idx] 88 [engl] Average speed [trans] Velocidad media
+*[idx] 89 [engl] Position [trans] Posición
+*[idx] 90 [engl] in highscore list [trans] en la lista de récords
+
+*[idx] 91 [engl] Author [trans] Autor
+
+*[idx] 92 [engl] Loading courses failed. [trans] Error al cargar circuitos.
+*[idx] 93 [engl] Loading characters failed. [trans] Error al cargar personajes.
+*[idx] 94 [engl] Loading environments failed. [trans] Error al cargar entornos.
+*[idx] 95 [engl] Loading terrains failed. [trans] Error al cargar terrenos.
+*[idx] 96 [engl] Loading avatars failed. [trans] Error al cargar avatares.
+*[idx] 97 [engl] herrings [trans] arenques
+*[idx] 98 [engl] sec [trans] seg.
+
+*[idx] 99 [engl] 1st [trans] 1.º
+*[idx] 100 [engl] 2nd [trans] 2.º
+*[idx] 101 [engl] 3rd [trans] 3.º
+*[idx] 102 [engl] 4th [trans] 4.º
+*[idx] 103 [engl] 5th [trans] 5.º
+*[idx] 104 [engl] 6th [trans] 6.º
+*[idx] 105 [engl] 7th [trans] 7.º
+*[idx] 106 [engl] 8th [trans] 8.º
+*[idx] 107 [engl] 9th [trans] 9.º
+*[idx] 108 [engl] 10th [trans] 10.º
+
+*[idx] 109 [engl] Unknown [trans] Desconocido
