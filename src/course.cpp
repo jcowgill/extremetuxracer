@@ -44,7 +44,7 @@ void TCourse::SetDescription(const std::string& description) {
 	std::size_t cnt = std::min<std::size_t>(desclist.size(), MAX_DESCRIPTION_LINES);
 	num_lines = cnt;
 	for (std::size_t ll = 0; ll < cnt; ll++) {
-		desc[ll] = desclist[ll];
+		desc[ll] = sf::String::fromUtf8(desclist[ll].cbegin(), desclist[ll].cend());
 	}
 }
 void TCourse::SetTranslatedData(const std::string& line2) {

@@ -56,7 +56,7 @@ static std::size_t MakeLine(std::size_t first, const std::vector<std::string>& w
 
 	float spacelng = FT.GetTextWidth("a a") - FT.GetTextWidth("aa");
 	while (last < wordlist.size()) {
-		float wordlng = FT.GetTextWidth(wordlist[last]);
+		float wordlng = FT.GetTextWidth(sf::String::fromUtf8(wordlist[last].cbegin(), wordlist[last].cend()));
 		lng += wordlng;
 		lng += spacelng;
 		if (lng >= width && first != last) // If first == last, we write beyond line

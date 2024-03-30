@@ -12,7 +12,8 @@ version 0.9 features the following changes:
 Version 0.8.4                                                 ??th of ???, 2024
 -------------------------------------------------------------------------------
 - Prevent configuration values from going below minimum by mouse clicks
-- Fix drawing with some older Intel GPU drivers
+- Fixed drawing with some older Intel GPU drivers
+- Fixed unicode text display issues
 - New translations
   - Portuguese
 - Updated translations
