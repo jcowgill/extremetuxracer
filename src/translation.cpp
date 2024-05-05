@@ -78,16 +78,16 @@ void CTranslation::SetDefaultTranslations() {
 	texts[44] = "1, 2, 3 - change view mode";
 	texts[45] = "F - hide/show fps display";
 	texts[46] = "H - hide/show hud display";
-	texts[47] = "S - screenshot";
+	texts[47] = "C - screenshot";
 	texts[48] = "U - toggle ui snow";
 	texts[49] = "P - set pause mode";
 	texts[50] = "T - trick";
 	texts[51] = "ESC - abort Race";
 	texts[52] = "SPACE - jump";
-	texts[53] = "CRSR Left - turn left";
-	texts[54] = "CRSR Right - turn right";
-	texts[55] = "CRSR Up - accelerate";
-	texts[56] = "CRSR down - brake";
+	texts[53] = "CRSR Left or A - turn left";
+	texts[54] = "CRSR Right or D - turn right";
+	texts[55] = "CRSR Up or W - accelerate";
+	texts[56] = "CRSR down or S - brake";
 	texts[57] = "Keyboard functions";
 
 	texts[58] = "Select your player name:";

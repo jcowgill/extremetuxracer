@@ -52,16 +52,16 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - Vaihda kuvakulmaa
 *[idx] 45 [engl] F - hide/show fps display [trans] F - Näytä/kätke ruudun päivitysnopeuden näyttö
 *[idx] 46 [engl] H - hide/show hud display [trans] H - Näytä/kätke HUD
-*[idx] 47 [engl] S - screenshot [trans] S - Ruutukaappaus
+*[idx] 47 [engl] C - screenshot [trans] C - Ruutukaappaus
 *[idx] 48 [engl] U - toggle ui snow [trans] U - Poista/palauta käyttöliittymän lumisade
 *[idx] 49 [engl] P - set pause mode [trans] P - Taukotila
 *[idx] 50 [engl] T - trick [trans] T - Temppu
 *[idx] 51 [engl] ESC - abort Race [trans] ESC - Keskeytä kisa
 *[idx] 52 [engl] SPACE - jump [trans] Välilyönti - Hyppää
-*[idx] 53 [engl] CRSR Left - turn left [trans] Vasen nuolinäppäin - Käänny vasemmalle
-*[idx] 54 [engl] CRSR Right - turn right [trans] Oikea nuolinäppäin - Käänny oikealle
-*[idx] 55 [engl] CRSR Up - accelerate [trans] Ylös nuolinäppäin - Kiihdytä
-*[idx] 56 [engl] CRSR down - brake [trans] Alas nuolinäppäin - Jarruta
+*[idx] 53 [engl] CRSR Left or A - turn left [trans] Vasen nuolinäppäin tai A - Käänny vasemmalle
+*[idx] 54 [engl] CRSR Right or D - turn right [trans] Oikea nuolinäppäin tai D - Käänny oikealle
+*[idx] 55 [engl] CRSR Up or W - accelerate [trans] Ylös nuolinäppäin tai W - Kiihdytä
+*[idx] 56 [engl] CRSR down or S - brake [trans] Alas nuolinäppäin tai S - Jarruta
 *[idx] 57 [engl] Keyboard Functions [trans] Näppäinkomennot
 
 *[idx] 58 [engl] Select your player name: [trans] Valitse pelaajanimesi:

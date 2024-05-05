@@ -60,7 +60,7 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - zmiana trybu kamery
 *[idx] 45 [engl] F - hide/show fps display [trans] F - pokaż/ukryj FPS
 *[idx] 46 [engl] H - hide/show hud display [trans] H - pokaż/ukry HUD
-*[idx] 47 [engl] S - screenshot [trans] S - zrzut ekranu
+*[idx] 47 [engl] C - screenshot [trans] C - zrzut ekranu
 *[idx] 48 [engl] U - toggle ui snow [trans] U - włącz/wyłącz śnieg
 *[idx] 49 [engl] P - set pause mode [trans] P - pauza
 *[idx] 50 [engl] T - trick [trans] T - triki

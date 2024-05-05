@@ -52,7 +52,7 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - cambia di prospettiva
 *[idx] 45 [engl] F - hide/show fps display [trans] F - nascondi/mostra il indicatore degli fotogrammi per secondo (fps)
 *[idx] 46 [engl] H - hide/show hud display [trans] H - nascondi/mostra l'interfaccia
-*[idx] 47 [engl] S - screenshot [trans] S - cattura schermo
+*[idx] 47 [engl] C - screenshot [trans] C - cattura schermo
 *[idx] 48 [engl] U - toggle ui snow [trans] U - attiva neve iu
 *[idx] 49 [engl] P - set pause mode [trans] P - attivare la modalità pausa
 *[idx] 50 [engl] T - trick [trans] T - figura acrobatica

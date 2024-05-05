@@ -52,7 +52,7 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - ändra visningsläge
 *[idx] 45 [engl] F - hide/show fps display [trans] F - visa/dölj fps-skärm
 *[idx] 46 [engl] H - hide/show hud display [trans] H - visa/dölj hud-skärm
-*[idx] 47 [engl] S - screenshot [trans] S - skärmdump
+*[idx] 47 [engl] C - screenshot [trans] C - skärmdump
 *[idx] 48 [engl] U - toggle ui snow [trans] U - växla snö för gränssnittet
 *[idx] 49 [engl] P - set pause mode [trans] P - pausläge
 *[idx] 50 [engl] T - trick [trans] T - trick

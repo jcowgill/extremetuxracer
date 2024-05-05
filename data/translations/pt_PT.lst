@@ -58,7 +58,7 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - alterar câmara
 *[idx] 45 [engl] F - hide/show fps display [trans] F - mostrar/ocultar info de FPS
 *[idx] 46 [engl] H - hide/show hud display [trans] H - mostrar/ocultar info do jogo
-*[idx] 47 [engl] S - screenshot [trans] S - captura de ecrã
+*[idx] 47 [engl] C - screenshot [trans] C - captura de ecrã
 *[idx] 48 [engl] U - toggle ui snow [trans] U - ativar/desativar neve (menus)
 *[idx] 49 [engl] P - set pause mode [trans] P - entrar em Pausa
 *[idx] 50 [engl] T - trick [trans] T - pirueta

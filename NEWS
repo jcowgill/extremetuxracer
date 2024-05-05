@@ -5,6 +5,7 @@
 
 Version 0.8.4                                                 ??th of ???, 2024
 -------------------------------------------------------------------------------
+- A, D, W, and S keys work as alternative to cursor keys
 - Prevent configuration values from going below minimum by mouse clicks
 - Fixed drawing with some older Intel GPU drivers
 - Fixed unicode text display issues
