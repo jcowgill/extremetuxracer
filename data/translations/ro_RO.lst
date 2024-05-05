@@ -56,7 +56,7 @@
 *[idx] 44 [engl] 1, 2, 3 - change view mode [trans] 1, 2, 3 - schimba unghiul camerei
 *[idx] 45 [engl] F - hide/show fps display [trans] F - Ascunde/Arata Cadrele pe secunda (FPS)
 *[idx] 46 [engl] H - hide/show hud display [trans] H - Ascunde/Arata HUD-ul
-*[idx] 47 [engl] S - screenshot [trans] S - Captura de ecran
+*[idx] 47 [engl] C - screenshot [trans] C - Captura de ecran
 *[idx] 48 [engl] U - toggle ui snow [trans] U - Ascunde/Arata fulgii de nea in meniu
 *[idx] 49 [engl] P - set pause mode [trans] P - pauza
 *[idx] 50 [engl] T - trick [trans] T - truc

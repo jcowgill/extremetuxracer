@@ -70,15 +70,19 @@ void CRacing::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	switch (key) {
 		// steering flipflops
 		case sf::Keyboard::Up:
+                case sf::Keyboard::W:
 			key_paddling = !release;
 			break;
 		case sf::Keyboard::Down:
+                case sf::Keyboard::S:
 			key_braking = !release;
 			break;
 		case sf::Keyboard::Left:
+                case sf::Keyboard::A:
 			left_turn = !release;
 			break;
 		case sf::Keyboard::Right:
+                case sf::Keyboard::D:
 			right_turn = !release;
 			break;
 		case sf::Keyboard::Space:
@@ -102,7 +106,7 @@ void CRacing::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 		case sf::Keyboard::R:
 			if (!release) State::manager.RequestEnterState(Reset);
 			break;
-		case sf::Keyboard::S:
+		case sf::Keyboard::C:
 			if (!release) Winsys.TakeScreenshot();
 			break;
 
