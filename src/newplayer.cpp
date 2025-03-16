@@ -49,10 +49,10 @@ void CNewPlayer::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 
 	KeyGUI(key, release);
 	switch (key) {
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestEnterState(Regist);
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			if (textbuttons[0]->focussed()) State::manager.RequestEnterState(Regist);
 			else QuitAndAddPlayer();
 			break;

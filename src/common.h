@@ -21,8 +21,10 @@ GNU General Public License for more details.
 #include "bh.h"
 #include "matrices.h"
 
-
-#define clamp(minimum, x, maximum) (std::max(std::min(x, maximum), minimum))
+template<typename T>
+inline T clamp(T min, T x, T max) {
+	return std::max(std::min(x, max), min);
+}
 
 #ifndef M_PI
 #	define M_PI 3.1415926535

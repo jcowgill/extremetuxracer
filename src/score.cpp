@@ -175,19 +175,19 @@ void CScore::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	KeyGUI(key, release);
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestEnterState(*State::manager.PreviousState());
 			break;
-		case sf::Keyboard::Q:
+		case sf::Keyboard::Key::Q:
 			State::manager.RequestQuit();
 			break;
-		case sf::Keyboard::S:
+		case sf::Keyboard::Key::S:
 			Score.SaveHighScore();
 			break;
-		case sf::Keyboard::L:
+		case sf::Keyboard::Key::L:
 			Score.LoadHighScore();
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			State::manager.RequestEnterState(*State::manager.PreviousState());
 			break;
 		default:

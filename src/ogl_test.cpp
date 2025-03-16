@@ -45,7 +45,7 @@ void SetTestLight() {
 
 void COglTest::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
-	if (key == sf::Keyboard::Escape) {
+	if (key == sf::Keyboard::Key::Escape) {
 		State::manager.RequestQuit();
 	}
 }

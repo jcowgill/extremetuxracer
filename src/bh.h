@@ -68,7 +68,7 @@ GNU General Public License for more details.
 #	include <pwd.h>
 #	include <dirent.h>
 #	include <sys/time.h>
-#	include <GL/glx.h>
+#	include <GL/gl.h>
 #	define SEP "/"
 #endif
 

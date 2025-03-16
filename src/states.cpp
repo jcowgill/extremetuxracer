@@ -53,63 +53,38 @@ void State::Manager::EnterNextState() {
 }
 
 void State::Manager::PollEvent() {
-	sf::Event event;
-	sf::Keyboard::Key key;
-
-	while (Winsys.PollEvent(event)) {
+	while (const auto event = Winsys.PollEvent()) {
 		if (!next) {
-			switch (event.type) {
-				case sf::Event::KeyPressed:
-					key = event.key.code;
-					current->Keyb(key, false, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
-					break;
-
-				case sf::Event::KeyReleased:
-					key = event.key.code;
-					current->Keyb(key, true, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
-					break;
-
-				case sf::Event::TextEntered:
-					current->TextEntered(static_cast<char>(event.text.unicode));
-					break;
-
-				case sf::Event::MouseButtonPressed:
-				case sf::Event::MouseButtonReleased:
-					current->Mouse(event.mouseButton.button, event.type == sf::Event::MouseButtonPressed, event.mouseButton.x, event.mouseButton.y);
-					break;
-
-				case sf::Event::MouseMoved: {
-					TVector2i old = cursor_pos;
-					cursor_pos.x = event.mouseMove.x;
-					cursor_pos.y = event.mouseMove.y;
-					current->Motion(event.mouseMove.x - old.x, event.mouseMove.y - old.y);
-					break;
+			if (const auto *keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+				current->Keyb(keyPressed->code, false, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
+			} else if (const auto *keyReleased = event->getIf<sf::Event::KeyReleased>()) {
+				current->Keyb(keyReleased->code, true, sf::Mouse::getPosition().x, sf::Mouse::getPosition().y);
+			} else if (const auto *textEntered = event->getIf<sf::Event::TextEntered>()) {
+				current->TextEntered(static_cast<char>(textEntered->unicode));
+			} else if (const auto *mousePressed = event->getIf<sf::Event::MouseButtonPressed>()) {
+				current->Mouse(static_cast<int>(mousePressed->button), true, mousePressed->position.x, mousePressed->position.y);
+			} else if (const auto *mouseReleased = event->getIf<sf::Event::MouseButtonReleased>()) {
+				current->Mouse(static_cast<int>(mouseReleased->button), false, mouseReleased->position.x, mouseReleased->position.y);
+			} else if (const auto *mouseMoved = event->getIf<sf::Event::MouseMoved>()) {
+				TVector2i old = cursor_pos;
+				cursor_pos.x = mouseMoved->position.x;
+				cursor_pos.y = mouseMoved->position.y;
+				current->Motion(mouseMoved->position.x - old.x, mouseMoved->position.y - old.y);
+			} else if (const auto *joystickMoved = event->getIf<sf::Event::JoystickMoved>()) {
+				float val = joystickMoved->position / 100.f;
+				current->Jaxis(joystickMoved->axis == sf::Joystick::Axis::X ? 0 : 1, val);
+			} else if (const auto *joystickPressed = event->getIf<sf::Event::JoystickButtonPressed>()) {
+				current->Jbutt(joystickPressed->button, true);
+			} else if (const auto *joystickReleased = event->getIf<sf::Event::JoystickButtonReleased>()) {
+				current->Jbutt(joystickReleased->button, false);
+			} else if (const auto *resized = event->getIf<sf::Event::Resized>()) {
+				if (Winsys.resolution.width != resized->size.x || Winsys.resolution.height != resized->size.y) {
+					Winsys.resolution.width = resized->size.x;
+					Winsys.resolution.height = resized->size.y;
+					Winsys.SetupVideoMode(resized->size.x, resized->size.y);
 				}
-
-				case sf::Event::JoystickMoved: {
-					float val = event.joystickMove.position / 100.f;
-					current->Jaxis(event.joystickMove.axis == sf::Joystick::X ? 0 : 1, val);
-					break;
-				}
-				case sf::Event::JoystickButtonPressed:
-				case sf::Event::JoystickButtonReleased:
-					current->Jbutt(event.joystickButton.button, event.type == sf::Event::JoystickButtonPressed);
-					break;
-
-				case sf::Event::Resized:
-					if (Winsys.resolution.width != event.size.width || Winsys.resolution.height != event.size.height) {
-						Winsys.resolution.width = event.size.width;
-						Winsys.resolution.height = event.size.height;
-						Winsys.SetupVideoMode(event.size.width, event.size.height);
-					}
-					break;
-
-				case sf::Event::Closed:
-					quit = true;
-					break;
-
-				default:
-					break;
+			} else if (event->is<sf::Event::Closed>()) {
+				quit = true;
 			}
 		}
 	}

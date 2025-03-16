@@ -46,7 +46,7 @@ CWinsys::CWinsys()
 	}
 
 	sf::VideoMode desktopMode = sf::VideoMode::getDesktopMode();
-	resolutions[0] = TScreenRes(desktopMode.width, desktopMode.height);
+	resolutions[0] = TScreenRes(desktopMode.size.x, desktopMode.size.y);
 	resolutions[1] = TScreenRes(800, 600);
 	resolutions[2] = TScreenRes(1024, 768);
 	resolutions[3] = TScreenRes(1152, 864);
@@ -89,20 +89,24 @@ void CWinsys::SetupVideoMode(const TScreenRes& res) {
 			bpp = sf::VideoMode::getDesktopMode().bitsPerPixel;
 			break;
 	}
-	sf::Uint32 style = sf::Style::Close | sf::Style::Titlebar;
+	std::uint32_t style = sf::Style::Close | sf::Style::Titlebar;
+	sf::State state = sf::State::Windowed;
 	if (param.fullscreen)
-		style |= sf::Style::Fullscreen;
+		state = sf::State::Fullscreen;
 
 	resolution = res;
 
 	ResetRenderMode();
 
+	sf::ContextSettings ctx;
+	ctx.depthBits = bpp;
+	ctx.majorVersion = 1;
+	ctx.minorVersion = 2;
 #ifdef USE_STENCIL_BUFFER
-	sf::ContextSettings ctx(bpp, 8, 0, 1, 2);
-#else
-	sf::ContextSettings ctx(bpp, 0, 0, 1, 2);
+	ctx.stencilBits = 8;
 #endif
-	window.create(sf::VideoMode(resolution.width, resolution.height, bpp), WINDOW_TITLE, style, ctx);
+
+	window.create(sf::VideoMode({resolution.width, resolution.height}, bpp), WINDOW_TITLE, style, state, ctx);
 	if (param.framerate)
 		window.setFramerateLimit(param.framerate);
 #ifdef _WIN32
@@ -158,19 +162,18 @@ void CWinsys::PrintJoystickInfo() const {
 		int buttons = sf::Joystick::getButtonCount(i);
 		std::cout << "Joystick has " << buttons << " button" << (buttons == 1 ? "" : "s") << '\n';
 		std::cout << "Axes: ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::R)) std::cout << "R ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::U)) std::cout << "U ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::V)) std::cout << "V ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::X)) std::cout << "X ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::Y)) std::cout << "Y ";
-		if (sf::Joystick::hasAxis(i, sf::Joystick::Z)) std::cout << "Z ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::R)) std::cout << "R ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::U)) std::cout << "U ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::V)) std::cout << "V ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::X)) std::cout << "X ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::Y)) std::cout << "Y ";
+		if (sf::Joystick::hasAxis(i, sf::Joystick::Axis::Z)) std::cout << "Z ";
 		std::cout << '\n';
 	}
 }
 
 void CWinsys::TakeScreenshot() const {
-	sf::Texture tex;
-	tex.create(window.getSize().x, window.getSize().y);
+	sf::Texture tex(window.getSize());
 	tex.update(window);
 	sf::Image img = tex.copyToImage();
 

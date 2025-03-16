@@ -69,61 +69,61 @@ static int lastsound = -1;
 void CRacing::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	switch (key) {
 		// steering flipflops
-		case sf::Keyboard::Up:
-                case sf::Keyboard::W:
+		case sf::Keyboard::Key::Up:
+		case sf::Keyboard::Key::W:
 			key_paddling = !release;
 			break;
-		case sf::Keyboard::Down:
-                case sf::Keyboard::S:
+		case sf::Keyboard::Key::Down:
+		case sf::Keyboard::Key::S:
 			key_braking = !release;
 			break;
-		case sf::Keyboard::Left:
-                case sf::Keyboard::A:
+		case sf::Keyboard::Key::Left:
+		case sf::Keyboard::Key::A:
 			left_turn = !release;
 			break;
-		case sf::Keyboard::Right:
-                case sf::Keyboard::D:
+		case sf::Keyboard::Key::Right:
+		case sf::Keyboard::Key::D:
 			right_turn = !release;
 			break;
-		case sf::Keyboard::Space:
+		case sf::Keyboard::Key::Space:
 			key_charging = !release;
 			break;
-		case sf::Keyboard::T:
+		case sf::Keyboard::Key::T:
 			trick_modifier = !release;
 			break;
 
 		// mode changing and other actions
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			if (!release) {
 				g_game.raceaborted = true;
 				g_game.race_result = -1;
 				State::manager.RequestEnterState(GameOver);
 			}
 			break;
-		case sf::Keyboard::P:
+		case sf::Keyboard::Key::P:
 			if (!release) State::manager.RequestEnterState(Paused);
 			break;
-		case sf::Keyboard::R:
+		case sf::Keyboard::Key::R:
 			if (!release) State::manager.RequestEnterState(Reset);
 			break;
-		case sf::Keyboard::C:
+		case sf::Keyboard::Key::C:
 			if (!release) Winsys.TakeScreenshot();
 			break;
 
 		// view changing
-		case sf::Keyboard::Num1:
+		case sf::Keyboard::Key::Num1:
 			if (!release) {
 				set_view_mode(g_game.player->ctrl, ABOVE);
 				param.view_mode = ABOVE;
 			}
 			break;
-		case sf::Keyboard::Num2:
+		case sf::Keyboard::Key::Num2:
 			if (!release) {
 				set_view_mode(g_game.player->ctrl, FOLLOW);
 				param.view_mode = FOLLOW;
 			}
 			break;
-		case sf::Keyboard::Num3:
+		case sf::Keyboard::Key::Num3:
 			if (!release) {
 				set_view_mode(g_game.player->ctrl, BEHIND);
 				param.view_mode = BEHIND;
@@ -131,22 +131,22 @@ void CRacing::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 			break;
 
 		// toggle display settings
-		case sf::Keyboard::H:
+		case sf::Keyboard::Key::H:
 			if (!release) param.show_hud = !param.show_hud;
 			break;
-		case sf::Keyboard::F:
+		case sf::Keyboard::Key::F:
 			if (!release) param.display_fps = !param.display_fps;
 			break;
-		case sf::Keyboard::F5:
+		case sf::Keyboard::Key::F5:
 			if (!release) sky = !sky;
 			break;
-		case sf::Keyboard::F6:
+		case sf::Keyboard::Key::F6:
 			if (!release) fog = !fog;
 			break;
-		case sf::Keyboard::F7:
+		case sf::Keyboard::Key::F7:
 			if (!release) terr = !terr;
 			break;
-		case sf::Keyboard::F8:
+		case sf::Keyboard::Key::F8:
 			if (!release) trees = !trees;
 			break;
 		default:

@@ -158,8 +158,8 @@ void TTexture::DrawFrame(int x, int y, int w, int h, int frame, const sf::Color&
 		DrawFrameX(x - frame, y - frame, w + 2 * frame, h + 2 * frame, frame, colTransp, col, 1.f);
 
 	sf::Sprite temp(texture);
-	temp.setPosition(x, y);
-	temp.setScale((float) w / (float) texture.getSize().x, (float) h / (float) texture.getSize().y);
+	temp.setPosition(sf::Vector2f(x, y));
+	temp.setScale({(float) w / (float) texture.getSize().x, (float) h / (float) texture.getSize().y});
 	Winsys.draw(temp);
 }
 

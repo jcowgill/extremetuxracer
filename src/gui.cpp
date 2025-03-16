@@ -78,11 +78,11 @@ void TWidget::MouseMove(int x, int y) {
 
 TLabel::TLabel(const sf::String& string, int x, int y, const sf::Color& color)
 	: TWidget(x, y, 0, 0, false)
-	, text(string, FT.getCurrentFont(), FT.GetSize()) {
+	, text(FT.getCurrentFont(), string, FT.GetSize()) {
 	if (x == CENTER)
-		text.setPosition((Winsys.resolution.width - text.getLocalBounds().width) / 2, y);
+		text.setPosition({(Winsys.resolution.width - text.getLocalBounds().size.x) / 2, y});
 	else
-		text.setPosition(x, y);
+		text.setPosition(sf::Vector2f(x, y));
 	text.setFillColor(color);
 	text.setOutlineColor(color);
 }
@@ -103,7 +103,7 @@ void TLabel::Draw() const {
 }
 
 sf::Vector2f TLabel::GetSize() const {
-	return sf::Vector2f(text.getLocalBounds().width, text.getLocalBounds().height);
+	return text.getLocalBounds().size;
 
 }
 
@@ -115,9 +115,9 @@ TLabel* AddLabel(const sf::String& string, int x, int y, const sf::Color& color)
 TFramedText::TFramedText(int x, int y, int width, int height, int line, const sf::Color& backcol, const sf::String& string, unsigned int ftsize, bool borderFocus_)
 	: TWidget(x, y, width, height, false)
 	, frame(sf::Vector2f(width - line * 2, height - line * 2))
-	, text(string, FT.getCurrentFont(), ftsize)
+	, text(FT.getCurrentFont(), string, ftsize)
 	, borderFocus(borderFocus_) {
-	text.setPosition(x + line + 20, y + line);
+	text.setPosition(sf::Vector2f(x + line + 20, y + line));
 	if (!borderFocus) {
 		text.setFillColor(colWhite);
 		text.setOutlineColor(colWhite);
@@ -125,7 +125,7 @@ TFramedText::TFramedText(int x, int y, int width, int height, int line, const sf
 		text.setFillColor(colDYell);
 		text.setOutlineColor(colDYell);
 	}
-	frame.setPosition(x + line, y + line);
+	frame.setPosition(sf::Vector2f(x + line, y + line));
 	frame.setOutlineThickness(line);
 	frame.setFillColor(backcol);
 	frame.setOutlineColor(colWhite);
@@ -172,12 +172,12 @@ TFramedText* AddFramedText(int x, int y, int width, int height, int line, const 
 
 TTextButton::TTextButton(int x, int y, const sf::String& text_, int ftsize)
 	: TWidget(x, y, 0, 0)
-	, text(text_, FT.getCurrentFont(), ftsize) {
+	, text(FT.getCurrentFont(), text_, ftsize) {
 	if (ftsize < 0) text.setCharacterSize(FT.AutoSizeN(4));
 
-	int len = text.getLocalBounds().width;
+	int len = text.getLocalBounds().size.x;
 	if (x == CENTER) position.x = (Winsys.resolution.width - len) / 2;
-	text.setPosition(position.x, position.y);
+	text.setPosition(sf::Vector2f(position.x, position.y));
 	int offs = ftsize / 5;
 	mouseRect.left = position.x-20;
 	mouseRect.top = position.y+offs;
@@ -211,15 +211,15 @@ TTextButton* AddTextButtonN(const sf::String& text, int x, int y, int rel_ftsize
 
 TTextField::TTextField(int x, int y, int width, int height, const sf::String& text_)
 	: TWidget(x, y, width, height)
-	, text(text_, FT.getCurrentFont(), FT.AutoSizeN(5))
+	, text(FT.getCurrentFont(), text_, FT.AutoSizeN(5))
 	, frame(sf::Vector2f(width-6.f, height-6.f))
 	, cursorShape(sf::Vector2f(2.f, 30.f * Winsys.scale))
 	, maxLng(32)
 	, time(0.0)
 	, cursor(false) {
-	text.setPosition(mouseRect.left + 20, mouseRect.top);
+	text.setPosition(sf::Vector2f(mouseRect.left + 20, mouseRect.top));
 	cursorShape.setFillColor(colYellow);
-	frame.setPosition(x + 3, y + 3);
+	frame.setPosition(sf::Vector2f(x + 3, y + 3));
 	frame.setOutlineThickness(3);
 	frame.setFillColor(colMBackgr);
 	frame.setOutlineColor(colWhite);
@@ -244,7 +244,7 @@ void TTextField::TextEnter(char c) {
 
 void TTextField::SetCursorPos(std::size_t new_pos) {
 	cursorPos = new_pos;
-	cursorShape.setPosition(text.findCharacterPos(cursorPos).x, mouseRect.top + 9);
+	cursorShape.setPosition(sf::Vector2f(text.findCharacterPos(cursorPos).x, mouseRect.top + 9));
 }
 
 void TTextField::Focussed() {
@@ -270,7 +270,7 @@ bool TTextField::Click(int x, int y) {
 			cursorPos++;
 			first = second;
 		}
-		cursorShape.setPosition(text.findCharacterPos(cursorPos).x, mouseRect.top + 9);
+		cursorShape.setPosition(sf::Vector2f(text.findCharacterPos(cursorPos).x, mouseRect.top + 9));
 		return true;
 	}
 	return false;
@@ -283,22 +283,22 @@ static void eraseFromText(sf::Text& text, std::size_t pos) {
 }
 void TTextField::Key(sf::Keyboard::Key key, bool released) {
 	switch (key) {
-		case sf::Keyboard::Delete:
+		case sf::Keyboard::Key::Delete:
 			if (cursorPos < text.getString().getSize()) eraseFromText(text, cursorPos);
 			break;
-		case sf::Keyboard::BackSpace:
+		case sf::Keyboard::Key::Backspace:
 			if (cursorPos > 0) { eraseFromText(text, cursorPos-1); SetCursorPos(cursorPos - 1); }
 			break;
-		case sf::Keyboard::Right:
+		case sf::Keyboard::Key::Right:
 			if (cursorPos < text.getString().getSize()) SetCursorPos(cursorPos + 1);
 			break;
-		case sf::Keyboard::Left:
+		case sf::Keyboard::Key::Left:
 			if (cursorPos > 0) SetCursorPos(cursorPos - 1);
 			break;
-		case sf::Keyboard::Home:
+		case sf::Keyboard::Key::Home:
 			SetCursorPos(0);
 			break;
-		case sf::Keyboard::End:
+		case sf::Keyboard::Key::End:
 			SetCursorPos(text.getString().getSize());
 			break;
 		default:
@@ -321,22 +321,22 @@ TTextField* AddTextField(const sf::String& text, int x, int y, int width, int he
 
 TCheckbox::TCheckbox(int x, int y, int width, const sf::String& tag_)
 	: TWidget(x, y, 32 * Winsys.scale / 0.8f, 32 * Winsys.scale / 0.8f)
-	, text(tag_, FT.getCurrentFont(), FT.GetSize())
+	, text(FT.getCurrentFont(), tag_, FT.GetSize())
 	, back(Tex.GetSFTexture(CHECKBOX))
 	, checkmark(Tex.GetSFTexture(CHECKMARK_SMALL))
 	, checked(false) {
-	text.setPosition(x, y);
-	back.setPosition(x + width - 32, y);
-	checkmark.setPosition(x + width - 32, y);
+	text.setPosition(sf::Vector2f(x, y));
+	back.setPosition(sf::Vector2f(x + width - 32, y));
+	checkmark.setPosition(sf::Vector2f(x + width - 32, y));
 	mouseRect.left = x + width - 32;
-	back.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
-	checkmark.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
+	back.setScale({Winsys.scale / 0.8f, Winsys.scale / 0.8f});
+	checkmark.setScale({Winsys.scale / 0.8f, Winsys.scale / 0.8f});
 }
 
 void TCheckbox::SetPosition(int x, int y) {
-	text.setPosition(x, y);
-	back.setPosition(x, y);
-	checkmark.setPosition(x, y);
+	text.setPosition(sf::Vector2f(x, y));
+	back.setPosition(sf::Vector2f(x, y));
+	checkmark.setPosition(sf::Vector2f(x, y));
 }
 
 void TCheckbox::Focussed() {
@@ -367,7 +367,7 @@ bool TCheckbox::Click(int x, int y) {
 void TCheckbox::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
-	if (key == sf::Keyboard::Space || key == sf::Keyboard::Return) {
+	if (key == sf::Keyboard::Key::Space || key == sf::Keyboard::Key::Enter) {
 		checked = !checked;
 	}
 }
@@ -383,9 +383,9 @@ TIconButton::TIconButton(int x, int y, const sf::Texture& texture, float size_, 
 	, size(size_)
 	, maximum(max_)
 	, value(value_) {
-	sprite.setScale(size / (texture.getSize().x / 2.f), size / (texture.getSize().y / 2.f));
-	sprite.setPosition(x, y);
-	frame.setPosition(x, y);
+	sprite.setScale({size / (texture.getSize().x / 2.f), size / (texture.getSize().y / 2.f)});
+	sprite.setPosition(sf::Vector2f(x, y));
+	frame.setPosition(sf::Vector2f(x, y));
 	frame.setOutlineColor(colWhite);
 	frame.setOutlineThickness(3.f);
 	SetValue(value_);
@@ -398,19 +398,19 @@ void TIconButton::SetValue(int _value) {
 	else if (value < 0)
 		value = maximum;
 
-	sf::Vector2u texSize = sprite.getTexture()->getSize();
+	sf::Vector2i texSize(sprite.getTexture().getSize());
 	switch (value) {
 		case 0:
-			sprite.setTextureRect(sf::IntRect(0, 0, texSize.x / 2, texSize.y / 2));
+			sprite.setTextureRect(sf::IntRect({0, 0}, texSize / 2));
 			break;
 		case 1:
-			sprite.setTextureRect(sf::IntRect(texSize.x / 2, 0, texSize.x / 2, texSize.y / 2));
+			sprite.setTextureRect(sf::IntRect({texSize.x / 2, 0}, texSize / 2));
 			break;
 		case 2:
-			sprite.setTextureRect(sf::IntRect(0, texSize.y / 2, texSize.x / 2, texSize.y / 2));
+			sprite.setTextureRect(sf::IntRect({0, texSize.y / 2}, texSize / 2));
 			break;
 		case 3:
-			sprite.setTextureRect(sf::IntRect(texSize.x / 2, texSize.y / 2, texSize.x / 2, texSize.y / 2));
+			sprite.setTextureRect(sf::IntRect(texSize / 2, texSize / 2));
 			break;
 	}
 }
@@ -438,9 +438,9 @@ bool TIconButton::Click(int x, int y) {
 void TIconButton::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
-	if (key == sf::Keyboard::Down) { // Arrow down/left
+	if (key == sf::Keyboard::Key::Down) { // Arrow down/left
 		SetValue(value - 1);
-	} else if (key == sf::Keyboard::Up) { // Arrow up/right
+	} else if (key == sf::Keyboard::Key::Up) { // Arrow up/right
 		SetValue(value + 1);
 	}
 }
@@ -454,8 +454,8 @@ TArrow::TArrow(int x, int y, bool down_)
 	: TWidget(x, y, 32 * Winsys.scale / 0.8f, 16 * Winsys.scale / 0.8f)
 	, sprite(Tex.GetSFTexture(LB_ARROWS))
 	, down(down_) {
-	sprite.setPosition(x, y);
-	sprite.setScale(Winsys.scale / 0.8f, Winsys.scale / 0.8f);
+	sprite.setPosition(sf::Vector2f(x, y));
+	sprite.setScale({Winsys.scale / 0.8f, Winsys.scale / 0.8f});
 
 	SetTexture();
 }
@@ -480,8 +480,8 @@ void TArrow::SetTexture() {
 	if (down)
 		type += 3;
 
-	sf::Vector2u texSize = sprite.getTexture()->getSize();
-	sprite.setTextureRect(sf::IntRect(textl[type] * texSize.x, texbr[type] * texSize.y, texSize.x / 2, texSize.y / 4));
+	sf::Vector2i texSize(sprite.getTexture().getSize());
+	sprite.setTextureRect(sf::IntRect({textl[type] * texSize.x, texbr[type] * texSize.y}, {texSize.x / 2, texSize.y / 4}));
 }
 
 void TArrow::Draw() const {
@@ -533,14 +533,14 @@ bool TUpDown::Click(int x, int y) {
 void TUpDown::Key(sf::Keyboard::Key key, bool released) {
 	if (released) return;
 
-	if ((!swapArrows && key == sf::Keyboard::Up) || (swapArrows && key == sf::Keyboard::Down)) { // Arrow up
+	if ((!swapArrows && key == sf::Keyboard::Key::Up) || (swapArrows && key == sf::Keyboard::Key::Down)) { // Arrow up
 		if (value > minimum) {
 			value--;
 			lower.SetActive(true);
 			if (value == minimum)
 				higher.SetActive(false);
 		}
-	} else if ((!swapArrows && key == sf::Keyboard::Down) || (swapArrows && key == sf::Keyboard::Up)) { // Arrow down
+	} else if ((!swapArrows && key == sf::Keyboard::Key::Down) || (swapArrows && key == sf::Keyboard::Key::Up)) { // Arrow down
 		if (value < maximum) {
 			value++;
 			higher.SetActive(true);
@@ -590,7 +590,7 @@ void DrawFrameX(int x, int y, int w, int h, int line, const sf::Color& backcol, 
 	w -= line * 2;
 	h -= line * 2;
 	sf::RectangleShape shape(sf::Vector2f(w, h));
-	shape.setPosition(x, y);
+	shape.setPosition(sf::Vector2f(x, y));
 	shape.setOutlineThickness(line);
 	shape.setFillColor(sf::Color(backcol.r, backcol.g, backcol.b, backcol.a * transp));
 	shape.setOutlineColor(sf::Color(framecol.r, framecol.g, framecol.b, framecol.a * transp));
@@ -617,8 +617,8 @@ void DrawBonusExt(int y, std::size_t numraces, std::size_t num) {
 	DrawFrameX(lleft[2], y, framewidth, 40, 1, col2, colBlack, 1);
 
 	static sf::Sprite tuxbonus(Tex.GetSFTexture(TUXBONUS));
-	sf::Vector2u size = tuxbonus.getTexture()->getSize();
-	tuxbonus.setTextureRect(sf::IntRect(0, 0, size.x, size.y/2));
+	sf::Vector2i size(tuxbonus.getTexture().getSize());
+	tuxbonus.setTextureRect(sf::IntRect({0, 0}, {size.x, size.y/2}));
 
 	for (std::size_t i=0; i<maxtux; i++) {
 		std::size_t majr = (i/numraces);
@@ -627,7 +627,7 @@ void DrawBonusExt(int y, std::size_t numraces, std::size_t num) {
 		int x = lleft[majr] + (int)minr * 40 + 6;
 
 		if (i<num) {
-			tuxbonus.setPosition(x, y + 4);
+			tuxbonus.setPosition(sf::Vector2f(x, y + 4));
 			Winsys.draw(tuxbonus);
 		}
 	}
@@ -639,9 +639,9 @@ void DrawGUIFrame() {
 	static sf::Sprite top_left(Tex.GetSFTexture(TOP_LEFT));
 	static sf::Sprite top_right(Tex.GetSFTexture(TOP_RIGHT));
 
-	bottom_left.setPosition(0, Winsys.resolution.height - bottom_left.getTexture()->getSize().y);
-	bottom_right.setPosition(Winsys.resolution.width - bottom_right.getTexture()->getSize().x, Winsys.resolution.height - bottom_right.getTexture()->getSize().y);
-	top_right.setPosition(Winsys.resolution.width - top_right.getTexture()->getSize().x, 0);
+	bottom_left.setPosition(sf::Vector2f(0, Winsys.resolution.height - bottom_left.getTexture().getSize().y));
+	bottom_right.setPosition(sf::Vector2f(Winsys.resolution.width - bottom_right.getTexture().getSize().x, Winsys.resolution.height - bottom_right.getTexture().getSize().y));
+	top_right.setPosition(sf::Vector2f(Winsys.resolution.width - top_right.getTexture().getSize().x, 0));
 
 	Winsys.draw(bottom_left);
 	Winsys.draw(bottom_right);
@@ -654,8 +654,8 @@ void DrawGUIBackground(float scale) {
 
 	static sf::Sprite logo(Tex.GetSFTexture(T_TITLE));
 	scale *= 0.5f;
-	logo.setScale(scale, scale);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width*scale)/2, 5);
+	logo.setScale({scale, scale});
+	logo.setPosition({(Winsys.resolution.width - logo.getTextureRect().size.x*scale)/2, 5});
 	Winsys.draw(logo);
 }
 
@@ -663,10 +663,10 @@ void DrawCursor() {
 	static sf::Sprite s(Tex.GetSFTexture(MOUSECURSOR));
 	static bool init = false;
 	if (!init) {
-		s.setScale((double) Winsys.resolution.width / 1400, (double) Winsys.resolution.width / 1400);
+		s.setScale(sf::Vector2f((double) Winsys.resolution.width / 1400, (double) Winsys.resolution.width / 1400));
 		init = true;
 	}
-	s.setPosition(cursor_pos.x, cursor_pos.y);
+	s.setPosition(sf::Vector2f(cursor_pos.x, cursor_pos.y));
 	Winsys.draw(s);
 }
 
@@ -716,25 +716,25 @@ TWidget* MouseMoveGUI(int x, int y) {
 TWidget* KeyGUI(sf::Keyboard::Key key, bool released) {
 	if (!released) {
 		switch (key) {
-			case sf::Keyboard::Tab:
-				if (sf::Keyboard::isKeyPressed(sf::Keyboard::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::RShift))
+			case sf::Keyboard::Key::Tab:
+				if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::LShift) || sf::Keyboard::isKeyPressed(sf::Keyboard::Key::RShift))
 					DecreaseFocus();
 				else
 					IncreaseFocus();
 				break;
-			case sf::Keyboard::Up:
+			case sf::Keyboard::Key::Up:
 				if (!locked_UD)
 					DecreaseFocus();
 				break;
-			case sf::Keyboard::Left:
+			case sf::Keyboard::Key::Left:
 				if (!locked_LR)
 					DecreaseFocus();
 				break;
-			case sf::Keyboard::Down:
+			case sf::Keyboard::Key::Down:
 				if (!locked_UD)
 					IncreaseFocus();
 				break;
-			case sf::Keyboard::Right:
+			case sf::Keyboard::Key::Right:
 				if (!locked_LR)
 					IncreaseFocus();
 				break;

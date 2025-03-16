@@ -55,7 +55,7 @@ void QuitGameOver() {
 
 void CGameOver::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
-	if (key == sf::Keyboard::Enter || key == sf::Keyboard::Escape) QuitGameOver();
+	if (key == sf::Keyboard::Key::Enter || key == sf::Keyboard::Key::Escape) QuitGameOver();
 }
 
 void CGameOver::Mouse(int button, int state, int x, int y) {

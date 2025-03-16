@@ -124,111 +124,111 @@ void CharKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 	must_render = true;
 
 	if (ToolsFinalStage()) {
-		if (key == sf::Keyboard::Y || key == sf::Keyboard::J) {
+		if (key == sf::Keyboard::Key::Y || key == sf::Keyboard::Key::J) {
 			SaveToolCharacter();
 			SaveToolFrame();
 			State::manager.RequestQuit();
-		} else if (key == sf::Keyboard::N) State::manager.RequestQuit();
+		} else if (key == sf::Keyboard::Key::N) State::manager.RequestQuit();
 		return;
 	}
 
-	if (key == sf::Keyboard::LShift || key == sf::Keyboard::RShift) shift = !release;
-	if (key == sf::Keyboard::LControl || key == sf::Keyboard::RControl) control = !release;
-	if (key == sf::Keyboard::LAlt || key == sf::Keyboard::RAlt) alt = !release;
+	if (key == sf::Keyboard::Key::LShift || key == sf::Keyboard::Key::RShift) shift = !release;
+	if (key == sf::Keyboard::Key::LControl || key == sf::Keyboard::Key::RControl) control = !release;
+	if (key == sf::Keyboard::Key::LAlt || key == sf::Keyboard::Key::RAlt) alt = !release;
 
 	if (release) return;
 
 	int type = action->type[curr_act];
 	switch (key) {
-		case sf::Keyboard::Tab:
+		case sf::Keyboard::Key::Tab:
 			SetToolMode(1);
 			break;
-		case sf::Keyboard::Escape:
-		case sf::Keyboard::Q:
+		case sf::Keyboard::Key::Escape:
+		case sf::Keyboard::Key::Q:
 			QuitTool();
 			break;
-		case sf::Keyboard::F10:
-		case sf::Keyboard::C:
+		case sf::Keyboard::Key::F10:
+		case sf::Keyboard::Key::C:
 			Winsys.TakeScreenshot();
 			break;
-		case sf::Keyboard::S:
+		case sf::Keyboard::Key::S:
 			SaveToolCharacter();
 			break;
-		case sf::Keyboard::M:
+		case sf::Keyboard::Key::M:
 			TestChar.useMaterials = !TestChar.useMaterials;
 			break;
-		case sf::Keyboard::H:
+		case sf::Keyboard::Key::H:
 			TestChar.useHighlighting = !TestChar.useHighlighting;
 			break;
-		case sf::Keyboard::R:
+		case sf::Keyboard::Key::R:
 			TestChar.Reset();
 			ReloadToolCharacter();
 			Tools.Enter();
 			break;
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			if (action != nullptr) {
 				RecallAction(action);
 				TestChar.RefreshNode(curr_node);
 			}
 			break;
-		case sf::Keyboard::Add:
-		case sf::Keyboard::Equal: // zoom in
+		case sf::Keyboard::Key::Add:
+		case sf::Keyboard::Key::Equal: // zoom in
 			zposition += 0.1f;
 			xposition -= 0.03f;
 			break;
-		case sf::Keyboard::Dash: // zoom out
+		case sf::Keyboard::Key::Hyphen: // zoom out
 			zposition -= 0.1f;
 			xposition += 0.03f;
 			break;
 
 		// set rotations for view
-		case sf::Keyboard::Num1:
+		case sf::Keyboard::Key::Num1:
 			SetRotation(0, 0, 0);
 			break;
-		case sf::Keyboard::Num2:
+		case sf::Keyboard::Key::Num2:
 			SetRotation(-50, 180, 15);
 			break;
-		case sf::Keyboard::Num3:
+		case sf::Keyboard::Key::Num3:
 			SetRotation(0, 180, 0);
 			break;
-		case sf::Keyboard::Num4:
+		case sf::Keyboard::Key::Num4:
 			SetRotation(0, -80, 0);
 			break;
 
 		// select node
-		case sf::Keyboard::PageUp:
+		case sf::Keyboard::Key::PageUp:
 			ChangeNode(-1);
 			break;
-		case sf::Keyboard::PageDown:
+		case sf::Keyboard::Key::PageDown:
 			ChangeNode(1);
 			break;
-		case sf::Keyboard::End:
+		case sf::Keyboard::Key::End:
 			ChangeNode(charbase);
 			break;
-		case sf::Keyboard::Home:
+		case sf::Keyboard::Key::Home:
 			ChangeNode(-charbase);
 			break;
 
 		// select action
-		case sf::Keyboard::Down:
+		case sf::Keyboard::Key::Down:
 			if (curr_act < lastact) curr_act++;
 			if (action->type[curr_act] == 4) comp = 0;
 			else comp = 1;
 			break;
-		case sf::Keyboard::Up:
+		case sf::Keyboard::Key::Up:
 			if (curr_act > 0) curr_act--;
 			if (action->type[curr_act] == 4) comp = 0;
 			else comp = 1;
 			break;
-		case sf::Keyboard::Left:
+		case sf::Keyboard::Key::Left:
 			ChangeValue(type, -1);
 			break;
-		case sf::Keyboard::Right:
+		case sf::Keyboard::Key::Right:
 			ChangeValue(type, 1);
 			break;
 
 		// select value
-		case sf::Keyboard::Space:
+		case sf::Keyboard::Key::Space:
 			if (type == 0 || type == 4) {
 				comp++;
 				if (comp > 3) comp = 0;

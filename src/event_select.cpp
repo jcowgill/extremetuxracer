@@ -53,17 +53,17 @@ void EnterEvent() {
 void CEventSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestEnterState(GameTypeSelect);
 			break;
-		case sf::Keyboard::Q:
+		case sf::Keyboard::Key::Q:
 			State::manager.RequestQuit();
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			if (textbuttons[1]->focussed()) State::manager.RequestEnterState(GameTypeSelect);
 			else if (Events.IsUnlocked(event->GetValue(), cup->GetValue())) EnterEvent();
 			break;
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:

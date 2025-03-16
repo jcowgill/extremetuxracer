@@ -67,14 +67,14 @@ void StartRace() {
 void CEvent::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			if (textbuttons[0]->focussed() && ready < 1) StartRace();
 			else State::manager.RequestEnterState(EventSelect);
 			break;
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestEnterState(EventSelect);
 			break;
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:

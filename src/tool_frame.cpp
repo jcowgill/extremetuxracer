@@ -57,139 +57,139 @@ void SingleFrameKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 	TKeyframe *frame = TestFrame.GetFrame(curr_frame);
 
 	// setting the camera change state
-	if (key == sf::Keyboard::F1) {GluCamera.turnright = !release; return;}
-	else if (key == sf::Keyboard::F2) { GluCamera.turnleft = !release; return; }
-	if (key == sf::Keyboard::F3) { GluCamera.nearer = !release; return; }
-	else if (key == sf::Keyboard::F4) { GluCamera.farther = !release; return; }
+	if (key == sf::Keyboard::Key::F1) {GluCamera.turnright = !release; return;}
+	else if (key == sf::Keyboard::Key::F2) { GluCamera.turnleft = !release; return; }
+	if (key == sf::Keyboard::Key::F3) { GluCamera.nearer = !release; return; }
+	else if (key == sf::Keyboard::Key::F4) { GluCamera.farther = !release; return; }
 
 	// additional keys if needed
-	if (key == sf::Keyboard::LShift || key == sf::Keyboard::RShift) shift = !release;
-	if (key == sf::Keyboard::LControl) control = !release;
-	if (key == sf::Keyboard::LAlt) alt = !release;
+	if (key == sf::Keyboard::Key::LShift || key == sf::Keyboard::Key::RShift) shift = !release;
+	if (key == sf::Keyboard::Key::LControl) control = !release;
+	if (key == sf::Keyboard::Key::LAlt) alt = !release;
 	if (shift) keyfact = -1;
 	else keyfact = 1;
 
 	if (release) return;
 
 	switch (key) {
-		case sf::Keyboard::Y:
-		case sf::Keyboard::J:
+		case sf::Keyboard::Key::Y:
+		case sf::Keyboard::Key::J:
 			if (ToolsFinalStage()) {
 				SaveToolCharacter();
 				SaveToolFrame();
 				State::manager.RequestQuit();
 			}
 			break;
-		case sf::Keyboard::N:
+		case sf::Keyboard::Key::N:
 			if (ToolsFinalStage()) State::manager.RequestQuit();
 			break;
 
-		case sf::Keyboard::Escape:
-		case sf::Keyboard::Q:
+		case sf::Keyboard::Key::Escape:
+		case sf::Keyboard::Key::Q:
 			QuitTool();
 			break;
-		case sf::Keyboard::S:
+		case sf::Keyboard::Key::S:
 			SaveToolFrame();
 			break;
-		case sf::Keyboard::Tab:
+		case sf::Keyboard::Key::Tab:
 			SetToolMode(0);
 			break;
 
-		case sf::Keyboard::A:
+		case sf::Keyboard::Key::A:
 			TestFrame.AddFrame();
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::Insert:
+		case sf::Keyboard::Key::Insert:
 			TestFrame.InsertFrame(curr_frame);
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::Delete:
+		case sf::Keyboard::Key::Delete:
 			curr_frame = TestFrame.DeleteFrame(curr_frame);
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::PageDown:
+		case sf::Keyboard::Key::PageDown:
 			if (curr_frame < TestFrame.numFrames()-1) curr_frame++;
 			break;
-		case sf::Keyboard::PageUp:
+		case sf::Keyboard::Key::PageUp:
 			if (curr_frame > 0) curr_frame--;
 			break;
-		case sf::Keyboard::Up:
+		case sf::Keyboard::Key::Up:
 			if (curr_joint > 0) curr_joint--;
 			break;
-		case sf::Keyboard::Down:
+		case sf::Keyboard::Key::Down:
 			if (curr_joint < last_joint) curr_joint++;
 			break;
-		case sf::Keyboard::Right:
+		case sf::Keyboard::Key::Right:
 			if (curr_joint < 4) frame->val[curr_joint] += 0.05;
 			else frame->val[curr_joint] += 1;
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::Left:
+		case sf::Keyboard::Key::Left:
 			if (curr_joint < 4) frame->val[curr_joint] -= 0.05;
 			else frame->val[curr_joint] -= 1;
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::Num0:
+		case sf::Keyboard::Key::Num0:
 			frame->val[curr_joint] = 0.0;
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::Space:
+		case sf::Keyboard::Key::Space:
 			if (curr_joint < 4) frame->val[curr_joint] += 0.05 * keyfact;
 			else frame->val[curr_joint] += 1 * keyfact;
 			SetFrameChanged(true);
 			break;
 
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			TestFrame.InitTest(ref_position, &TestChar);
 			SetToolMode(2);
 			must_render = true;
 			break;
 
-		case sf::Keyboard::M :
+		case sf::Keyboard::Key::M :
 			TestChar.useMaterials = !TestChar.useMaterials;
 			break;
-		case sf::Keyboard::H:
+		case sf::Keyboard::Key::H:
 			TestChar.useHighlighting = !TestChar.useHighlighting;
 			break;
-		case sf::Keyboard::C:
+		case sf::Keyboard::Key::C:
 			if (control) TestFrame.CopyToClipboard(curr_frame);
 			else TestFrame.ClearFrame(curr_frame);
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::V:
+		case sf::Keyboard::Key::V:
 			if (control) TestFrame.PasteFromClipboard(curr_frame);
 			SetFrameChanged(true);
 			break;
-		case sf::Keyboard::P:
+		case sf::Keyboard::Key::P:
 			if (curr_frame>0)
 				TestFrame.CopyFrame(curr_frame-1, curr_frame);
 			break;
-		case sf::Keyboard::F10:
+		case sf::Keyboard::Key::F10:
 			Winsys.TakeScreenshot();
 			break;
 
-		case sf::Keyboard::Num1:
+		case sf::Keyboard::Key::Num1:
 			GluCamera.angle = 0;
 			break;
-		case sf::Keyboard::Num2:
+		case sf::Keyboard::Key::Num2:
 			GluCamera.angle = 45;
 			break;
-		case sf::Keyboard::Num3:
+		case sf::Keyboard::Key::Num3:
 			GluCamera.angle = 90;
 			break;
-		case sf::Keyboard::Num4:
+		case sf::Keyboard::Key::Num4:
 			GluCamera.angle = 135;
 			break;
-		case sf::Keyboard::Num5:
+		case sf::Keyboard::Key::Num5:
 			GluCamera.angle = 180;
 			break;
-		case sf::Keyboard::Num6:
+		case sf::Keyboard::Key::Num6:
 			GluCamera.angle = 225;
 			break;
-		case sf::Keyboard::Num7:
+		case sf::Keyboard::Key::Num7:
 			GluCamera.angle = 270;
 			break;
-		case sf::Keyboard::Num8:
+		case sf::Keyboard::Key::Num8:
 			GluCamera.angle = 315;
 			break;
 		default:
@@ -291,14 +291,14 @@ void RenderSingleFrame(float timestep) {
 void SequenceKeys(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			keyrun = true;
 			break;
-		case sf::Keyboard::Escape:
-		case sf::Keyboard::Tab:
+		case sf::Keyboard::Key::Escape:
+		case sf::Keyboard::Key::Tab:
 			SetToolMode(1);
 			break;
-		case sf::Keyboard::Q:
+		case sf::Keyboard::Key::Q:
 			QuitTool();
 			break;
 		default:

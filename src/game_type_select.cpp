@@ -38,7 +38,7 @@ GNU General Public License for more details.
 CGameTypeSelect GameTypeSelect;
 
 static TTextButton* textbuttons[7];
-static sf::Sprite logo;
+static std::optional<sf::Sprite> logo;
 
 void EnterPractice() {
 	g_game.game_type = PRACTICING;
@@ -73,16 +73,16 @@ void CGameTypeSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 
 	switch (key) {
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			param.ui_snow = !param.ui_snow;
 			break;
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestQuit();
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			QuitGameType();
 			break;
-		case sf::Keyboard::W:
+		case sf::Keyboard::Key::W:
 			Music.FreeMusics();
 			break;
 		default:
@@ -113,9 +113,10 @@ void CGameTypeSelect::Enter() {
 	textbuttons[4] = AddTextButton(Trans.Text(43), CENTER, top + dist * 4, siz);
 	textbuttons[5] = AddTextButton(Trans.Text(4), CENTER, top + dist * 5, siz);
 	textbuttons[6] = AddTextButton(Trans.Text(5), CENTER, top + dist * 6, siz);
-	logo.setTexture(Tex.GetSFTexture(T_TITLE));
-	logo.setScale(Winsys.scale, Winsys.scale);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width) / 2, (5));
+
+	logo = sf::Sprite(Tex.GetSFTexture(T_TITLE));
+	logo->setScale({Winsys.scale, Winsys.scale});
+	logo->setPosition({(Winsys.resolution.width - logo->getTextureRect().size.x) / 2.0f, (5)});
 
 	Music.Play(param.menu_music, true);
 }
@@ -129,7 +130,7 @@ void CGameTypeSelect::Loop(float time_step) {
 		draw_ui_snow();
 	}
 
-	Winsys.draw(logo);
+	Winsys.draw(*logo);
 	DrawGUIFrame();
 	DrawGUI();
 

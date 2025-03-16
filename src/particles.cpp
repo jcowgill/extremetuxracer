@@ -66,32 +66,31 @@ static TVector2d push_position(0, 0);
 static TVector2d last_push_position;
 static bool push_position_initialized = false;
 
-TGuiParticle::TGuiParticle(float x, float y) {
-	const sf::Texture& texture = Tex.GetSFTexture(SNOW_PART);
-	sprite.setTexture(texture);
-	sprite.setPosition(x*static_cast<float>(Winsys.resolution.width), y*static_cast<float>(Winsys.resolution.height));
+TGuiParticle::TGuiParticle(float x, float y) : sprite(Tex.GetSFTexture(SNOW_PART)) {
+	const sf::Vector2i tex_size(sprite.getTexture().getSize());
+	sprite.setPosition({x*static_cast<float>(Winsys.resolution.width), y*static_cast<float>(Winsys.resolution.height)});
 	sprite.setColor(sf::Color(255, 255, 255, 76));
 	double p_dist = FRandom();
 
 	size = PARTICLE_MIN_SIZE + (1.0 - p_dist) * PARTICLE_SIZE_RANGE;
 
-	sprite.setScale(size / (texture.getSize().x / 2), size / (texture.getSize().y / 2));
+	sprite.setScale({size / (tex_size.x / 2.0f), size / (tex_size.y / 2.0f)});
 	vel.x = 0;
 	vel.y = BASE_VELOCITY + p_dist * VELOCITY_RANGE;
 
 	int type = std::rand() % 4;
 	switch (type) {
 		case 0:
-			sprite.setTextureRect(sf::IntRect(0, 0, texture.getSize().x / 2, texture.getSize().y / 2));
+			sprite.setTextureRect(sf::IntRect({0, 0}, tex_size / 2));
 			break;
 		case 1:
-			sprite.setTextureRect(sf::IntRect(texture.getSize().x / 2, 0, texture.getSize().x / 2, texture.getSize().y / 2));
+			sprite.setTextureRect(sf::IntRect({tex_size.x / 2, 0}, tex_size / 2));
 			break;
 		case 2:
-			sprite.setTextureRect(sf::IntRect(texture.getSize().x / 2, texture.getSize().y / 2, texture.getSize().x / 2, texture.getSize().y / 2));
+			sprite.setTextureRect(sf::IntRect(tex_size / 2, tex_size / 2));
 			break;
 		case 3:
-			sprite.setTextureRect(sf::IntRect(0, texture.getSize().y / 2, texture.getSize().x / 2, texture.getSize().y / 2));
+			sprite.setTextureRect(sf::IntRect({0, tex_size.y / 2}, tex_size / 2));
 			break;
 	}
 }
@@ -122,7 +121,7 @@ void TGuiParticle::Update(float time_step, float push_timestep, const TVector2d&
 	y += vel.y * time_step * (size / PARTICLE_SIZE_RANGE);
 
 	x = clamp(-0.05f, x, 1.05f);
-	sprite.setPosition(x*Winsys.resolution.width, y*Winsys.resolution.height);
+	sprite.setPosition({x*Winsys.resolution.width, y*Winsys.resolution.height});
 }
 
 void init_ui_snow() {
@@ -159,10 +158,10 @@ void update_ui_snow(float time_step) {
 			if (particles_2d.size() > BASE_snowparticles * Winsys.resolution.width && FRandom() > 0.2) {
 				p = particles_2d.erase(p);
 			} else {
-				p->sprite.setPosition(static_cast<float>(Winsys.resolution.width)*FRandom(), static_cast<float>(Winsys.resolution.height) * (-FRandom()*BASE_VELOCITY));
+				p->sprite.setPosition(sf::Vector2f(static_cast<float>(Winsys.resolution.width)*FRandom(), static_cast<float>(Winsys.resolution.height) * (-FRandom()*BASE_VELOCITY)));
 				double p_dist = FRandom();
 				p->size = PARTICLE_MIN_SIZE + (1.f - p_dist) * PARTICLE_SIZE_RANGE;
-				p->sprite.setScale(p->size / (p->sprite.getTexture()->getSize().x / 2), p->size / (p->sprite.getTexture()->getSize().x / 2));
+				p->sprite.setScale({p->size / (p->sprite.getTexture().getSize().x / 2.0f), p->size / (p->sprite.getTexture().getSize().x / 2.0f)});
 				p->vel.x = 0;
 				p->vel.y = BASE_VELOCITY + p_dist*VELOCITY_RANGE;
 				++p;

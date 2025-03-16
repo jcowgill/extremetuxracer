@@ -52,10 +52,10 @@ void CRegist::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	TWidget* focussed = KeyGUI(key, release);
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestQuit();
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			if (focussed == textbuttons[1]) {
 				g_game.player = Players.GetPlayer(player->GetValue());
 				State::manager.RequestEnterState(NewPlayer);

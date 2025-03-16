@@ -39,7 +39,7 @@ CCredits Credits;
 static float y_offset = 0;
 static bool moving = true;
 sf::RenderTexture* RT = 0;
-sf::VertexArray arr(sf::Quads, 12);
+sf::VertexArray arr(sf::PrimitiveType::TriangleStrip, 8);
 sf::RenderStates states(sf::BlendAlpha);
 
 void CCredits::LoadCreditList() {
@@ -73,8 +73,7 @@ void CCredits::DrawCreditsText(float time_step) {
 	float offs = 0.f;
 	if (moving) y_offset += time_step * 30;
 
-	sf::Text text;
-	text.setFont(FT.getCurrentFont());
+	sf::Text text(FT.getCurrentFont());
 	RT->clear(colTBackr);
 	for (std::vector<TCredits>::const_iterator i = CreditList.begin(); i != CreditList.end(); ++i) {
 		offs = h - TOP_Y - y_offset + i->offs;
@@ -90,7 +89,7 @@ void CCredits::DrawCreditsText(float time_step) {
 		}
 		text.setCharacterSize(FT.AutoSizeN(i->size)+1);
 		text.setString(i->text);
-		text.setPosition((Winsys.resolution.width - text.getLocalBounds().width) / 2, offs);
+		text.setPosition({(Winsys.resolution.width - text.getLocalBounds().size.x) / 2, offs});
 		RT->draw(text);
 	}
 	RT->display();
@@ -103,10 +102,10 @@ void CCredits::DrawCreditsText(float time_step) {
 void CCredits::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::M:
+		case sf::Keyboard::Key::M:
 			moving = !moving;
 			break;
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			param.ui_snow = !param.ui_snow;
 			break;
 		default:
@@ -128,25 +127,18 @@ void CCredits::Enter() {
 	Music.Play(param.credits_music, true);
 	y_offset = 0;
 	moving = true;
-	RT = new sf::RenderTexture();
-	RT->create(Winsys.resolution.width, Winsys.resolution.height - TOP_Y - BOTT_Y + 2 * FADE);
+	RT = new sf::RenderTexture({Winsys.resolution.width, Winsys.resolution.height - TOP_Y - BOTT_Y + 2 * FADE});
 
 	float w = Winsys.resolution.width;
 	float h = Winsys.resolution.height;
-	arr[0] = sf::Vertex(sf::Vector2f(0, TOP_Y - FADE), colTBackr, sf::Vector2f(0, 0));
-	arr[1] = sf::Vertex(sf::Vector2f(0, TOP_Y), colWhite, sf::Vector2f(0, FADE));
-	arr[2] = sf::Vertex(sf::Vector2f(w, TOP_Y), colWhite, sf::Vector2f(w, FADE));
-	arr[3] = sf::Vertex(sf::Vector2f(w, TOP_Y - FADE), colTBackr, sf::Vector2f(w, 0));
-
-	arr[4] = sf::Vertex(sf::Vector2f(0, TOP_Y), colWhite, sf::Vector2f(0, FADE));
-	arr[5] = sf::Vertex(sf::Vector2f(0, h - BOTT_Y), colWhite, sf::Vector2f(0, RT->getSize().y - FADE));
-	arr[6] = sf::Vertex(sf::Vector2f(w, h - BOTT_Y), colWhite, sf::Vector2f(w, RT->getSize().y - FADE));
-	arr[7] = sf::Vertex(sf::Vector2f(w, TOP_Y), colWhite, sf::Vector2f(w, FADE));
-
-	arr[8] = sf::Vertex(sf::Vector2f(0, h - BOTT_Y), colWhite, sf::Vector2f(0, RT->getSize().y - FADE));
-	arr[9] = sf::Vertex(sf::Vector2f(0, h - BOTT_Y + FADE), colTBackr, sf::Vector2f(0, RT->getSize().y));
-	arr[10] = sf::Vertex(sf::Vector2f(w, h - BOTT_Y + FADE), colTBackr, sf::Vector2f(w, RT->getSize().y));
-	arr[11] = sf::Vertex(sf::Vector2f(w, h - BOTT_Y), colWhite, sf::Vector2f(w, RT->getSize().y - FADE));
+	arr[0] = sf::Vertex{sf::Vector2f(w, TOP_Y - FADE), colTBackr, sf::Vector2f(w, 0)};
+	arr[1] = sf::Vertex{sf::Vector2f(0, TOP_Y - FADE), colTBackr, sf::Vector2f(0, 0)};
+	arr[2] = sf::Vertex{sf::Vector2f(w, TOP_Y), colWhite, sf::Vector2f(w, FADE)};
+	arr[3] = sf::Vertex{sf::Vector2f(0, TOP_Y), colWhite, sf::Vector2f(0, FADE)};
+	arr[4] = sf::Vertex{sf::Vector2f(w, h - BOTT_Y), colWhite, sf::Vector2f(w, RT->getSize().y - FADE)};
+	arr[5] = sf::Vertex{sf::Vector2f(0, h - BOTT_Y), colWhite, sf::Vector2f(0, RT->getSize().y - FADE)};
+	arr[6] = sf::Vertex{sf::Vector2f(w, h - BOTT_Y + FADE), colTBackr, sf::Vector2f(w, RT->getSize().y)};
+	arr[7] = sf::Vertex{sf::Vector2f(0, h - BOTT_Y + FADE), colTBackr, sf::Vector2f(0, RT->getSize().y)};
 
 	states.texture = &RT->getTexture();
 }

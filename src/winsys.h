@@ -62,7 +62,7 @@ public:
 	void clear() { window.clear(colBackgr); }
 	void beginSFML() { if (!sfmlRenders) window.pushGLStates(); sfmlRenders = true; }
 	void endSFML() { if (sfmlRenders) window.popGLStates(); sfmlRenders = false; }
-	bool PollEvent(sf::Event& event) { return window.pollEvent(event); }
+	std::optional<sf::Event> PollEvent() { return window.pollEvent(); }
 	const sf::Window& getWindow() const { return window; }
 	void TakeScreenshot() const;
 };

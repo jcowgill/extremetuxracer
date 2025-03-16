@@ -45,19 +45,19 @@ static bool trees = true;
 void CPaused::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	if (release) return;
 	switch (key) {
-		case sf::Keyboard::C:
+		case sf::Keyboard::Key::C:
 			Winsys.TakeScreenshot();
 			break;
-		case sf::Keyboard::F5:
+		case sf::Keyboard::Key::F5:
 			sky = !sky;
 			break;
-		case sf::Keyboard::F6:
+		case sf::Keyboard::Key::F6:
 			fog = !fog;
 			break;
-		case sf::Keyboard::F7:
+		case sf::Keyboard::Key::F7:
 			terr = !terr;
 			break;
-		case sf::Keyboard::F8:
+		case sf::Keyboard::Key::F8:
 			trees = !trees;
 			break;
 		default:

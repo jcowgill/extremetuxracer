@@ -110,7 +110,7 @@ void CFont::Clear() {
 
 int CFont::LoadFont(const std::string& name, const std::string& path) {
 	fonts.push_back(new sf::Font());
-	if (!fonts.back()->loadFromFile(path)) {
+	if (!fonts.back()->openFromFile(path)) {
 		Message("Failed to open font");
 		return -1;
 	}
@@ -196,10 +196,10 @@ int CFont::AutoDistanceN(int rel_val) const {
 void CFont::DrawText(float x, float y, const sf::String& text, std::size_t font, unsigned int size) const {
 	if (font >= fonts.size()) return;
 
-	sf::Text temp(text, *fonts[font], size);
+	sf::Text temp(*fonts[font], text, size);
 	if (x == CENTER)
-		x = (Winsys.resolution.width - temp.getLocalBounds().width) / 2;
-	temp.setPosition(x, y);
+		x = (Winsys.resolution.width - temp.getLocalBounds().size.x) / 2;
+	temp.setPosition({x, y});
 	temp.setFillColor(curr_col);
 	temp.setOutlineColor(curr_col);
 	Winsys.draw(temp);
@@ -219,9 +219,9 @@ void CFont::DrawString(float x, float y, const sf::String& s, const std::string 
 void CFont::GetTextSize(const sf::String& text, float &x, float &y, std::size_t font, unsigned int size) const {
 	if (font >= fonts.size()) { x = 0; y = 0; return; }
 
-	sf::Text temp(text, *fonts[font], size);
-	x = temp.getGlobalBounds().width;
-	y = temp.getGlobalBounds().height;
+	sf::Text temp(*fonts[font], text, size);
+	x = temp.getGlobalBounds().size.x;
+	y = temp.getGlobalBounds().size.y;
 }
 
 void CFont::GetTextSize(const sf::String& text, float &x, float &y, const std::string &fontname, unsigned int size) const {

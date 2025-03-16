@@ -109,24 +109,24 @@ void CRaceSelect::Keyb(sf::Keyboard::Key key, bool release, int x, int y) {
 	KeyGUI(key, release);
 	UpdateInfo();
 	switch (key) {
-		case sf::Keyboard::Escape:
+		case sf::Keyboard::Key::Escape:
 			State::manager.RequestEnterState(GameTypeSelect);
 			break;
-		case sf::Keyboard::U:
+		case sf::Keyboard::Key::U:
 			param.ui_snow = !param.ui_snow;
 			break;
-		case sf::Keyboard::T:
+		case sf::Keyboard::Key::T:
 			g_game.force_treemap = !g_game.force_treemap;
 			break;
-		case sf::Keyboard::C:
+		case sf::Keyboard::Key::C:
 			g_game.treesize++;
 			if (g_game.treesize > 5) g_game.treesize = 1;
 			break;
-		case sf::Keyboard::V:
+		case sf::Keyboard::Key::V:
 			g_game.treevar++;
 			if (g_game.treevar > 5) g_game.treevar = 1;
 			break;
-		case sf::Keyboard::Return:
+		case sf::Keyboard::Key::Enter:
 			if (textbuttons[1]->focussed())
 				State::manager.RequestEnterState(GameTypeSelect);
 			else

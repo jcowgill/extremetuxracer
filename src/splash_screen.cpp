@@ -50,17 +50,17 @@ void CSplashScreen::Loop(float time_step) {
 	Trans.LoadTranslations(param.language);  // Before first texts are being displayed
 
 	sf::Sprite logo(Tex.GetSFTexture(TEXLOGO));
-	logo.setScale(Winsys.scale/2.f, Winsys.scale/2.f);
-	logo.setPosition((Winsys.resolution.width - logo.getTextureRect().width*(Winsys.scale / 2)) / 2, 60);
+	logo.setScale({Winsys.scale/2.f, Winsys.scale/2.f});
+	logo.setPosition({(Winsys.resolution.width - logo.getTextureRect().size.x*(Winsys.scale / 2)) / 2, 60});
 
 	if (!Failure) {
 		FT.AutoSizeN(6);
-		sf::Text t1(Trans.Text(67), FT.getCurrentFont(), FT.GetSize());
+		sf::Text t1(FT.getCurrentFont(), Trans.Text(67), FT.GetSize());
 		int top = AutoYPosN(60);
-		t1.setPosition((Winsys.resolution.width - t1.getLocalBounds().width) / 2, top);
-		sf::Text t2(Trans.Text(68), FT.getCurrentFont(), FT.GetSize());
+		t1.setPosition(sf::Vector2f((Winsys.resolution.width - t1.getLocalBounds().size.x) / 2, top));
+		sf::Text t2(FT.getCurrentFont(), Trans.Text(68), FT.GetSize());
 		int dist = FT.AutoDistanceN(3);
-		t2.setPosition((Winsys.resolution.width - t2.getLocalBounds().width) / 2, top + dist);
+		t2.setPosition(sf::Vector2f((Winsys.resolution.width - t2.getLocalBounds().size.x) / 2, top + dist));
 
 		Winsys.draw(t1);
 		Winsys.draw(t2);
@@ -99,10 +99,10 @@ void CSplashScreen::Loop(float time_step) {
 		else { // Failure
 			FT.AutoSizeN(6);
 			int top = AutoYPosN(60);
-			Failure = new sf::Text(reason, FT.getCurrentFont(), FT.GetSize());
+			Failure = new sf::Text(FT.getCurrentFont(), reason, FT.GetSize());
 			Failure->setFillColor(colDRed);
 			Failure->setOutlineColor(colDRed);
-			Failure->setPosition((Winsys.resolution.width - Failure->getLocalBounds().width) / 2, top);
+			Failure->setPosition(sf::Vector2f((Winsys.resolution.width - Failure->getLocalBounds().size.x) / 2, top));
 		}
 	}
 }
